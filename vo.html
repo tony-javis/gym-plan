@@ -84,74 +84,51 @@
   .note code { background:var(--card2); padding:1px 5px; border-radius:4px; font-size:12.5px; }
   footer { max-width:720px; margin:0 auto; padding:12px 18px 0; color:var(--dim); font-size:12.3px; line-height:1.6; }
 
-  .logbox { background:var(--card); border:1px solid var(--line); border-radius:14px;
-    padding:14px 14px 12px; margin:18px 0 0; }
-  .logbox h4 { margin:0 0 10px; font-size:12.5px; text-transform:uppercase;
+  details.ex summary { flex-wrap:wrap; }
+  .ctl { flex:0 0 100%; display:flex; align-items:center; gap:8px; margin-top:9px; }
+  .wt { width:88px; font:inherit; font-size:14px; font-variant-numeric:tabular-nums;
+    text-align:center; color:var(--txt); background:var(--card2);
+    border:1px solid var(--line); border-radius:9px; padding:9px 6px; outline:none; }
+  .wt::placeholder { color:#4d5a68; font-size:12.5px; }
+  .wt:focus { border-color:var(--accent); background:#1b232b; }
+  .wtunit { font-size:11.5px; font-weight:700; color:var(--dim); letter-spacing:.3px; }
+  .done { flex:0 0 auto; margin-left:auto; width:38px; height:38px; border-radius:11px;
+    display:grid; place-items:center; cursor:pointer; padding:0;
+    background:#eef2f6; border:1px solid #eef2f6; color:#c3ccd6;
+    font-size:16px; font-weight:900; line-height:1; transition:.15s; }
+  .done:active { transform:scale(.93); }
+  details.ex.isdone .done { background:var(--accent); border-color:var(--accent); color:#0f1216; }
+  details.ex.isdone .wt { background:rgba(78,201,160,.1); border-color:rgba(78,201,160,.45); color:#cfe9e0; }
+  details.ex.isdone .exname { color:var(--dim); }
+  details.ex.isdone .badge { opacity:.6; }
+  .finish { display:block; width:100%; margin:14px 0 4px; padding:14px;
+    font:inherit; font-size:14px; font-weight:800; letter-spacing:.2px; cursor:pointer;
+    color:#0f1216; background:var(--accent); border:1px solid var(--accent);
+    border-radius:12px; }
+  .finish:active { transform:scale(.99); }
+  .finish.off { color:var(--dim); background:var(--card2); border-color:var(--line); }
+  #statroot { background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:14px 16px; margin:20px 0 0; }
+  #statroot h4 { margin:0 0 10px; font-size:12.5px; text-transform:uppercase;
     letter-spacing:.5px; color:var(--accent); }
-  .selrow { display:flex; gap:6px; margin-bottom:10px; flex-wrap:wrap; }
-  .pchip { flex:0 0 auto; font:inherit; font-size:12.5px; font-weight:700; cursor:pointer;
-    color:var(--dim); background:var(--card2); border:1px solid var(--line);
-    border-radius:999px; padding:6px 12px; transition:.15s; }
-  .pchip.on { color:#0f1216; background:var(--accent); border-color:var(--accent); }
-  .pchip.sm { font-size:12px; padding:5px 10px; }
-  .pchip.sm.on { background:var(--accent2); border-color:var(--accent2); }
-  .pchip.wk.on { background:#b78bff; border-color:#b78bff; }
-  .lwho { font-size:12.5px; color:var(--dim); margin:2px 0 8px; }
-  .lwho b { color:var(--txt); }
-  .lprog { font-size:12px; font-weight:700; color:var(--accent2); margin:0 0 10px; }
-  .lprog span { color:var(--dim); font-weight:600; }
-  table.ltab { width:100%; border-collapse:collapse; font-size:13px;
+  .day { margin-bottom:14px; }
+  .day:last-child { margin-bottom:0; }
+  .dh { display:flex; align-items:baseline; gap:8px; padding-bottom:6px;
+    border-bottom:1px solid var(--line); margin-bottom:4px; }
+  .dh b { font-size:13.5px; color:#fff; font-variant-numeric:tabular-nums; }
+  .dh span { font-size:11.5px; color:var(--dim); font-weight:700;
+    text-transform:uppercase; letter-spacing:.3px; }
+  table.stab { width:100%; border-collapse:collapse; font-size:13px;
     font-variant-numeric:tabular-nums; }
-  table.ltab th { color:var(--dim); font-size:10.5px; text-transform:uppercase;
-    letter-spacing:.3px; font-weight:700; padding:6px 4px; text-align:center;
-    border-bottom:1px solid var(--line); }
-  table.ltab th:first-child { text-align:left; padding-left:2px; }
-  table.ltab td { padding:3px 2px; border-bottom:1px solid rgba(43,53,64,.55); vertical-align:middle; }
-  table.ltab td.ck { text-align:center; padding:6px 0 6px 2px; width:34px; }
-  table.ltab td.nm { padding:8px 6px 8px 4px; }
-  .nm .t { display:block; color:var(--txt); font-weight:600; font-size:13px; line-height:1.3; }
-  .nm .p { display:block; color:var(--dim); font-size:11px; margin-top:2px; }
-  table.ltab td.v { text-align:center; color:var(--txt); padding:8px 2px; font-weight:600; }
-  table.ltab td.v.empty { color:#4d5a68; font-weight:400; }
-  table.ltab input { width:100%; font:inherit; font-size:14px;
-    font-variant-numeric:tabular-nums; text-align:center; color:var(--txt);
-    background:var(--card2); border:1px solid transparent; border-radius:8px;
-    padding:9px 4px; outline:none; }
-  table.ltab input:focus { border-color:var(--accent); background:#1b232b; }
-  table.ltab input::placeholder { color:#4d5a68; }
-  .colw { width:28%; }
-  .colr { width:21%; }
-  .tick { display:inline-flex; width:26px; height:26px; cursor:pointer;
-    align-items:center; justify-content:center; border-radius:8px;
-    background:var(--card2); border:1px solid var(--line);
-    color:transparent; font-size:15px; font-weight:800; line-height:1;
-    transition:.15s; user-select:none; padding:0; }
-  .tick:active { transform:scale(.9); }
-  .tick.on { background:var(--accent); border-color:var(--accent); color:#0f1216; }
-  tr.done td.nm .t { color:var(--dim); text-decoration:line-through; }
-  tr.done td.nm .p { opacity:.55; }
-  tr.done td.v { opacity:.55; }
-  .lfoot { display:flex; align-items:center; gap:8px; margin-top:12px; flex-wrap:wrap; }
-  .lbtn { font:inherit; font-size:12.5px; font-weight:700; cursor:pointer;
-    color:var(--txt); background:var(--card2); border:1px solid var(--line);
-    border-radius:9px; padding:8px 13px; }
-  .lbtn:active { background:#2a333d; }
-  .lbtn.pri { color:#0f1216; background:var(--accent); border-color:var(--accent); }
-  .lbtn.reset { color:#ff9b9b; border-color:rgba(255,122,122,.4); }
-  .lbtn.reset:active { background:rgba(255,122,122,.15); }
-  .lsaved { font-size:11.5px; font-weight:700; color:var(--accent);
-    opacity:0; transition:opacity .3s; margin-left:auto; }
-  .lsaved.on { opacity:1; }
-  .lwarn { display:none; margin-top:10px; padding:10px 12px; border-radius:9px;
-    font-size:12.5px; line-height:1.5; background:rgba(255,181,71,.1);
-    border-left:3px solid #ffb547; color:#f2e4c9; }
-  .lwarn.on { display:block; }
-  .lhint { color:var(--dim); font-size:12.3px; line-height:1.6; margin-top:10px; }
-  .lshare { display:none; margin-top:10px; }
-  .lshare.on { display:block; }
-  .lshare textarea { width:100%; height:66px; font:12px/1.4 ui-monospace,Menlo,monospace;
-    color:var(--txt); background:var(--card2); border:1px solid var(--line);
-    border-radius:9px; padding:8px; resize:none; }
+  table.stab td { padding:6px 0; border-bottom:1px solid rgba(43,53,64,.45); }
+  table.stab td.w { text-align:right; color:var(--accent); font-weight:700; white-space:nowrap; padding-left:10px; }
+  table.stab tr:last-child td { border-bottom:none; }
+  .lhint { color:var(--dim); font-size:12.3px; line-height:1.6; }
+  .toast { position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(20px);
+    background:#2a333d; color:#fff; font-size:13px; font-weight:700; padding:11px 18px;
+    border-radius:11px; box-shadow:0 6px 20px rgba(0,0,0,.45); opacity:0; pointer-events:none;
+    transition:.22s; z-index:99; }
+  .toast.on { opacity:1; transform:translateX(-50%) translateY(0); }
 </style></head>
 <body>
 <header>
@@ -167,10 +144,10 @@
   <div class="lvl"><span class="dot d3"></span><span><b>Mức 3 — tùy chọn.</b> Nằm sau đường cắt. Bỏ đầu tiên khi hết giờ hoặc hôm đó mệt.</span></div>
 </div>
 
-<section class="session" id="sA">
+<section class="session" id="sA" data-session="A" data-label="BUỔI A — THÂN TRÊN">
   <h2>BUỔI A — THÂN TRÊN<span class="sub">8 bài · ~46 phút · 3 bài mức 1 là phần không được cắt</span></h2>
   
-      <details class="ex">
+      <details class="ex" data-slug="widegriplatpulldown" data-name="Wide-Grip Lat Pulldown">
         <summary>
           <span class="rank">1</span>
           <span class="exname">Wide-Grip Lat Pulldown</span>
@@ -192,7 +169,7 @@
           <div class="why"><b>Tại sao bài này</b>Bài nặng nhất buổi và là bài dễ sai tư thế nhất, nên làm khi còn khoẻ. Với người ngồi nhiều, cơ xô yếu là nguyên nhân trực tiếp của vai xuôi và đau mỏi cổ vai gáy.</div>
         </div>
       </details>
-      <details class="ex">
+      <details class="ex" data-slug="machinebenchpress" data-name="Machine Bench Press">
         <summary>
           <span class="rank">2</span>
           <span class="exname">Machine Bench Press</span>
@@ -214,7 +191,7 @@
           <div class="why"><b>Tại sao bài này</b>Compound đẩy an toàn nhất cho người mới: quỹ đạo cố định, không có tạ rơi. Ngực khoẻ kéo vai về sau, cân lại tư thế gù do ngồi bàn giấy.</div>
         </div>
       </details>
-      <details class="ex">
+      <details class="ex" data-slug="seatedcablerows" data-name="Seated Cable Rows">
         <summary>
           <span class="rank">3</span>
           <span class="exname">Seated Cable Rows</span>
@@ -236,7 +213,7 @@
           <div class="why"><b>Tại sao bài này</b>Có pad chặn chân và thân được tựa, nên giới hạn của hiệp là cơ lưng chứ không phải sức chịu của lưng dưới — khác hẳn T-bar đứng.</div>
         </div>
       </details>
-      <details class="ex">
+      <details class="ex" data-slug="machineshouldermilitarypress" data-name="Machine Shoulder (Military) Press">
         <summary>
           <span class="rank">4</span>
           <span class="exname">Machine Shoulder (Military) Press</span>
@@ -258,7 +235,7 @@
           <div class="why"><b>Tại sao bài này</b>Compound dọc duy nhất cho vai. Đẩy qua đầu cũng là kỹ năng cần cho sinh hoạt hằng ngày — với túi xách, vali, đồ trên cao.</div>
         </div>
       </details>
-      <details class="ex">
+      <details class="ex" data-slug="reversemachineflyes" data-name="Reverse Machine Flyes">
         <summary>
           <span class="rank">5</span>
           <span class="exname">Reverse Machine Flyes</span>
@@ -280,7 +257,7 @@
           <div class="why"><b>Tại sao bài này</b>Vai sau là phần yếu nhất ở người ngồi nhiều, và là thứ giữ bả vai không trượt về trước. Đổi từ face pull vì bài này khoá cả người vào ghế, không có gì để chỉnh sai.</div>
         </div>
       </details>
-      <details class="ex">
+      <details class="ex" data-slug="dipmachine" data-name="Dip Machine">
         <summary>
           <span class="rank">6</span>
           <span class="exname">Dip Machine</span>
@@ -302,7 +279,7 @@
           <div class="why"><b>Tại sao bài này</b>Máy trợ lực có chốt chỉnh đến từng mức, nên chỉnh được chính xác &#x27;vừa đủ 10 cái&#x27; — thay vì đoán tạ như cáp.</div>
         </div>
       </details>
-      <details class="ex">
+      <details class="ex" data-slug="plank" data-name="Plank">
         <summary>
           <span class="rank">7</span>
           <span class="exname">Plank</span>
@@ -324,7 +301,7 @@
           <div class="why"><b>Tại sao bài này</b>Không cần máy nhưng dạy kỹ năng giữ thân trung tính — nền cho mọi bài khác, kể cả hip thrust và leg press.</div>
         </div>
       </details><div class="cut"><span>Cắt từ đây nếu còn dưới 35 phút</span></div>
-      <details class="ex">
+      <details class="ex" data-slug="butterfly" data-name="Butterfly">
         <summary>
           <span class="rank">8</span>
           <span class="exname">Butterfly</span>
@@ -347,10 +324,10 @@
         </div>
       </details>
 </section>
-<section class="session" id="sB">
+<section class="session" id="sB" data-session="B" data-label="BUỔI B — THÂN DƯỚI">
   <h2>BUỔI B — THÂN DƯỚI<span class="sub">8 bài · ~48 phút · 3 bài mức 1 là phần không được cắt</span></h2>
   
-      <details class="ex">
+      <details class="ex" data-slug="barbellhipthrust" data-name="Barbell Hip Thrust">
         <summary>
           <span class="rank">1</span>
           <span class="exname">Barbell Hip Thrust</span>
@@ -372,7 +349,7 @@
           <div class="why"><b>Tại sao bài này</b>Bài duy nhất cô lập được mông ở góc co ngắn mà vẫn chất được tạ nặng — bổ khuyết cho hack squat chứ không thay thế. Giàn có pad lưng cố định cộng hai chốt an toàn sát đất nên tập một mình vẫn an toàn: fail thì đòn nằm trên chốt. Đặt đầu buổi vì đây là mục tiêu chính và cần thân khoẻ nhất.</div>
         </div>
       </details>
-      <details class="ex">
+      <details class="ex" data-slug="hacksquat" data-name="Hack Squat">
         <summary>
           <span class="rank">2</span>
           <span class="exname">Hack Squat</span>
@@ -394,7 +371,7 @@
           <div class="why"><b>Tại sao bài này</b>Thay cho leg press. Cùng đùi trước, cùng lưng được đỡ, nhưng tư thế đứng nên gần với squat thật hơn và dạy được cảm giác giữ thân. Chốt an toàn cho phép đặt đúng biên độ đùi song song nên không thể xuống quá dù muốn.</div>
         </div>
       </details>
-      <details class="ex">
+      <details class="ex" data-slug="seatedlegcurl" data-name="Seated Leg Curl">
         <summary>
           <span class="rank">3</span>
           <span class="exname">Seated Leg Curl</span>
@@ -416,7 +393,7 @@
           <div class="why"><b>Tại sao bài này</b>Đùi sau gập gối là phần mà hip thrust và hack squat không chạm tới. Cân bằng đùi trước/đùi sau là cách rẻ nhất để giảm đau gối khi chạy.</div>
         </div>
       </details>
-      <details class="ex">
+      <details class="ex" data-slug="smithmachinestiffleggeddeadlift" data-name="Smith Machine Stiff-Legged Deadlift">
         <summary>
           <span class="rank">4</span>
           <span class="exname">Smith Machine Stiff-Legged Deadlift</span>
@@ -438,7 +415,7 @@
           <div class="why"><b>Tại sao bài này</b>Phủ phần duỗi hông của đùi sau — phần mà leg curl không chạm tới. Smith giữ tạ trên ray cố định nên an toàn hơn tạ đòn tự do, nhưng vẫn là bài duy nhất trong lịch cần người đứng nhìn.</div>
         </div>
       </details>
-      <details class="ex">
+      <details class="ex" data-slug="legextensions" data-name="Leg Extensions">
         <summary>
           <span class="rank">5</span>
           <span class="exname">Leg Extensions</span>
@@ -460,7 +437,7 @@
           <div class="why"><b>Tại sao bài này</b>Cô lập đùi trước, tạo nét cơ mà leg press (có mông và đùi sau hỗ trợ) không làm được. Máy khoá đùi hoàn toàn.</div>
         </div>
       </details>
-      <details class="ex">
+      <details class="ex" data-slug="thighabductor" data-name="Thigh Abductor">
         <summary>
           <span class="rank">6</span>
           <span class="exname">Thigh Abductor</span>
@@ -482,7 +459,7 @@
           <div class="why"><b>Tại sao bài này</b>Mông nhỡ tạo đường cong hông và giữ gối không đổ vào trong khi chạy, xuống cầu thang. Máy này ít phòng có, nên tận dụng.</div>
         </div>
       </details>
-      <details class="ex">
+      <details class="ex" data-slug="plank" data-name="Plank">
         <summary>
           <span class="rank">7</span>
           <span class="exname">Plank</span>
@@ -504,7 +481,7 @@
           <div class="why"><b>Tại sao bài này</b>Giữ nguyên như buổi A. An toàn hơn ab coaster — máy chạy bằng đà, khó kiểm soát với người mới.</div>
         </div>
       </details><div class="cut"><span>Cắt từ đây nếu còn dưới 35 phút</span></div>
-      <details class="ex">
+      <details class="ex" data-slug="thighadductor" data-name="Thigh Adductor">
         <summary>
           <span class="rank">8</span>
           <span class="exname">Thigh Adductor</span>
@@ -554,204 +531,213 @@
     <li>Tony ghi mức tạ giúp trên máy của anh ấy. Người tập chỉ cần mở trang để xem lại số của tuần trước.</li>
   </ul>
 </div>
-<div class="logbox" id="logroot"></div>
 
 <script>
 (function(){
-  var PLANID = "vo";
-  var WHOID = "vo";
-  var SESSIONS = [{"id": "A", "name": "Buổi A — Thân trên", "short": "Buổi A", "ex": [{"slug": "widegriplatpulldown", "name": "Wide-Grip Lat Pulldown", "presc": "3×8-10"}, {"slug": "machinebenchpress", "name": "Machine Bench Press", "presc": "3×8-10"}, {"slug": "seatedcablerows", "name": "Seated Cable Rows", "presc": "3×10-12"}, {"slug": "machineshouldermilitarypress", "name": "Machine Shoulder (Military) Press", "presc": "2×10-12"}, {"slug": "reversemachineflyes", "name": "Reverse Machine Flyes", "presc": "3×12-15"}, {"slug": "dipmachine", "name": "Dip Machine", "presc": "2×10-12"}, {"slug": "plank", "name": "Plank", "presc": "3×30-40s"}, {"slug": "butterfly", "name": "Butterfly", "presc": "2×12-15"}]}, {"id": "B", "name": "Buổi B — Thân dưới", "short": "Buổi B", "ex": [{"slug": "barbellhipthrust", "name": "Barbell Hip Thrust", "presc": "3×10-12"}, {"slug": "hacksquat", "name": "Hack Squat", "presc": "3×10-12"}, {"slug": "seatedlegcurl", "name": "Seated Leg Curl", "presc": "3×10-12"}, {"slug": "smithmachinestiffleggeddeadlift", "name": "Smith Machine Stiff-Legged Deadlift", "presc": "2×10-12"}, {"slug": "legextensions", "name": "Leg Extensions", "presc": "2×12-15"}, {"slug": "thighabductor", "name": "Thigh Abductor", "presc": "3×15-20"}, {"slug": "plank", "name": "Plank", "presc": "3×30-40s"}, {"slug": "thighadductor", "name": "Thigh Adductor", "presc": "2×15-20"}]}];
-  var WEEKS = 12;
-  var WHO = "Thảo Vy";
-  var root = document.getElementById('logroot');
-  if (!root) return;
+  var PLAN = "vo", PROF = "vo";
+  var main = document.querySelector('main');
+  if (!main) return;
 
-  function b64enc(str){
-    var bytes = new TextEncoder().encode(str), bin = '';
-    for (var i=0;i<bytes.length;i++) bin += String.fromCharCode(bytes[i]);
-    return btoa(bin).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
-  }
-  function b64dec(s){
-    s = s.replace(/-/g,'+').replace(/_/g,'/');
-    while (s.length % 4) s += '=';
-    var bin = atob(s), bytes = new Uint8Array(bin.length);
-    for (var i=0;i<bin.length;i++) bytes[i] = bin.charCodeAt(i);
-    return new TextDecoder().decode(bytes);
-  }
-  function readHashData(){
-    var h = location.hash || '', i = h.indexOf('d=');
-    if (i < 0) return null;
-    try { return JSON.parse(b64dec(h.slice(i+2))); } catch(e){ return null; }
-  }
-  function el(tag, cls, text){
-    var e = document.createElement(tag);
-    if (cls) e.className = cls;
-    if (text !== undefined) e.textContent = text;
-    return e;
-  }
+  var storageOK = true;
+  function curKey(s){ return 'gymtrack.' + PLAN + '.' + PROF + '.cur.' + s; }
+  var LOGKEY = 'gymtrack.' + PLAN + '.' + PROF + '.log';
 
-  var data = readHashData();
-  var sess = SESSIONS[0].id, week = 1;
-  var storageOK = true, savedTimer = null;
-
-  function kLive(s){ return 'gymlive.' + PLANID + '.' + WHOID + '.' + s; }
-  function lsGet(k){
-    try { return localStorage.getItem(k); } catch(e){ storageOK = false; return null; }
+  function get(k){
+    try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : null; }
+    catch(e){ storageOK = false; return null; }
   }
-  function lsSet(k, v){
-    try { localStorage.setItem(k, v); return true; }
+  function set(k, v){
+    try { localStorage.setItem(k, JSON.stringify(v)); return true; }
     catch(e){ storageOK = false; return false; }
   }
-  function getLive(s){
-    var raw = lsGet(kLive(s));
-    if (raw) { try { return JSON.parse(raw) || {}; } catch(e){} }
-    return {};
+  function esc(s){
+    return String(s === undefined || s === null ? '' : s)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
-  function setLive(s, v){ lsSet(kLive(s), JSON.stringify(v)); }
-  function flash(){
-    var w = root.querySelector('.lwarn');
-    if (w) w.className = 'lwarn' + (storageOK ? '' : ' on');
-    var sp = root.querySelector('.lsaved');
-    if (!sp || !storageOK) return;
-    sp.className = 'lsaved on';
-    clearTimeout(savedTimer);
-    savedTimer = setTimeout(function(){ sp.className = 'lsaved'; }, 1400);
+  function today(){
+    var d = new Date();
+    return ('0'+d.getDate()).slice(-2) + '/' + ('0'+(d.getMonth()+1)).slice(-2) + '/' + d.getFullYear();
   }
 
-  root.appendChild(el('h4', null, 'Buổi tập'));
+  var state = {};
+  function load(s){ if (!state[s]) state[s] = get(curKey(s)) || {}; return state[s]; }
+  function save(s){ set(curKey(s), state[s] || {}); }
 
-  var who = el('div', 'lwho');
-  who.innerHTML = 'Người tập: <b>' + WHO + '</b>';
-  root.appendChild(who);
-
-  if (SESSIONS.length > 1) {
-    var sr = el('div', 'selrow');
-    SESSIONS.forEach(function(s){
-      var b = el('button', 'pchip sm' + (s.id === sess ? ' on' : ''), s.short || s.name);
-      b.type = 'button';
-      b.onclick = function(){ sess = s.id; build(); };
-      sr.appendChild(b);
-    });
-    root.appendChild(sr);
-  }
-
-  var wr = el('div', 'selrow');
-  for (let w = 1; w <= WEEKS; w++) {
-    (function(n){
-      var b = el('button', 'pchip sm wk' + (n === week ? ' on' : ''), 'T' + n);
-      b.type = 'button';
-      b.onclick = function(){ week = n; build(); };
-      wr.appendChild(b);
-    })(w);
-  }
-  root.appendChild(wr);
-
-  var prog = el('div', 'lprog');
-  root.appendChild(prog);
-
-  var body = el('div');
-  root.appendChild(body);
-
-  var foot = el('div', 'lfoot');
-  var breset = el('button', 'lbtn reset', 'Đặt lại buổi này');
-  breset.type = 'button';
-  breset.onclick = function(){
-    if (!confirm('Bỏ hết dấu tick của ' + WHO + ' · buổi này?\n\nĐây chỉ là checklist trong buổi, không ảnh hưởng mức tạ.')) return;
-    setLive(sess, {});
-    build();
-  };
-  foot.appendChild(breset);
-  foot.appendChild(el('span', 'lsaved', 'Đã lưu'));
-  root.appendChild(foot);
-
-  var warn = el('div', 'lwarn', 'Trình duyệt đang chặn lưu trữ nên dấu tick chỉ còn trong phiên này.');
-  root.appendChild(warn);
-  root.appendChild(el('div', 'lhint',
-    'Bấm ô vuông để đánh dấu bài đã tập xong. Dấu tick chỉ để theo dõi trong buổi hôm nay, bấm "Đặt lại buổi này" trước buổi mới.'));
-
-  function build(){
-    root.querySelectorAll('.selrow').forEach(function(rowEl){
-      rowEl.querySelectorAll('.pchip').forEach(function(b){
-        if (/^T\d+$/.test(b.textContent)) {
-          b.className = 'pchip sm wk' + (b.textContent === 'T' + week ? ' on' : '');
-        }
-      });
-    });
-    var srEl = root.querySelectorAll('.selrow');
-    if (srEl.length > (WEEKS ? 1 : 0) && SESSIONS.length > 1) {
-      srEl[0].querySelectorAll('.pchip').forEach(function(b, i){
-        if (SESSIONS[i]) b.className = 'pchip sm' + (SESSIONS[i].id === sess ? ' on' : '');
-      });
+  var toastEl = null, toastTimer = null;
+  function toast(msg){
+    if (!toastEl) {
+      toastEl = document.createElement('div');
+      toastEl.className = 'toast';
+      document.body.appendChild(toastEl);
     }
+    toastEl.textContent = msg;
+    toastEl.className = 'toast on';
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toastEl.className = 'toast'; }, 1800);
+  }
 
-    var S = SESSIONS[0];
-    for (var i=0;i<SESSIONS.length;i++) if (SESSIONS[i].id === sess) S = SESSIONS[i];
+  function stop(e){ e.stopPropagation(); }
 
-    var live = getLive(S.id);
-    body.innerHTML = '';
-    var t = el('table', 'ltab');
-    var thead = el('thead'), htr = el('tr');
-    htr.appendChild(el('th', null, 'Bài'));
-    htr.appendChild(el('th', 'colw', 'Tạ'));
-    htr.appendChild(el('th', 'colr', 'Reps'));
-    thead.appendChild(htr);
-    t.appendChild(thead);
+  var sections = [].slice.call(document.querySelectorAll('section.session[data-session]'));
 
-    var tbody = el('tbody');
-    var doneN = 0;
+  sections.forEach(function(sec){
+    var sid = sec.getAttribute('data-session');
+    var exs = [].slice.call(sec.querySelectorAll('details.ex[data-slug]'));
 
-    S.ex.forEach(function(row){
-      var slug = row.slug, name = row.name, presc = row.presc || '';
-      var isDone = live[slug] === 1;
-      if (isDone) doneN++;
+    exs.forEach(function(ex){
+      var slug = ex.getAttribute('data-slug');
+      var name = ex.getAttribute('data-name') || slug;
+      var sum = ex.querySelector('summary');
+      if (!sum || sum.querySelector('.ctl')) return;
 
-      var tr = el('tr');
-      if (isDone) tr.className = 'done';
-
-      var tdc = el('td', 'ck');
-      var tick = el('button', 'tick' + (isDone ? ' on' : ''), '✓');
-      tick.type = 'button';
-      tick.setAttribute('aria-label', 'Đánh dấu xong ' + name);
-      tick.onclick = function(){
-        var lv = getLive(S.id);
-        lv[slug] = lv[slug] === 1 ? 0 : 1;
-        setLive(S.id, lv);
-        flash();
-        build();
+      var rec = function(){
+        var s = load(sid);
+        if (!s[slug]) s[slug] = { w:'', done:0 };
+        return s[slug];
       };
-      tdc.appendChild(tick);
-      tr.appendChild(tdc);
 
-      var td = el('td', 'nm');
-      td.appendChild(el('span', 't', name));
-      if (presc) td.appendChild(el('span', 'p', presc));
-      tr.appendChild(td);
+      var ctl = document.createElement('div');
+      ctl.className = 'ctl';
 
-      var c = (data && data[week] && data[week][S.id] && data[week][S.id][slug]) || {};
-      [['w','colw'],['r','colr']].forEach(function(f){
-        var val = c[f[0]];
-        var has = !(val === undefined || val === null || val === '');
-        tr.appendChild(el('td', 'v' + (has ? '' : ' empty'), has ? String(val) : '—'));
+      var inp = document.createElement('input');
+      inp.type = 'number';
+      inp.inputMode = 'decimal';
+      inp.step = '0.5';
+      inp.min = '0';
+      inp.className = 'wt';
+      inp.placeholder = 'kg';
+      inp.value = rec().w || '';
+      inp.setAttribute('aria-label', 'Mức tạ ' + name);
+
+      var unit = document.createElement('span');
+      unit.className = 'wtunit';
+      unit.textContent = 'kg';
+
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'done';
+      btn.textContent = '✓';
+      btn.setAttribute('aria-label', 'Hoàn thành ' + name);
+
+      if (rec().done) ex.classList.add('isdone');
+
+      inp.addEventListener('input', function(){
+        var s = load(sid);
+        if (!s[slug]) s[slug] = { w:'', done:0 };
+        s[slug].w = inp.value;
+        save(sid);
+      });
+      inp.addEventListener('change', function(){ updateFinish(sid, sec); });
+
+      btn.addEventListener('click', function(ev){
+        ev.preventDefault(); ev.stopPropagation();
+        var s = load(sid);
+        if (!s[slug]) s[slug] = { w:'', done:0 };
+        s[slug].w = inp.value;
+        if (!s[slug].done && !inp.value) {
+          toast('Nhập mức tạ trước');
+          inp.focus();
+          return;
+        }
+        s[slug].done = s[slug].done ? 0 : 1;
+        save(sid);
+        ex.classList.toggle('isdone', !!s[slug].done);
+        updateFinish(sid, sec);
       });
 
-      tbody.appendChild(tr);
+      [inp, btn].forEach(function(n){
+        n.addEventListener('click', stop);
+        n.addEventListener('mousedown', stop);
+        n.addEventListener('touchstart', stop, { passive:true });
+        n.addEventListener('keydown', stop);
+      });
+
+      ctl.appendChild(inp);
+      ctl.appendChild(unit);
+      ctl.appendChild(btn);
+      sum.appendChild(ctl);
     });
 
-    prog.innerHTML = 'Đã xong ' + doneN + '/' + S.ex.length + ' bài';
-    prog.appendChild(document.createTextNode(' · '));
-    prog.appendChild(el('span', null,
-      doneN === S.ex.length ? 'hoàn thành buổi tập' : 'còn ' + (S.ex.length - doneN) + ' bài'));
+    var fin = document.createElement('button');
+    fin.type = 'button';
+    fin.className = 'finish';
+    fin.textContent = 'Hoàn thành ngày tập';
+    fin.addEventListener('click', function(){ finish(sid, sec); });
+    sec.appendChild(fin);
+  });
 
-    t.appendChild(tbody);
-    body.appendChild(t);
-
-    if (!data) {
-      body.appendChild(el('div', 'lhint', 'Chưa có link mức tạ nên cột tạ để trống. Việc đánh dấu bài vẫn dùng được bình thường.'));
-    }
-    if (!storageOK) warn.className = 'lwarn on';
+  function filled(sid, sec){
+    var s = load(sid), out = [];
+    [].slice.call(sec.querySelectorAll('details.ex[data-slug]')).forEach(function(ex){
+      var slug = ex.getAttribute('data-slug');
+      var r = s[slug];
+      if (r && r.w !== '' && r.w !== undefined && r.w !== null) {
+        out.push({ slug: slug, n: ex.getAttribute('data-name') || slug, w: r.w });
+      }
+    });
+    return out;
   }
 
-  build();
+  function updateFinish(sid, sec){
+    var fin = sec.querySelector('.finish');
+    if (!fin) return;
+    var n = filled(sid, sec).length;
+    fin.textContent = n ? ('Hoàn thành ngày tập · ' + n + ' bài') : 'Hoàn thành ngày tập';
+    fin.classList.toggle('off', !n);
+  }
+
+  function finish(sid, sec){
+    var items = filled(sid, sec);
+    if (!items.length) { toast('Chưa nhập mức tạ nào'); return; }
+    var label = sec.getAttribute('data-label') || sid;
+    if (!confirm('Lưu ' + items.length + ' bài của "' + label + '" vào bảng thống kê ngày ' + today() + '?\n\nCác ô tạ sẽ được xoá trắng để bắt đầu buổi mới.')) return;
+
+    var log = get(LOGKEY) || [];
+    log.unshift({ d: today(), s: sid, label: label, items: items });
+    set(LOGKEY, log);
+
+    state[sid] = {};
+    save(sid);
+
+    [].slice.call(sec.querySelectorAll('details.ex[data-slug]')).forEach(function(ex){
+      ex.classList.remove('isdone');
+      var i = ex.querySelector('.ctl .wt');
+      if (i) i.value = '';
+    });
+    updateFinish(sid, sec);
+    renderStats();
+    toast('Đã lưu ' + items.length + ' bài');
+  }
+
+  function renderStats(){
+    var host = document.getElementById('statroot');
+    if (!host) {
+      host = document.createElement('div');
+      host.id = 'statroot';
+      main.appendChild(host);
+    }
+    var log = get(LOGKEY) || [];
+    var h = '<h4>Bảng thống kê</h4>';
+    if (!log.length) {
+      h += '<div class="lhint">Chưa có buổi nào được chốt. Nhập mức tạ rồi bấm "Hoàn thành ngày tập" ở cuối buổi.</div>';
+      host.innerHTML = h;
+      return;
+    }
+    log.forEach(function(e){
+      h += '<div class="day"><div class="dh"><b>' + esc(e.d) + '</b><span>' + esc(e.label || e.s) + '</span></div>';
+      h += '<table class="stab">';
+      e.items.forEach(function(it){
+        h += '<tr><td>' + esc(it.n) + '</td><td class="w">' + esc(it.w) + ' kg</td></tr>';
+      });
+      h += '</table></div>';
+    });
+    host.innerHTML = h;
+  }
+
+  sections.forEach(function(sec){ updateFinish(sec.getAttribute('data-session'), sec); });
+  renderStats();
+
+  if (!storageOK) toast('Trình duyệt đang chặn lưu trữ');
 })();
 </script>
 
