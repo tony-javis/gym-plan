@@ -96,8 +96,10 @@
   .pchip.sm { font-size:12px; padding:5px 10px; }
   .pchip.sm.on { background:var(--accent2); border-color:var(--accent2); }
   .pchip.wk.on { background:#b78bff; border-color:#b78bff; }
-  .lwho { font-size:12.5px; color:var(--dim); margin:2px 0 10px; }
+  .lwho { font-size:12.5px; color:var(--dim); margin:2px 0 8px; }
   .lwho b { color:var(--txt); }
+  .lprog { font-size:12px; font-weight:700; color:var(--accent2); margin:0 0 10px; }
+  .lprog span { color:var(--dim); font-weight:600; }
   table.ltab { width:100%; border-collapse:collapse; font-size:13px;
     font-variant-numeric:tabular-nums; }
   table.ltab th { color:var(--dim); font-size:10.5px; text-transform:uppercase;
@@ -105,7 +107,8 @@
     border-bottom:1px solid var(--line); }
   table.ltab th:first-child { text-align:left; padding-left:2px; }
   table.ltab td { padding:3px 2px; border-bottom:1px solid rgba(43,53,64,.55); vertical-align:middle; }
-  table.ltab td.nm { padding:8px 6px 8px 2px; }
+  table.ltab td.ck { text-align:center; padding:6px 0 6px 2px; width:34px; }
+  table.ltab td.nm { padding:8px 6px 8px 4px; }
   .nm .t { display:block; color:var(--txt); font-weight:600; font-size:13px; line-height:1.3; }
   .nm .p { display:block; color:var(--dim); font-size:11px; margin-top:2px; }
   table.ltab td.v { text-align:center; color:var(--txt); padding:8px 2px; font-weight:600; }
@@ -116,30 +119,26 @@
     padding:9px 4px; outline:none; }
   table.ltab input:focus { border-color:var(--accent); background:#1b232b; }
   table.ltab input::placeholder { color:#4d5a68; }
-  .colc { width:34px; }
   .colw { width:28%; }
   .colr { width:21%; }
-  table.ltab td.ck { text-align:center; padding:6px 0 6px 2px; }
   .tick { display:inline-flex; width:26px; height:26px; cursor:pointer;
     align-items:center; justify-content:center; border-radius:8px;
     background:var(--card2); border:1px solid var(--line);
     color:transparent; font-size:15px; font-weight:800; line-height:1;
-    transition:.15s; user-select:none; }
-  .tick:active { transform:scale(.92); }
+    transition:.15s; user-select:none; padding:0; }
+  .tick:active { transform:scale(.9); }
   .tick.on { background:var(--accent); border-color:var(--accent); color:#0f1216; }
   tr.done td.nm .t { color:var(--dim); text-decoration:line-through; }
   tr.done td.nm .p { opacity:.55; }
-  tr.done td.v { opacity:.6; }
-  .lprog { font-size:12px; font-weight:700; color:var(--accent2); margin:0 0 8px; }
-  .lprog span { color:var(--dim); font-weight:600; }
-  .lbtn.reset { color:#ff9b9b; border-color:rgba(255,122,122,.4); }
-  .lbtn.reset:active { background:rgba(255,122,122,.15); }
+  tr.done td.v { opacity:.55; }
   .lfoot { display:flex; align-items:center; gap:8px; margin-top:12px; flex-wrap:wrap; }
   .lbtn { font:inherit; font-size:12.5px; font-weight:700; cursor:pointer;
     color:var(--txt); background:var(--card2); border:1px solid var(--line);
     border-radius:9px; padding:8px 13px; }
   .lbtn:active { background:#2a333d; }
   .lbtn.pri { color:#0f1216; background:var(--accent); border-color:var(--accent); }
+  .lbtn.reset { color:#ff9b9b; border-color:rgba(255,122,122,.4); }
+  .lbtn.reset:active { background:rgba(255,122,122,.15); }
   .lsaved { font-size:11.5px; font-weight:700; color:var(--accent);
     opacity:0; transition:opacity .3s; margin-left:auto; }
   .lsaved.on { opacity:1; }
@@ -559,6 +558,8 @@
 
 <script>
 (function(){
+  var PLANID = "vo";
+  var WHOID = "vo";
   var SESSIONS = [{"id": "A", "name": "Buổi A — Thân trên", "short": "Buổi A", "ex": [{"slug": "widegriplatpulldown", "name": "Wide-Grip Lat Pulldown", "presc": "3×8-10"}, {"slug": "machinebenchpress", "name": "Machine Bench Press", "presc": "3×8-10"}, {"slug": "seatedcablerows", "name": "Seated Cable Rows", "presc": "3×10-12"}, {"slug": "machineshouldermilitarypress", "name": "Machine Shoulder (Military) Press", "presc": "2×10-12"}, {"slug": "reversemachineflyes", "name": "Reverse Machine Flyes", "presc": "3×12-15"}, {"slug": "dipmachine", "name": "Dip Machine", "presc": "2×10-12"}, {"slug": "plank", "name": "Plank", "presc": "3×30-40s"}, {"slug": "butterfly", "name": "Butterfly", "presc": "2×12-15"}]}, {"id": "B", "name": "Buổi B — Thân dưới", "short": "Buổi B", "ex": [{"slug": "barbellhipthrust", "name": "Barbell Hip Thrust", "presc": "3×10-12"}, {"slug": "hacksquat", "name": "Hack Squat", "presc": "3×10-12"}, {"slug": "seatedlegcurl", "name": "Seated Leg Curl", "presc": "3×10-12"}, {"slug": "smithmachinestiffleggeddeadlift", "name": "Smith Machine Stiff-Legged Deadlift", "presc": "2×10-12"}, {"slug": "legextensions", "name": "Leg Extensions", "presc": "2×12-15"}, {"slug": "thighabductor", "name": "Thigh Abductor", "presc": "3×15-20"}, {"slug": "plank", "name": "Plank", "presc": "3×30-40s"}, {"slug": "thighadductor", "name": "Thigh Adductor", "presc": "2×15-20"}]}];
   var WEEKS = 12;
   var WHO = "Thảo Vy";
@@ -591,16 +592,33 @@
 
   var data = readHashData();
   var sess = SESSIONS[0].id, week = 1;
+  var storageOK = true, savedTimer = null;
 
-  root.appendChild(el('h4', null, 'Mức tạ đã ghi'));
-
-  if (!data) {
-    var p = el('div', 'lwarn on');
-    p.textContent = 'Chưa có dữ liệu trong link này. Muốn xem mức tạ, mở link do Tony gửi — hoặc nhờ Tony bấm "Tạo link cho ' + WHO + '" trong trang của anh ấy.';
-    root.appendChild(p);
-    root.appendChild(el('div', 'lhint', 'Trang này để xem lịch tập. Việc ghi mức tạ do Tony làm trên máy của anh ấy.'));
-    return;
+  function kLive(s){ return 'gymlive.' + PLANID + '.' + WHOID + '.' + s; }
+  function lsGet(k){
+    try { return localStorage.getItem(k); } catch(e){ storageOK = false; return null; }
   }
+  function lsSet(k, v){
+    try { localStorage.setItem(k, v); return true; }
+    catch(e){ storageOK = false; return false; }
+  }
+  function getLive(s){
+    var raw = lsGet(kLive(s));
+    if (raw) { try { return JSON.parse(raw) || {}; } catch(e){} }
+    return {};
+  }
+  function setLive(s, v){ lsSet(kLive(s), JSON.stringify(v)); }
+  function flash(){
+    var w = root.querySelector('.lwarn');
+    if (w) w.className = 'lwarn' + (storageOK ? '' : ' on');
+    var sp = root.querySelector('.lsaved');
+    if (!sp || !storageOK) return;
+    sp.className = 'lsaved on';
+    clearTimeout(savedTimer);
+    savedTimer = setTimeout(function(){ sp.className = 'lsaved'; }, 1400);
+  }
+
+  root.appendChild(el('h4', null, 'Buổi tập'));
 
   var who = el('div', 'lwho');
   who.innerHTML = 'Người tập: <b>' + WHO + '</b>';
@@ -634,29 +652,45 @@
   var body = el('div');
   root.appendChild(body);
 
-  // build session row for the active session
-  var sr2 = root.querySelectorAll('.selrow')[SESSIONS.length > 1 ? 0 : -1];
+  var foot = el('div', 'lfoot');
+  var breset = el('button', 'lbtn reset', 'Đặt lại buổi này');
+  breset.type = 'button';
+  breset.onclick = function(){
+    if (!confirm('Bỏ hết dấu tick của ' + WHO + ' · buổi này?\n\nĐây chỉ là checklist trong buổi, không ảnh hưởng mức tạ.')) return;
+    setLive(sess, {});
+    build();
+  };
+  foot.appendChild(breset);
+  foot.appendChild(el('span', 'lsaved', 'Đã lưu'));
+  root.appendChild(foot);
+
+  var warn = el('div', 'lwarn', 'Trình duyệt đang chặn lưu trữ nên dấu tick chỉ còn trong phiên này.');
+  root.appendChild(warn);
+  root.appendChild(el('div', 'lhint',
+    'Bấm ô vuông để đánh dấu bài đã tập xong. Dấu tick chỉ để theo dõi trong buổi hôm nay, bấm "Đặt lại buổi này" trước buổi mới.'));
 
   function build(){
-    var chips = root.querySelectorAll('.selrow');
-    chips.forEach(function(c){
-      c.querySelectorAll('.pchip').forEach(function(b, i){
-        // session chips use block names; week chips use T<n>
+    root.querySelectorAll('.selrow').forEach(function(rowEl){
+      rowEl.querySelectorAll('.pchip').forEach(function(b){
         if (/^T\d+$/.test(b.textContent)) {
-          b.className = 'pchip sm wk' + ((b.textContent === 'T' + week) ? ' on' : '');
-        } else {
-          b.className = 'pchip sm' + ((SESSIONS[i] && SESSIONS[i].id === sess) ? ' on' : '');
+          b.className = 'pchip sm wk' + (b.textContent === 'T' + week ? ' on' : '');
         }
       });
     });
+    var srEl = root.querySelectorAll('.selrow');
+    if (srEl.length > (WEEKS ? 1 : 0) && SESSIONS.length > 1) {
+      srEl[0].querySelectorAll('.pchip').forEach(function(b, i){
+        if (SESSIONS[i]) b.className = 'pchip sm' + (SESSIONS[i].id === sess ? ' on' : '');
+      });
+    }
 
     var S = SESSIONS[0];
     for (var i=0;i<SESSIONS.length;i++) if (SESSIONS[i].id === sess) S = SESSIONS[i];
 
+    var live = getLive(S.id);
     body.innerHTML = '';
     var t = el('table', 'ltab');
     var thead = el('thead'), htr = el('tr');
-    htr.appendChild(el('th', 'colc', ''));
     htr.appendChild(el('th', null, 'Bài'));
     htr.appendChild(el('th', 'colw', 'Tạ'));
     htr.appendChild(el('th', 'colr', 'Reps'));
@@ -664,43 +698,57 @@
     t.appendChild(thead);
 
     var tbody = el('tbody');
+    var doneN = 0;
+
     S.ex.forEach(function(row){
       var slug = row.slug, name = row.name, presc = row.presc || '';
+      var isDone = live[slug] === 1;
+      if (isDone) doneN++;
+
       var tr = el('tr');
-      var c = (data[week] && data[week][S.id] && data[week][S.id][slug]) || {};
-      var isDone = c.d === '1';
+      if (isDone) tr.className = 'done';
 
       var tdc = el('td', 'ck');
-      tdc.appendChild(el('span', 'tick' + (isDone ? ' on' : ''), isDone ? '✓' : ''));
+      var tick = el('button', 'tick' + (isDone ? ' on' : ''), '✓');
+      tick.type = 'button';
+      tick.setAttribute('aria-label', 'Đánh dấu xong ' + name);
+      tick.onclick = function(){
+        var lv = getLive(S.id);
+        lv[slug] = lv[slug] === 1 ? 0 : 1;
+        setLive(S.id, lv);
+        flash();
+        build();
+      };
+      tdc.appendChild(tick);
       tr.appendChild(tdc);
-      if (isDone) tr.className = 'done';
 
       var td = el('td', 'nm');
       td.appendChild(el('span', 't', name));
       if (presc) td.appendChild(el('span', 'p', presc));
       tr.appendChild(td);
+
+      var c = (data && data[week] && data[week][S.id] && data[week][S.id][slug]) || {};
       [['w','colw'],['r','colr']].forEach(function(f){
         var val = c[f[0]];
         var has = !(val === undefined || val === null || val === '');
-        var cellEl = el('td', 'v' + (has ? '' : ' empty'), has ? String(val) : '—');
-        tr.appendChild(cellEl);
+        tr.appendChild(el('td', 'v' + (has ? '' : ' empty'), has ? String(val) : '—'));
       });
+
       tbody.appendChild(tr);
     });
+
+    prog.innerHTML = 'Đã xong ' + doneN + '/' + S.ex.length + ' bài';
+    prog.appendChild(document.createTextNode(' · '));
+    prog.appendChild(el('span', null,
+      doneN === S.ex.length ? 'hoàn thành buổi tập' : 'còn ' + (S.ex.length - doneN) + ' bài'));
+
     t.appendChild(tbody);
     body.appendChild(t);
 
-    var any = false, doneN = 0;
-    S.ex.forEach(function(row){
-      var c = (data[week] && data[week][S.id] && data[week][S.id][row.slug]);
-      if (c && (c.w || c.r || c.d)) any = true;
-      if (c && c.d === '1') doneN++;
-    });
-    prog.innerHTML = 'Đã xong ' + doneN + '/' + S.ex.length + ' bài';
-    prog.appendChild(document.createTextNode(' · '));
-    prog.appendChild(el('span', null, doneN === S.ex.length ? 'hoàn thành buổi tập' : 'còn ' + (S.ex.length - doneN) + ' bài'));
-
-    if (!any) body.appendChild(el('div', 'lhint', 'Tuần này chưa ghi gì cho buổi ' + S.name + '.'));
+    if (!data) {
+      body.appendChild(el('div', 'lhint', 'Chưa có link mức tạ nên cột tạ để trống. Việc đánh dấu bài vẫn dùng được bình thường.'));
+    }
+    if (!storageOK) warn.className = 'lwarn on';
   }
 
   build();
