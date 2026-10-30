@@ -84,23 +84,28 @@
   .note code { background:var(--card2); padding:1px 5px; border-radius:4px; font-size:12.5px; }
   footer { max-width:720px; margin:0 auto; padding:12px 18px 0; color:var(--dim); font-size:12.3px; line-height:1.6; }
 
-  details.ex summary { flex-wrap:wrap; }
-  .ctl { flex:0 0 100%; display:flex; align-items:center; gap:8px; margin-top:9px; }
-  .wt { width:88px; font:inherit; font-size:14px; font-variant-numeric:tabular-nums;
-    text-align:center; color:var(--txt); background:var(--card2);
-    border:1px solid var(--line); border-radius:9px; padding:9px 6px; outline:none; }
-  .wt::placeholder { color:#4d5a68; font-size:12.5px; }
+  details.ex summary { flex-wrap:nowrap; gap:7px; padding:11px 10px; }
+  .rank { flex:0 0 22px; height:22px; border-radius:6px; font-size:11.5px; }
+  .exname { flex:1 1 auto; min-width:0; font-size:13.5px; line-height:1.25;
+    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
+    overflow:hidden; word-break:break-word; }
+  .wt { flex:0 0 56px; width:56px; font:inherit; font-size:13.5px;
+    font-variant-numeric:tabular-nums; text-align:center; color:var(--txt);
+    background:var(--card2); border:1px solid var(--line); border-radius:8px;
+    padding:7px 3px; outline:none; }
+  .wt::placeholder { color:#4d5a68; font-size:12px; }
   .wt:focus { border-color:var(--accent); background:#1b232b; }
-  .wtunit { font-size:11.5px; font-weight:700; color:var(--dim); letter-spacing:.3px; }
-  .done { flex:0 0 auto; margin-left:auto; width:38px; height:38px; border-radius:11px;
-    display:grid; place-items:center; cursor:pointer; padding:0;
-    background:#eef2f6; border:1px solid #eef2f6; color:#c3ccd6;
-    font-size:16px; font-weight:900; line-height:1; transition:.15s; }
-  .done:active { transform:scale(.93); }
-  details.ex.isdone .done { background:var(--accent); border-color:var(--accent); color:#0f1216; }
-  details.ex.isdone .wt { background:rgba(78,201,160,.1); border-color:rgba(78,201,160,.45); color:#cfe9e0; }
+  .mark { flex:0 0 auto; font:inherit; font-size:11.5px; font-weight:800;
+    font-variant-numeric:tabular-nums; letter-spacing:.2px; cursor:pointer;
+    padding:8px 9px; border-radius:8px; border:1px solid transparent;
+    background:rgba(78,201,160,.14); color:var(--accent); white-space:nowrap; }
+  .mark:active { transform:scale(.95); }
+  .mark.on { background:var(--accent); border-color:var(--accent); color:#0f1216;
+    cursor:default; }
+  .mark.on:active { transform:none; }
   details.ex.isdone .exname { color:var(--dim); }
-  details.ex.isdone .badge { opacity:.6; }
+  details.ex.isdone .wt { background:rgba(78,201,160,.08);
+    border-color:rgba(78,201,160,.35); color:#cfe9e0; }
   .finish { display:block; width:100%; margin:14px 0 4px; padding:14px;
     font:inherit; font-size:14px; font-weight:800; letter-spacing:.2px; cursor:pointer;
     color:#0f1216; background:var(--accent); border:1px solid var(--accent);
@@ -108,26 +113,39 @@
   .finish:active { transform:scale(.99); }
   .finish.off { color:var(--dim); background:var(--card2); border-color:var(--line); }
   #statroot { background:var(--card); border:1px solid var(--line); border-radius:14px;
-    padding:14px 16px; margin:20px 0 0; }
+    padding:14px 13px 12px; margin:20px 0 0; }
   #statroot h4 { margin:0 0 10px; font-size:12.5px; text-transform:uppercase;
     letter-spacing:.5px; color:var(--accent); }
-  .day { margin-bottom:14px; }
-  .day:last-child { margin-bottom:0; }
-  .dh { display:flex; align-items:baseline; gap:8px; padding-bottom:6px;
-    border-bottom:1px solid var(--line); margin-bottom:4px; }
-  .dh b { font-size:13.5px; color:#fff; font-variant-numeric:tabular-nums; }
-  .dh span { font-size:11.5px; color:var(--dim); font-weight:700;
-    text-transform:uppercase; letter-spacing:.3px; }
-  table.stab { width:100%; border-collapse:collapse; font-size:13px;
+  .stwrap { overflow-x:auto; -webkit-overflow-scrolling:touch; margin:0 -3px; padding:0 3px; }
+  table.stab { border-collapse:collapse; font-size:12.5px;
     font-variant-numeric:tabular-nums; }
-  table.stab td { padding:6px 0; border-bottom:1px solid rgba(43,53,64,.45); }
-  table.stab td.w { text-align:right; color:var(--accent); font-weight:700; white-space:nowrap; padding-left:10px; }
-  table.stab tr:last-child td { border-bottom:none; }
+  table.stab th, table.stab td { padding:6px 7px; text-align:left;
+    border-bottom:1px solid rgba(43,53,64,.5); white-space:nowrap; }
+  table.stab th { position:sticky; top:0; background:var(--card);
+    font-size:11px; font-weight:700; color:var(--dim); vertical-align:bottom; }
+  table.stab th.nm, table.stab td.nm { position:sticky; left:0; background:var(--card);
+    border-right:1px solid var(--line); font-weight:600; color:var(--txt);
+    width:186px; min-width:186px; max-width:186px; white-space:normal;
+    line-height:1.3; vertical-align:top; }
+  table.stab td.w { color:var(--accent); font-weight:700; text-align:center; }
+  table.stab td.w.empty { color:#3f4b57; font-weight:400; }
+  .dh { display:flex; align-items:center; gap:2px; }
+  .dbtn { font:inherit; font-size:12px; font-weight:800; color:#fff;
+    font-variant-numeric:tabular-nums; background:transparent; border:none;
+    padding:2px 3px; border-radius:5px; cursor:pointer; white-space:nowrap; }
+  .dbtn:active { background:rgba(255,255,255,.08); }
+  input.din { position:absolute; opacity:0; pointer-events:none; width:0; height:0;
+    border:none; padding:0; }
+  .ddel { border:none; background:transparent; color:#ff9b9b; font-size:14px;
+    font-weight:800; line-height:1; padding:2px 3px; cursor:pointer; border-radius:5px; }
+  .ddel:active { background:rgba(255,122,122,.15); }
+  .dsub { display:block; font-size:9.5px; font-weight:700; letter-spacing:.3px;
+    color:#5f6c7a; text-transform:uppercase; margin-top:1px; }
   .lhint { color:var(--dim); font-size:12.3px; line-height:1.6; }
   .toast { position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(20px);
     background:#2a333d; color:#fff; font-size:13px; font-weight:700; padding:11px 18px;
     border-radius:11px; box-shadow:0 6px 20px rgba(0,0,0,.45); opacity:0; pointer-events:none;
-    transition:.22s; z-index:99; }
+    transition:.22s; z-index:99; max-width:86vw; text-align:center; }
   .toast.on { opacity:1; transform:translateX(-50%) translateY(0); }
 </style></head>
 <body>
@@ -554,9 +572,24 @@
     return String(s === undefined || s === null ? '' : s)
       .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
-  function today(){
+  function isoToday(){
     var d = new Date();
-    return ('0'+d.getDate()).slice(-2) + '/' + ('0'+(d.getMonth()+1)).slice(-2) + '/' + d.getFullYear();
+    return d.getFullYear() + '-' + ('0'+(d.getMonth()+1)).slice(-2) + '-' + ('0'+d.getDate()).slice(-2);
+  }
+  function dmy(iso){
+    if (!iso) return '';
+    var p = String(iso).split('-');
+    if (p.length !== 3) return iso;
+    return p[2] + '/' + p[1];
+  }
+  function normEntry(e){
+    var d = e.d || '';
+    if (/^\d{2}\/\d{2}\/\d{4}$/.test(d)) {
+      var q = d.split('/');
+      e.d = q[2] + '-' + q[1] + '-' + q[0];
+    }
+    if (!e.id) e.id = 'e' + Math.random().toString(36).slice(2, 9);
+    return e;
   }
 
   var state = {};
@@ -573,9 +606,8 @@
     toastEl.textContent = msg;
     toastEl.className = 'toast on';
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(function(){ toastEl.className = 'toast'; }, 1800);
+    toastTimer = setTimeout(function(){ toastEl.className = 'toast'; }, 2000);
   }
-
   function stop(e){ e.stopPropagation(); }
 
   var sections = [].slice.call(document.querySelectorAll('section.session[data-session]'));
@@ -588,16 +620,17 @@
       var slug = ex.getAttribute('data-slug');
       var name = ex.getAttribute('data-name') || slug;
       var sum = ex.querySelector('summary');
-      if (!sum || sum.querySelector('.ctl')) return;
+      if (!sum || sum.querySelector('.mark')) return;
 
-      var rec = function(){
+      var badge = sum.querySelector('.badge');
+      var repsTxt = badge ? badge.textContent.trim() : '✓';
+      if (badge) badge.parentNode.removeChild(badge);
+
+      function rec(){
         var s = load(sid);
         if (!s[slug]) s[slug] = { w:'', done:0 };
         return s[slug];
-      };
-
-      var ctl = document.createElement('div');
-      ctl.className = 'ctl';
+      }
 
       var inp = document.createElement('input');
       inp.type = 'number';
@@ -609,17 +642,27 @@
       inp.value = rec().w || '';
       inp.setAttribute('aria-label', 'Mức tạ ' + name);
 
-      var unit = document.createElement('span');
-      unit.className = 'wtunit';
-      unit.textContent = 'kg';
-
       var btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = 'done';
-      btn.textContent = '✓';
-      btn.setAttribute('aria-label', 'Hoàn thành ' + name);
+      btn.className = 'mark';
+      btn.textContent = repsTxt;
+      btn.setAttribute('aria-label', 'Hoàn thành ' + name + ' · ' + repsTxt);
 
-      if (rec().done) ex.classList.add('isdone');
+      function paint(){
+        var r = rec();
+        if (r.done) {
+          ex.classList.add('isdone');
+          btn.classList.add('on');
+          btn.textContent = '✓';
+          btn.disabled = true;
+        } else {
+          ex.classList.remove('isdone');
+          btn.classList.remove('on');
+          btn.textContent = repsTxt;
+          btn.disabled = false;
+        }
+      }
+      paint();
 
       inp.addEventListener('input', function(){
         var s = load(sid);
@@ -631,17 +674,15 @@
 
       btn.addEventListener('click', function(ev){
         ev.preventDefault(); ev.stopPropagation();
+        var r = rec();
+        if (r.done) return;
+        var v = String(inp.value || '').trim();
+        if (!v) { toast('Nhập mức tạ trước'); inp.focus(); return; }
         var s = load(sid);
-        if (!s[slug]) s[slug] = { w:'', done:0 };
-        s[slug].w = inp.value;
-        if (!s[slug].done && !inp.value) {
-          toast('Nhập mức tạ trước');
-          inp.focus();
-          return;
-        }
-        s[slug].done = s[slug].done ? 0 : 1;
+        s[slug].w = v;
+        s[slug].done = 1;
         save(sid);
-        ex.classList.toggle('isdone', !!s[slug].done);
+        paint();
         updateFinish(sid, sec);
       });
 
@@ -652,10 +693,8 @@
         n.addEventListener('keydown', stop);
       });
 
-      ctl.appendChild(inp);
-      ctl.appendChild(unit);
-      ctl.appendChild(btn);
-      sum.appendChild(ctl);
+      sum.appendChild(inp);
+      sum.appendChild(btn);
     });
 
     var fin = document.createElement('button');
@@ -666,14 +705,13 @@
     sec.appendChild(fin);
   });
 
-  function filled(sid, sec){
+  function itemsOf(sid, sec){
     var s = load(sid), out = [];
     [].slice.call(sec.querySelectorAll('details.ex[data-slug]')).forEach(function(ex){
       var slug = ex.getAttribute('data-slug');
       var r = s[slug];
-      if (r && r.w !== '' && r.w !== undefined && r.w !== null) {
-        out.push({ slug: slug, n: ex.getAttribute('data-name') || slug, w: r.w });
-      }
+      var v = r && r.w !== undefined && r.w !== null ? String(r.w).trim() : '';
+      if (v) out.push({ slug: slug, n: ex.getAttribute('data-name') || slug, w: v });
     });
     return out;
   }
@@ -681,19 +719,21 @@
   function updateFinish(sid, sec){
     var fin = sec.querySelector('.finish');
     if (!fin) return;
-    var n = filled(sid, sec).length;
+    var n = itemsOf(sid, sec).length;
     fin.textContent = n ? ('Hoàn thành ngày tập · ' + n + ' bài') : 'Hoàn thành ngày tập';
     fin.classList.toggle('off', !n);
   }
 
   function finish(sid, sec){
-    var items = filled(sid, sec);
+    var items = itemsOf(sid, sec);
     if (!items.length) { toast('Chưa nhập mức tạ nào'); return; }
     var label = sec.getAttribute('data-label') || sid;
-    if (!confirm('Lưu ' + items.length + ' bài của "' + label + '" vào bảng thống kê ngày ' + today() + '?\n\nCác ô tạ sẽ được xoá trắng để bắt đầu buổi mới.')) return;
+    var d = isoToday();
+    if (!confirm('Lưu ' + items.length + ' bài của "' + label + '" vào bảng thống kê ngày ' + dmy(d) +
+                 '?\n\nCác ô tạ sẽ được xoá trắng để bắt đầu buổi mới.')) return;
 
-    var log = get(LOGKEY) || [];
-    log.unshift({ d: today(), s: sid, label: label, items: items });
+    var log = (get(LOGKEY) || []).map(normEntry);
+    log.unshift({ id: 'e' + Date.now().toString(36), d: d, s: sid, label: label, items: items });
     set(LOGKEY, log);
 
     state[sid] = {};
@@ -701,13 +741,32 @@
 
     [].slice.call(sec.querySelectorAll('details.ex[data-slug]')).forEach(function(ex){
       ex.classList.remove('isdone');
-      var i = ex.querySelector('.ctl .wt');
+      var i = ex.querySelector('.wt');
       if (i) i.value = '';
+      var b = ex.querySelector('.mark');
+      if (b) {
+        b.classList.remove('on');
+        b.disabled = false;
+        var bd = ex.querySelector('summary .badge');
+        b.textContent = b.getAttribute('data-reps') || b.textContent;
+      }
     });
+    // reset nhãn nút reps về đúng chữ ban đầu
+    [].slice.call(sec.querySelectorAll('details.ex[data-slug]')).forEach(function(ex){
+      var b = ex.querySelector('.mark');
+      if (b && b.dataset.reps) b.textContent = b.dataset.reps;
+    });
+
     updateFinish(sid, sec);
     renderStats();
     toast('Đã lưu ' + items.length + ' bài');
   }
+
+  // lưu nhãn reps gốc để khôi phục sau khi chốt
+  [].slice.call(document.querySelectorAll('details.ex[data-slug]')).forEach(function(ex){
+    var b = ex.querySelector('.mark');
+    if (b && !b.dataset.reps) b.dataset.reps = b.textContent;
+  });
 
   function renderStats(){
     var host = document.getElementById('statroot');
@@ -716,22 +775,95 @@
       host.id = 'statroot';
       main.appendChild(host);
     }
-    var log = get(LOGKEY) || [];
-    var h = '<h4>Bảng thống kê</h4>';
+    var log = (get(LOGKEY) || []).map(normEntry);
     if (!log.length) {
-      h += '<div class="lhint">Chưa có buổi nào được chốt. Nhập mức tạ rồi bấm "Hoàn thành ngày tập" ở cuối buổi.</div>';
-      host.innerHTML = h;
+      host.innerHTML = '<h4>Bảng thống kê</h4><div class="lhint">Chưa có buổi nào được chốt. ' +
+        'Nhập mức tạ rồi bấm "Hoàn thành ngày tập" ở cuối buổi.</div>';
       return;
     }
+    log.sort(function(a, b){ return a.d < b.d ? 1 : (a.d > b.d ? -1 : 0); });
+
+    var names = [], idx = {};
     log.forEach(function(e){
-      h += '<div class="day"><div class="dh"><b>' + esc(e.d) + '</b><span>' + esc(e.label || e.s) + '</span></div>';
-      h += '<table class="stab">';
       e.items.forEach(function(it){
-        h += '<tr><td>' + esc(it.n) + '</td><td class="w">' + esc(it.w) + ' kg</td></tr>';
+        if (!(it.n in idx)) { idx[it.n] = names.length; names.push(it.n); }
       });
-      h += '</table></div>';
     });
+
+    var h = '<h4>Bảng thống kê</h4><div class="stwrap"><table class="stab"><thead><tr>';
+    h += '<th class="nm">Bài</th>';
+    log.forEach(function(e){
+      h += '<th><div class="dh">' +
+           '<button class="dbtn" data-id="' + esc(e.id) + '" aria-label="Sửa ngày">' + esc(dmy(e.d)) + '</button>' +
+           '<button class="ddel" data-id="' + esc(e.id) + '" aria-label="Xoá ngày">×</button>' +
+           '<input class="din" type="date" value="' + esc(e.d) + '" data-id="' + esc(e.id) + '">' +
+           '</div><span class="dsub">Buổi ' + esc(e.s) + '</span></th>';
+    });
+    h += '</tr></thead><tbody>';
+
+    names.forEach(function(nm){
+      h += '<tr><td class="nm">' + esc(nm) + '</td>';
+      log.forEach(function(e){
+        var hit = null;
+        e.items.forEach(function(it){ if (it.n === nm) hit = it; });
+        h += hit ? '<td class="w">' + esc(hit.w) + '</td>' : '<td class="w empty">—</td>';
+      });
+      h += '</tr>';
+    });
+    h += '</tbody></table></div>';
+    h += '<div class="lhint" style="margin-top:9px">Bấm vào ngày để sửa. Bấm × để xoá buổi đó.</div>';
+
     host.innerHTML = h;
+
+    [].slice.call(host.querySelectorAll('th .dbtn')).forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var th = btn.parentNode;
+        var inp = th.querySelector('input.din');
+        if (!inp) return;
+        if (typeof inp.showPicker === 'function') {
+          try { inp.showPicker(); return; } catch(e){}
+        }
+        inp.style.position = 'fixed';
+        inp.style.opacity = '0';
+        inp.style.pointerEvents = 'auto';
+        inp.style.width = '1px';
+        inp.style.height = '1px';
+        inp.click();
+        setTimeout(function(){
+          inp.style.position = 'absolute';
+          inp.style.pointerEvents = 'none';
+          inp.style.width = '0';
+          inp.style.height = '0';
+        }, 900);
+      });
+    });
+
+    [].slice.call(host.querySelectorAll('input.din')).forEach(function(inp){
+      inp.addEventListener('change', function(){
+        var lg = (get(LOGKEY) || []).map(normEntry);
+        var id = inp.getAttribute('data-id');
+        for (var i=0;i<lg.length;i++) {
+          if (lg[i].id === id) { lg[i].d = inp.value || lg[i].d; break; }
+        }
+        set(LOGKEY, lg);
+        renderStats();
+        toast('Đã đổi ngày');
+      });
+    });
+    [].slice.call(host.querySelectorAll('.ddel')).forEach(function(b){
+      b.addEventListener('click', function(){
+        var lg = (get(LOGKEY) || []).map(normEntry);
+        var id = b.getAttribute('data-id');
+        var tgt = null;
+        for (var i=0;i<lg.length;i++) if (lg[i].id === id) tgt = lg[i];
+        if (!tgt) return;
+        if (!confirm('Xoá buổi "' + tgt.label + '" ngày ' + dmy(tgt.d) + '?')) return;
+        lg = lg.filter(function(e){ return e.id !== id; });
+        set(LOGKEY, lg);
+        renderStats();
+        toast('Đã xoá');
+      });
+    });
   }
 
   sections.forEach(function(sec){ updateFinish(sec.getAttribute('data-session'), sec); });
