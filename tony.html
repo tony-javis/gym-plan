@@ -91,31 +91,36 @@
     padding:14px 14px 12px; margin:18px 0 0; }
   .logbox h4 { margin:0 0 10px; font-size:12.5px; text-transform:uppercase;
     letter-spacing:.5px; color:var(--accent); }
-  .profiles { display:flex; gap:7px; margin-bottom:10px; flex-wrap:wrap; }
-  .pchip { flex:0 0 auto; font:inherit; font-size:13px; font-weight:700; cursor:pointer;
+  .selrow { display:flex; gap:6px; margin-bottom:10px; flex-wrap:wrap; }
+  .pchip { flex:0 0 auto; font:inherit; font-size:12.5px; font-weight:700; cursor:pointer;
     color:var(--dim); background:var(--card2); border:1px solid var(--line);
-    border-radius:999px; padding:6px 14px; transition:.15s; }
+    border-radius:999px; padding:6px 12px; transition:.15s; }
   .pchip.on { color:#0f1216; background:var(--accent); border-color:var(--accent); }
-  .lscroll { overflow-x:auto; -webkit-overflow-scrolling:touch; margin:0 -4px; padding:0 4px; }
+  .pchip.sm { font-size:12px; padding:5px 10px; }
+  .pchip.sm.on { background:var(--accent2); border-color:var(--accent2); }
+  .pchip.wk.on { background:#b78bff; border-color:#b78bff; }
+  .lwho { font-size:12.5px; color:var(--dim); margin:2px 0 10px; }
+  .lwho b { color:var(--txt); }
   table.ltab { width:100%; border-collapse:collapse; font-size:13px;
     font-variant-numeric:tabular-nums; }
   table.ltab th { color:var(--dim); font-size:10.5px; text-transform:uppercase;
     letter-spacing:.3px; font-weight:700; padding:6px 4px; text-align:center;
-    border-bottom:1px solid var(--line); white-space:nowrap; }
-  table.ltab th:first-child { text-align:left; }
-  table.ltab td { padding:3px 3px; border-bottom:1px solid rgba(43,53,64,.55); }
-  table.ltab td.wk { color:var(--dim); font-size:11.5px; font-weight:700;
-    white-space:nowrap; padding-right:8px; width:34px; }
-  table.ltab td.v { text-align:center; color:var(--txt); padding:8px 4px; }
-  table.ltab td.v.empty { color:#4d5a68; }
-  table.ltab td.v.wide { text-align:left; }
-  table.ltab input { width:100%; min-width:54px; font:inherit; font-size:13.5px;
+    border-bottom:1px solid var(--line); }
+  table.ltab th:first-child { text-align:left; padding-left:2px; }
+  table.ltab td { padding:3px 2px; border-bottom:1px solid rgba(43,53,64,.55); vertical-align:middle; }
+  table.ltab td.nm { padding:8px 6px 8px 2px; }
+  .nm .t { display:block; color:var(--txt); font-weight:600; font-size:13px; line-height:1.3; }
+  .nm .p { display:block; color:var(--dim); font-size:11px; margin-top:2px; }
+  table.ltab td.v { text-align:center; color:var(--txt); padding:8px 2px; font-weight:600; }
+  table.ltab td.v.empty { color:#4d5a68; font-weight:400; }
+  table.ltab input { width:100%; font:inherit; font-size:14px;
     font-variant-numeric:tabular-nums; text-align:center; color:var(--txt);
-    background:var(--card2); border:1px solid transparent; border-radius:7px;
-    padding:7px 4px; outline:none; }
+    background:var(--card2); border:1px solid transparent; border-radius:8px;
+    padding:9px 4px; outline:none; }
   table.ltab input:focus { border-color:var(--accent); background:#1b232b; }
   table.ltab input::placeholder { color:#4d5a68; }
-  table.ltab input.wide { text-align:left; min-width:120px; }
+  .colw { width:31%; }
+  .colr { width:23%; }
   .lfoot { display:flex; align-items:center; gap:8px; margin-top:12px; flex-wrap:wrap; }
   .lbtn { font:inherit; font-size:12.5px; font-weight:700; cursor:pointer;
     color:var(--txt); background:var(--card2); border:1px solid var(--line);
@@ -130,8 +135,6 @@
     border-left:3px solid #ffb547; color:#f2e4c9; }
   .lwarn.on { display:block; }
   .lhint { color:var(--dim); font-size:12.3px; line-height:1.6; margin-top:10px; }
-  .lwho { font-size:12.5px; color:var(--dim); margin:0 0 10px; }
-  .lwho b { color:var(--txt); }
   .lshare { display:none; margin-top:10px; }
   .lshare.on { display:block; }
   .lshare textarea { width:100%; height:66px; font:12px/1.4 ui-monospace,Menlo,monospace;
@@ -745,63 +748,81 @@
 <script>
 (function(){
   var PLAN = "tony";
-  var PROFILES = [{"id": "thanh", "name": "Tony", "page": "", "cols": [{"k": "squat", "l": "Squat", "n": "number", "ph": "kg"}, {"k": "dead", "l": "Deadlift", "n": "number", "ph": "kg"}, {"k": "bench", "l": "Bench máy", "n": "number", "ph": "kg"}, {"k": "row", "l": "Cable row", "n": "number", "ph": "kg"}, {"k": "press", "l": "Đẩy vai", "n": "number", "ph": "kg"}, {"k": "pain", "l": "Vai 0-10", "n": "number", "ph": "0"}, {"k": "note", "l": "Ghi chú", "n": "text", "ph": ""}]}, {"id": "vo", "name": "Thảo Vy", "page": "vo.html", "cols": [{"k": "hip", "l": "Hip thrust", "n": "number", "ph": "kg"}, {"k": "legpress", "l": "Leg press", "n": "number", "ph": "kg"}, {"k": "pulldown", "l": "Pulldown", "n": "number", "ph": "kg"}, {"k": "bench", "l": "Bench máy", "n": "number", "ph": "kg"}, {"k": "row", "l": "Cable row", "n": "number", "ph": "kg"}, {"k": "note", "l": "Ghi chú", "n": "text", "ph": ""}]}, {"id": "yen", "name": "Yến Nhi", "page": "yen.html", "cols": [{"k": "hip", "l": "Hip thrust", "n": "number", "ph": "kg"}, {"k": "legpress", "l": "Leg press", "n": "number", "ph": "kg"}, {"k": "pulldown", "l": "Pulldown", "n": "number", "ph": "kg"}, {"k": "bench", "l": "Bench máy", "n": "number", "ph": "kg"}, {"k": "row", "l": "Cable row", "n": "number", "ph": "kg"}, {"k": "note", "l": "Ghi chú", "n": "text", "ph": ""}]}];
+  var PROFILES = [{"id": "thanh", "name": "Tony", "page": "", "sessions": [{"id": "A", "name": "Buổi A — Squat · Ngực · Kéo dọc", "short": "Buổi A", "ex": [{"slug": "barbellsquat", "name": "Back Squat", "presc": "4×6-8"}, {"slug": "machinebenchpress", "name": "Machine Bench Press", "presc": "4×8-10"}, {"slug": "seatedcablerows", "name": "Seated Cable Row", "presc": "3×10-12"}, {"slug": "sidelateralraise", "name": "Lateral Raise (tạ đơn)", "presc": "4×12-15"}, {"slug": "seatedlegcurl", "name": "Seated Leg Curl", "presc": "3×12-15"}, {"slug": "abcrunchmachine", "name": "Ab Crunch Machine", "presc": "3×15"}, {"slug": "cablecrossover", "name": "Cable Crossover (low-to-high)", "presc": "3×12-15"}]}, {"id": "B", "name": "Buổi B — Deadlift · Vai · Kéo ngang", "short": "Buổi B", "ex": [{"slug": "barbelldeadlift", "name": "Deadlift", "presc": "3×5"}, {"slug": "widegriplatpulldown", "name": "Wide-Grip Lat Pulldown", "presc": "3×10-12"}, {"slug": "machineshouldermilitarypress", "name": "Machine Shoulder Press", "presc": "3×8-10"}, {"slug": "sidelateralraise", "name": "Lateral Raise (tạ đơn)", "presc": "3×12-15"}, {"slug": "facepull", "name": "Face Pull", "presc": "3×15-20"}, {"slug": "legpress", "name": "Leg Press", "presc": "3×10-12"}, {"slug": "closegripfrontlatpulldown", "name": "Close-Grip Lat Pulldown", "presc": "3×10-12"}, {"slug": "plank", "name": "Plank", "presc": "3×45 giây"}]}, {"id": "C", "name": "Buổi C — Thân trên (tuỳ chọn)", "short": "Buổi C", "ex": [{"slug": "machinebenchpress", "name": "Machine Bench Press", "presc": "3×10-12"}, {"slug": "pullups", "name": "Pull-up", "presc": "3×8-10"}, {"slug": "sidelateralraise", "name": "Lateral Raise (tạ đơn)", "presc": "4×12-15"}, {"slug": "reversemachineflyes", "name": "Reverse Machine Flyes", "presc": "3×15-20"}, {"slug": "butterfly", "name": "Butterfly (Pec Deck)", "presc": "3×12-15"}, {"slug": "tricepspushdown", "name": "Cable Triceps Pushdown", "presc": "3×12-15"}, {"slug": "cablecrunch", "name": "Cable Crunch", "presc": "3×15-20"}]}]}, {"id": "vo", "name": "Thảo Vy", "page": "vo.html", "sessions": [{"id": "A", "name": "Buổi A — Thân trên", "short": "Buổi A", "ex": [{"slug": "widegriplatpulldown", "name": "Wide-Grip Lat Pulldown", "presc": "3×8-10"}, {"slug": "machinebenchpress", "name": "Machine Bench Press", "presc": "3×8-10"}, {"slug": "seatedcablerows", "name": "Seated Cable Rows", "presc": "3×10-12"}, {"slug": "machineshouldermilitarypress", "name": "Machine Shoulder (Military) Press", "presc": "2×10-12"}, {"slug": "reversemachineflyes", "name": "Reverse Machine Flyes", "presc": "3×12-15"}, {"slug": "dipmachine", "name": "Dip Machine", "presc": "2×10-12"}, {"slug": "plank", "name": "Plank", "presc": "3×30-40s"}, {"slug": "butterfly", "name": "Butterfly", "presc": "2×12-15"}]}, {"id": "B", "name": "Buổi B — Thân dưới", "short": "Buổi B", "ex": [{"slug": "barbellhipthrust", "name": "Barbell Hip Thrust", "presc": "3×10-12"}, {"slug": "legpress", "name": "Leg Press", "presc": "3×10-12"}, {"slug": "seatedlegcurl", "name": "Seated Leg Curl", "presc": "3×10-12"}, {"slug": "smithmachinestiffleggeddeadlift", "name": "Smith Machine Stiff-Legged Deadlift", "presc": "2×10-12"}, {"slug": "legextensions", "name": "Leg Extensions", "presc": "2×12-15"}, {"slug": "thighabductor", "name": "Thigh Abductor", "presc": "3×15-20"}, {"slug": "plank", "name": "Plank", "presc": "3×30-40s"}, {"slug": "thighadductor", "name": "Thigh Adductor", "presc": "2×15-20"}]}]}, {"id": "yen", "name": "Yến Nhi", "page": "yen.html", "sessions": [{"id": "A", "name": "Buổi A — Thân trên", "short": "Buổi A", "ex": [{"slug": "widegriplatpulldown", "name": "Wide-Grip Lat Pulldown", "presc": "3×8-10"}, {"slug": "machinebenchpress", "name": "Machine Bench Press", "presc": "3×8-10"}, {"slug": "seatedcablerows", "name": "Seated Cable Rows", "presc": "3×10-12"}, {"slug": "machineshouldermilitarypress", "name": "Machine Shoulder (Military) Press", "presc": "2×10-12"}, {"slug": "reversemachineflyes", "name": "Reverse Machine Flyes", "presc": "3×12-15"}, {"slug": "dipmachine", "name": "Dip Machine", "presc": "2×10-12"}, {"slug": "plank", "name": "Plank", "presc": "3×30-40s"}, {"slug": "butterfly", "name": "Butterfly", "presc": "2×12-15"}]}, {"id": "B", "name": "Buổi B — Thân dưới", "short": "Buổi B", "ex": [{"slug": "barbellhipthrust", "name": "Barbell Hip Thrust", "presc": "3×10-12"}, {"slug": "legpress", "name": "Leg Press", "presc": "3×10-12"}, {"slug": "seatedlegcurl", "name": "Seated Leg Curl", "presc": "3×10-12"}, {"slug": "smithmachinestiffleggeddeadlift", "name": "Smith Machine Stiff-Legged Deadlift", "presc": "2×10-12"}, {"slug": "legextensions", "name": "Leg Extensions", "presc": "2×12-15"}, {"slug": "thighabductor", "name": "Thigh Abductor", "presc": "3×15-20"}, {"slug": "plank", "name": "Plank", "presc": "3×30-40s"}, {"slug": "thighadductor", "name": "Thigh Adductor", "presc": "2×15-20"}]}]}];
   var WEEKS = 12;
   var root = document.getElementById('logroot');
   if (!root) return;
 
   function b64enc(str){
-    var bytes = new TextEncoder().encode(str);
-    var bin = '';
+    var bytes = new TextEncoder().encode(str), bin = '';
     for (var i=0;i<bytes.length;i++) bin += String.fromCharCode(bytes[i]);
     return btoa(bin).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
   }
   function b64dec(s){
     s = s.replace(/-/g,'+').replace(/_/g,'/');
     while (s.length % 4) s += '=';
-    var bin = atob(s);
-    var bytes = new Uint8Array(bin.length);
+    var bin = atob(s), bytes = new Uint8Array(bin.length);
     for (var i=0;i<bin.length;i++) bytes[i] = bin.charCodeAt(i);
     return new TextDecoder().decode(bytes);
   }
   function readHashData(){
-    var h = location.hash || '';
-    var i = h.indexOf('d=');
+    var h = location.hash || '', i = h.indexOf('d=');
     if (i < 0) return null;
     try { return JSON.parse(b64dec(h.slice(i+2))); } catch(e){ return null; }
   }
+  function el(tag, cls, text){
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text !== undefined) e.textContent = text;
+    return e;
+  }
 
-  var mem = {}, storageOK = true, savedTimer = null, active = '', fileInput = null;
+  var storageOK = true, savedTimer = null, fileInput = null;
+  var active = '', sess = 'A', week = 1;
 
   function kActive(){ return 'gymdata.' + PLAN + '.active'; }
+  function kUi(){ return 'gymdata.' + PLAN + '.ui'; }
   function kProf(p){ return 'gymdata.' + PLAN + '.' + p; }
+
   function prof(id){
     for (var i=0;i<PROFILES.length;i++) if (PROFILES[i].id === id) return PROFILES[i];
     return PROFILES[0];
   }
-  function persistActive(){
-    if (!storageOK) return;
-    try { localStorage.setItem(kActive(), active); } catch(e){ storageOK = false; }
+  function sessionsOf(P){ return P.sessions || []; }
+  function sessionOf(P, id){
+    var s = sessionsOf(P);
+    for (var i=0;i<s.length;i++) if (s[i].id === id) return s[i];
+    return s[0];
   }
-  function readActive(){
-    var v = null;
-    try { v = localStorage.getItem(kActive()); } catch(e){ storageOK = false; }
-    for (var i=0;i<PROFILES.length;i++) if (PROFILES[i].id === v) return v;
-    return PROFILES[0].id;
-  }
+
   function getData(p){
     var raw = null;
     try { raw = localStorage.getItem(kProf(p)); } catch(e){ storageOK = false; }
     if (raw) { try { return JSON.parse(raw); } catch(e){} }
-    return mem[p] || {};
+    return {};
   }
   function setData(p, d){
-    mem[p] = d;
     if (storageOK) {
       try { localStorage.setItem(kProf(p), JSON.stringify(d)); }
       catch(e){ storageOK = false; }
     }
     flash();
+  }
+  function saveUi(){
+    if (!storageOK) return;
+    try { localStorage.setItem(kUi(), JSON.stringify({ p: active, s: sess, w: week })); }
+    catch(e){ storageOK = false; }
+  }
+  function loadUi(){
+    var raw = null;
+    try { raw = localStorage.getItem(kUi()); } catch(e){ storageOK = false; }
+    if (!raw) return;
+    try {
+      var u = JSON.parse(raw);
+      if (u.p) active = u.p;
+      if (u.s) sess = u.s;
+      if (u.w) week = u.w;
+    } catch(e){}
   }
   function flash(){
     var w = root.querySelector('.lwarn');
@@ -813,11 +834,12 @@
     clearTimeout(savedTimer);
     savedTimer = setTimeout(function(){ s.className = 'lsaved'; }, 1400);
   }
-  function el(tag, cls, text){
-    var e = document.createElement(tag);
-    if (cls) e.className = cls;
-    if (text !== undefined) e.textContent = text;
-    return e;
+  function cell(d, wk, sid, slug){
+    var w = d[wk];
+    if (!w) return null;
+    var s = w[sid];
+    if (!s) return null;
+    return s[slug] || null;
   }
 
   function build(){
@@ -827,57 +849,100 @@
     root.appendChild(el('h4', null, 'Ghi mức tạ'));
 
     if (PROFILES.length > 1) {
-      var pc = el('div', 'profiles');
+      var pr = el('div', 'selrow');
       PROFILES.forEach(function(p){
         var b = el('button', 'pchip' + (p.id === active ? ' on' : ''), p.name);
         b.type = 'button';
-        b.onclick = function(){ active = p.id; persistActive(); build(); };
-        pc.appendChild(b);
+        b.onclick = function(){ active = p.id; sess = sessionsOf(prof(p.id))[0].id; saveUi(); build(); };
+        pr.appendChild(b);
       });
-      root.appendChild(pc);
+      root.appendChild(pr);
     }
 
+    var S = sessionOf(P, sess);
+    sess = S.id;
+    var chk = getData(active);
+    var seen = false;
+    for (var wk in chk) { if (chk[wk] && chk[wk][S.id]) { seen = true; break; } }
+
+    if (sessionsOf(P).length > 1) {
+      var sr = el('div', 'selrow');
+      sessionsOf(P).forEach(function(s){
+        var b = el('button', 'pchip sm' + (s.id === sess ? ' on' : ''), s.short || s.name);
+        b.type = 'button';
+        b.onclick = function(){ sess = s.id; saveUi(); build(); };
+        sr.appendChild(b);
+      });
+      root.appendChild(sr);
+    }
+
+    var wr = el('div', 'selrow');
+    for (var w = 1; w <= WEEKS; w++) {
+      (function(n){
+        var b = el('button', 'pchip sm wk' + (n === week ? ' on' : ''), 'T' + n);
+        b.type = 'button';
+        b.onclick = function(){ week = n; saveUi(); build(); };
+        wr.appendChild(b);
+      })(w);
+    }
+    root.appendChild(wr);
+
     var who = el('div', 'lwho');
-    who.innerHTML = 'Đang ghi cho <b>' + P.name + '</b>';
+    who.innerHTML = 'Đang ghi: <b>' + P.name + '</b> · ' + S.name + ' · <b>Tuần ' + week + '</b>';
     root.appendChild(who);
 
-    var scroll = el('div', 'lscroll');
     var t = el('table', 'ltab');
     var thead = el('thead'), htr = el('tr');
-    htr.appendChild(el('th', null, 'Tuần'));
-    P.cols.forEach(function(c){ htr.appendChild(el('th', null, c.l)); });
+    htr.appendChild(el('th', null, 'Bài'));
+    var thw = el('th', 'colw', 'Tạ');
+    var thr = el('th', 'colr', 'Reps');
+    htr.appendChild(thw); htr.appendChild(thr);
     thead.appendChild(htr);
     t.appendChild(thead);
 
-    var tbody = el('tbody'), data = getData(active);
-    for (let w = 1; w <= WEEKS; w++) {
+    var tbody = el('tbody');
+    S.ex.forEach(function(row){
+      var slug = row.slug, name = row.name, presc = row.presc || '';
       var tr = el('tr');
-      tr.appendChild(el('td', 'wk', String(w)));
-      P.cols.forEach(function(c){
-        var td = el('td'), inp = document.createElement('input');
-        var isNum = (c.n === 'number');
-        inp.type = isNum ? 'number' : 'text';
-        inp.inputMode = isNum ? 'decimal' : 'text';
-        if (isNum) inp.step = '0.5';
-        inp.placeholder = c.ph || '—';
-        inp.className = isNum ? '' : 'wide';
-        var cur = data[w] ? data[w][c.k] : undefined;
-        inp.value = (cur === undefined || cur === null) ? '' : cur;
-        inp.setAttribute('aria-label', c.l + ' tuần ' + w);
+
+      var td = el('td', 'nm');
+      td.appendChild(el('span', 't', name));
+      if (presc) td.appendChild(el('span', 'p', presc));
+      tr.appendChild(td);
+
+      var prev = null;
+      for (var pv = week - 1; pv >= 1; pv--) {
+        var c = cell(chk, pv, S.id, slug);
+        if (c && c.w) { prev = c.w; break; }
+      }
+      var cur = cell(chk, week, S.id, slug) || {};
+
+      [['w', 'colw', '0.5'], ['r', 'colr', '1']].forEach(function(f){
+        var ftd = el('td', f[1] === 'colw' ? 'v-a' : 'v-a');
+        var inp = document.createElement('input');
+        inp.type = 'number';
+        inp.inputMode = 'decimal';
+        inp.step = f[2];
+        inp.min = '0';
+        inp.value = cur[f[0]] === undefined ? '' : cur[f[0]];
+        if (f[0] === 'w' && prev && !inp.value) inp.placeholder = prev;
+        inp.setAttribute('aria-label', name + ' ' + (f[0] === 'w' ? 'tạ' : 'reps') + ' tuần ' + week);
         inp.oninput = function(){
           var d = getData(active);
-          if (!d[w]) d[w] = {};
-          d[w][c.k] = inp.value;
+          if (!d[week]) d[week] = {};
+          if (!d[week][S.id]) d[week][S.id] = {};
+          if (!d[week][S.id][slug]) d[week][S.id][slug] = {};
+          d[week][S.id][slug][f[0]] = inp.value;
           setData(active, d);
         };
-        td.appendChild(inp);
-        tr.appendChild(td);
+        ftd.appendChild(inp);
+        tr.appendChild(ftd);
       });
+
       tbody.appendChild(tr);
-    }
+    });
     t.appendChild(tbody);
-    scroll.appendChild(t);
-    root.appendChild(scroll);
+    root.appendChild(t);
 
     var foot = el('div', 'lfoot');
     var bex = el('button', 'lbtn', 'Xuất JSON');
@@ -904,8 +969,7 @@
     ta.readOnly = true;
     ta.setAttribute('spellcheck', 'false');
     shbox.appendChild(ta);
-    var shint = el('div', 'lhint', 'Gửi link này qua Zalo. Mở trên máy khác là thấy số đã ghi, không cần mạng sau khi trang đã tải.');
-    shbox.appendChild(shint);
+    shbox.appendChild(el('div', 'lhint', 'Gửi link này qua Zalo. Mở trên máy khác là thấy toàn bộ số đã ghi.'));
     root.appendChild(shbox);
 
     fileInput = document.createElement('input');
@@ -918,17 +982,16 @@
     var warn = el('div', 'lwarn', 'Trình duyệt đang chặn lưu trữ nên dữ liệu chỉ còn trong phiên này. Dùng "Xuất JSON" trước khi đóng tab.');
     root.appendChild(warn);
 
-    var hint = el('div', 'lhint', 'Gõ số là tự lưu. Mỗi người có bộ cột riêng. Trên iPhone nên "Thêm vào MH chính" để Safari không xoá dữ liệu sau vài ngày không mở.');
-    root.appendChild(hint);
+    root.appendChild(el('div', 'lhint',
+      'Chọn tuần, ghi đủ mọi bài của buổi đó. Ô "Tạ" để trống hiện mờ số của tuần gần nhất — đối chiếu nhanh. Gõ là tự lưu.'));
 
     if (!storageOK) warn.className = 'lwarn on';
   }
 
   function makeShare(P, box){
     var d = getData(P.id);
-    var payload = b64enc(JSON.stringify(d));
-    var base = location.origin + location.pathname.replace(/[^\/]*$/, '');
-    var url = base + P.page + '#d=' + payload;
+    var url = location.origin + location.pathname.replace(/[^\/]*$/, '') +
+              P.page + '#d=' + b64enc(JSON.stringify(d));
     box.className = 'lshare on';
     var ta = box.querySelector('textarea');
     ta.value = url;
@@ -948,7 +1011,7 @@
   function exportAll(){
     var d = new Date();
     var stamp = d.getFullYear() + '-' + ('0'+(d.getMonth()+1)).slice(-2) + '-' + ('0'+d.getDate()).slice(-2);
-    var out = { plan: PLAN, version: 1, exported: stamp, profiles: {} };
+    var out = { plan: PLAN, version: 2, exported: stamp, profiles: {} };
     PROFILES.forEach(function(p){ out.profiles[p.id] = getData(p.id); });
     var blob = new Blob([JSON.stringify(out, null, 2)], { type:'application/json' });
     var a = document.createElement('a');
@@ -978,7 +1041,13 @@
     r.readAsText(f);
   }
 
-  active = readActive();
+  loadUi();
+  if (!active) active = PROFILES[0].id;
+  var _ok = false;
+  for (var _i=0;_i<PROFILES.length;_i++) if (PROFILES[_i].id === active) _ok = true;
+  if (!_ok) active = PROFILES[0].id;
+  sess = sessionOf(prof(active), sess).id;
+  saveUi();
   build();
 })();
 </script>
