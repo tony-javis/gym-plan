@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#101418">
-<title>Lịch 2 Buổi · Bản 5 (thứ tự ưu tiên)</title>
+<title>Lịch 2 buổi — Thảo Vy</title>
 <style>
   :root { --bg:#101418; --card:#191f26; --card2:#222a33; --line:#2d3742;
           --txt:#e9eef4; --dim:#93a1b0; --accent:#4ec9a0; --accent2:#7cc6ff;
@@ -83,12 +83,63 @@
   .note li { margin-bottom:9px; }
   .note code { background:var(--card2); padding:1px 5px; border-radius:4px; font-size:12.5px; }
   footer { max-width:720px; margin:0 auto; padding:12px 18px 0; color:var(--dim); font-size:12.3px; line-height:1.6; }
+
+  .logbox { background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:14px 14px 12px; margin:18px 0 0; }
+  .logbox h4 { margin:0 0 10px; font-size:12.5px; text-transform:uppercase;
+    letter-spacing:.5px; color:var(--accent); }
+  .profiles { display:flex; gap:7px; margin-bottom:10px; flex-wrap:wrap; }
+  .pchip { flex:0 0 auto; font:inherit; font-size:13px; font-weight:700; cursor:pointer;
+    color:var(--dim); background:var(--card2); border:1px solid var(--line);
+    border-radius:999px; padding:6px 14px; transition:.15s; }
+  .pchip.on { color:#0f1216; background:var(--accent); border-color:var(--accent); }
+  .lscroll { overflow-x:auto; -webkit-overflow-scrolling:touch; margin:0 -4px; padding:0 4px; }
+  table.ltab { width:100%; border-collapse:collapse; font-size:13px;
+    font-variant-numeric:tabular-nums; }
+  table.ltab th { color:var(--dim); font-size:10.5px; text-transform:uppercase;
+    letter-spacing:.3px; font-weight:700; padding:6px 4px; text-align:center;
+    border-bottom:1px solid var(--line); white-space:nowrap; }
+  table.ltab th:first-child { text-align:left; }
+  table.ltab td { padding:3px 3px; border-bottom:1px solid rgba(43,53,64,.55); }
+  table.ltab td.wk { color:var(--dim); font-size:11.5px; font-weight:700;
+    white-space:nowrap; padding-right:8px; width:34px; }
+  table.ltab td.v { text-align:center; color:var(--txt); padding:8px 4px; }
+  table.ltab td.v.empty { color:#4d5a68; }
+  table.ltab td.v.wide { text-align:left; }
+  table.ltab input { width:100%; min-width:54px; font:inherit; font-size:13.5px;
+    font-variant-numeric:tabular-nums; text-align:center; color:var(--txt);
+    background:var(--card2); border:1px solid transparent; border-radius:7px;
+    padding:7px 4px; outline:none; }
+  table.ltab input:focus { border-color:var(--accent); background:#1b232b; }
+  table.ltab input::placeholder { color:#4d5a68; }
+  table.ltab input.wide { text-align:left; min-width:120px; }
+  .lfoot { display:flex; align-items:center; gap:8px; margin-top:12px; flex-wrap:wrap; }
+  .lbtn { font:inherit; font-size:12.5px; font-weight:700; cursor:pointer;
+    color:var(--txt); background:var(--card2); border:1px solid var(--line);
+    border-radius:9px; padding:8px 13px; }
+  .lbtn:active { background:#2a333d; }
+  .lbtn.pri { color:#0f1216; background:var(--accent); border-color:var(--accent); }
+  .lsaved { font-size:11.5px; font-weight:700; color:var(--accent);
+    opacity:0; transition:opacity .3s; margin-left:auto; }
+  .lsaved.on { opacity:1; }
+  .lwarn { display:none; margin-top:10px; padding:10px 12px; border-radius:9px;
+    font-size:12.5px; line-height:1.5; background:rgba(255,181,71,.1);
+    border-left:3px solid #ffb547; color:#f2e4c9; }
+  .lwarn.on { display:block; }
+  .lhint { color:var(--dim); font-size:12.3px; line-height:1.6; margin-top:10px; }
+  .lwho { font-size:12.5px; color:var(--dim); margin:0 0 10px; }
+  .lwho b { color:var(--txt); }
+  .lshare { display:none; margin-top:10px; }
+  .lshare.on { display:block; }
+  .lshare textarea { width:100%; height:66px; font:12px/1.4 ui-monospace,Menlo,monospace;
+    color:var(--txt); background:var(--card2); border:1px solid var(--line);
+    border-radius:9px; padding:8px; resize:none; }
 </style></head>
 <body>
 <header>
-  <h1>Lịch 2 Buổi · Bản 5</h1>
+  <h1>Lịch 2 buổi — Thảo Vy</h1>
   <div class="hint">16 bài · xếp theo thứ tự ưu tiên · có đường cắt</div>
-  <nav><a href="#sA">Buổi A · Trên</a><a href="#sB">Buổi B · Dưới</a></nav>
+  <nav><a href="#sA">Buổi A · Trên</a><a href="#sB">Buổi B · Dưới</a><a href="#logroot">Mức tạ</a></nav>
 </header>
 <main>
 <div class="rule">
@@ -458,7 +509,6 @@
         </div>
       </details>
 </section>
-
 <div class="note">
   <h4>Nếu chỉ có 30 phút</h4>
   <ul>
@@ -481,23 +531,98 @@
   <h4>Buổi tập thử — ghi gì lại</h4>
   <ul>
     <li>Mục đích của 2–3 buổi đầu không phải tăng tạ, mà là <b>tìm ra chỗ đau và chỗ sai</b>. Chọn tạ nhẹ hơn khả năng thật một bậc, để còn dư sức cảm nhận.</li>
-    <li>Ghi ngay sau mỗi bài, trên điện thoại, đúng 3 dòng: <b>mức tạ · số lỗ chỉnh ghế · cảm giác</b>. Không ghi lại thì buổi sau phải mò lại từ đầu.</li>
     <li>Đau cơ (mỏi, rát, xuất hiện sau 12–24 giờ, đối xứng hai bên) là bình thường. <b>Đau khớp</b> (nhói, đau ngay trong lúc tập, lệch một bên) là tín hiệu phải đổi bài — dừng bài đó, đừng hạ tạ rồi tập tiếp.</li>
     <li>Ba vị trí cần để ý nhất: <b>mặt trước gối</b> (leg extension, leg press), <b>lưng dưới</b> (Smith stiff-leg deadlift, hip thrust khi lên quá cao), <b>mặt trước vai</b> (machine bench press, dip machine).</li>
-    <li>Gửi lại cho tôi 3 dòng ghi chép đó là đủ để điều chỉnh lịch. Không cần nhớ hết — chỉ cần biết bài nào gây khó chịu ở đâu.</li>
+    <li>Tony ghi mức tạ giúp trên máy của anh ấy. Người tập chỉ cần mở trang để xem lại số của tuần trước.</li>
   </ul>
 </div>
+<div class="logbox" id="logroot"></div>
 
-<div class="note">
-  <h4>Còn thiếu để chốt lịch</h4>
-  <ul>
-    <li>Kết quả buổi thử: đau ở đâu, bài nào — quyết định leg extension giữ hay bỏ, dip machine giữ hay đổi sang cable pushdown.</li>
-    <li>Chiều cao hai chốt an toàn của giàn hip thrust sau khi chỉnh (ghi số lỗ) — để lần sau vào là tập, không phải chỉnh lại.</li>
-    <li>Số buổi chạy mỗi tuần: 4–5 buổi thì buổi B nên cách buổi chạy dài ít nhất một ngày.</li>
-  </ul>
-</div>
+<script>
+(function(){
+  var WEEKS = 12;
+  var COLS = [{"k": "hip", "l": "Hip thrust", "n": "number"}, {"k": "legpress", "l": "Leg press", "n": "number"}, {"k": "pulldown", "l": "Pulldown", "n": "number"}, {"k": "bench", "l": "Bench máy", "n": "number"}, {"k": "row", "l": "Cable row", "n": "number"}, {"k": "note", "l": "Ghi chú", "n": "text"}];
+  var WHO = "Thảo Vy";
+  var root = document.getElementById('logroot');
+  if (!root) return;
+
+  function b64enc(str){
+    var bytes = new TextEncoder().encode(str);
+    var bin = '';
+    for (var i=0;i<bytes.length;i++) bin += String.fromCharCode(bytes[i]);
+    return btoa(bin).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+  }
+  function b64dec(s){
+    s = s.replace(/-/g,'+').replace(/_/g,'/');
+    while (s.length % 4) s += '=';
+    var bin = atob(s);
+    var bytes = new Uint8Array(bin.length);
+    for (var i=0;i<bin.length;i++) bytes[i] = bin.charCodeAt(i);
+    return new TextDecoder().decode(bytes);
+  }
+  function readHashData(){
+    var h = location.hash || '';
+    var i = h.indexOf('d=');
+    if (i < 0) return null;
+    try { return JSON.parse(b64dec(h.slice(i+2))); } catch(e){ return null; }
+  }
+
+  var data = readHashData();
+
+  function el(tag, cls, text){
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text !== undefined) e.textContent = text;
+    return e;
+  }
+
+  root.appendChild(el('h4', null, 'Mức tạ đã ghi'));
+
+  if (!data) {
+    var p = el('div', 'lwarn on');
+    p.textContent = 'Chưa có dữ liệu trong link này. Muốn xem mức tạ, mở link do Tony gửi — hoặc nhờ Tony tạo link mới trong trang của anh ấy.';
+    root.appendChild(p);
+    var hint0 = el('div', 'lhint', 'Trang này để xem lịch tập. Việc ghi mức tạ do Tony làm trên máy của anh ấy.');
+    root.appendChild(hint0);
+    return;
+  }
+
+  var who = el('div', 'lwho');
+  who.innerHTML = 'Người tập: <b>' + WHO + '</b>';
+  root.appendChild(who);
+
+  var scroll = el('div', 'lscroll');
+  var t = el('table', 'ltab');
+  var thead = el('thead'), htr = el('tr');
+  htr.appendChild(el('th', null, 'Tuần'));
+  COLS.forEach(function(c){ htr.appendChild(el('th', null, c.l)); });
+  thead.appendChild(htr);
+  t.appendChild(thead);
+
+  var tbody = el('tbody');
+  for (let w = 1; w <= WEEKS; w++) {
+    var tr = el('tr');
+    tr.appendChild(el('td', 'wk', String(w)));
+    COLS.forEach(function(c){
+      var raw = data[w] ? data[w][c.k] : undefined;
+      var has = !(raw === undefined || raw === null || raw === '');
+      var td = el('td', 'v' + (c.n === 'number' ? '' : ' wide') + (has ? '' : ' empty'),
+                  has ? String(raw) : '—');
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  }
+  t.appendChild(tbody);
+  scroll.appendChild(t);
+  root.appendChild(scroll);
+
+  var hint = el('div', 'lhint', 'Chỉ để xem. Số do Tony ghi trên máy của anh ấy; mở link mới khi Tony gửi lại.');
+  root.appendChild(hint);
+})();
+</script>
+
 </main>
 <footer>
-  Ảnh động: free-exercise-db (giấy phép mở). Bản 5 — đã cập nhật giàn hip thrust thực tế.
+  Ảnh động: free-exercise-db (giấy phép mở). Trang để xem — mức tạ do Tony ghi.
 </footer>
 </body></html>

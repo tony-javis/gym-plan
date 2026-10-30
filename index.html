@@ -7,7 +7,7 @@
 <title>Lịch tập</title>
 <style>
   :root { --bg:#0f1216; --card:#181e25; --card2:#212932; --line:#2b3540;
-          --txt:#e9eef4; --dim:#8e9caa; --accent:#4ec9a0; --accent2:#7cc6ff; }
+          --txt:#e9eef4; --dim:#8e9caa; --accent:#4ec9a0; --accent2:#7cc6ff; --gold:#e0b062; }
   * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
   body { margin:0; background:var(--bg); color:var(--txt);
     font:16px/1.55 -apple-system,BlinkMacSystemFont,"SF Pro Text",Roboto,sans-serif;
@@ -20,10 +20,12 @@
     transition:border-color .15s, transform .15s; }
   a.card:active { transform:scale(.99); }
   a.card:hover { border-color:var(--accent); }
+  a.card.owner:hover { border-color:var(--gold); }
   .ver { display:inline-block; font-size:11px; font-weight:800; letter-spacing:.5px;
     text-transform:uppercase; color:var(--accent); background:rgba(78,201,160,.14);
     border-radius:999px; padding:3px 10px; margin-bottom:10px; }
   .ver.b { color:var(--accent2); background:rgba(124,198,255,.14); }
+  .ver.c { color:var(--gold); background:rgba(224,176,98,.14); }
   .name { font-size:17px; font-weight:700; margin-bottom:5px; }
   .desc { color:var(--dim); font-size:13.4px; line-height:1.6; }
   .meta { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
@@ -34,23 +36,31 @@
 <body>
 <div class="wrap">
   <h1>Lịch tập</h1>
-  <div class="sub">Hai chương trình riêng. Mỗi bài có nhóm cơ, các bước tập và mục chú ý.</div>
+  <div class="sub">Ba chương trình. Mỗi bài có nhóm cơ, các bước tập và mục chú ý.</div>
 
-  <a class="card" href="vo5.html">
-    <span class="ver">Bản 5</span>
-    <div class="name">Lịch 2 buổi — vợ</div>
+  <a class="card" href="vo.html">
+    <span class="ver">Lịch 2 buổi</span>
+    <div class="name">Thảo Vy</div>
     <div class="desc">Thân trên và thân dưới, toàn bộ là máy cố định. Có đường cắt rõ khi thiếu thời gian.</div>
-    <div class="meta"><span>16 bài</span><span>~48 phút/buổi</span><span>3 mức ưu tiên</span></div>
+    <div class="meta"><span>16 bài</span><span>~48 phút/buổi</span><span>Chỉ xem</span></div>
   </a>
 
-  <a class="card" href="thanh.html">
-    <span class="ver b">Bản 1</span>
-    <div class="name">Lịch 3 buổi — Thanh</div>
-    <div class="desc">Compound nặng (squat, deadlift) cộng máy. Buổi thứ ba là thân trên, tuỳ chọn. Đã điều chỉnh cho khớp AC đang đau.</div>
-    <div class="meta"><span>22 bài</span><span>~65 phút/buổi</span><span>Bảng ghi tạ</span></div>
+  <a class="card" href="yen.html">
+    <span class="ver">Lịch 2 buổi</span>
+    <div class="name">Yến Nhi</div>
+    <div class="desc">Tạm thời giống lịch của Thảo Vy, sẽ điều chỉnh sau khi tập thử vài buổi.</div>
+    <div class="meta"><span>16 bài</span><span>~48 phút/buổi</span><span>Chỉ xem</span></div>
+  </a>
+
+  <a class="card owner" href="tony.html">
+    <span class="ver c">Lịch 3 buổi + ghi tạ</span>
+    <div class="name">Tony</div>
+    <div class="desc">Squat, deadlift cộng máy. Buổi thứ ba là thân trên, tuỳ chọn. Trang này ghi mức tạ cho cả ba người.</div>
+    <div class="meta"><span>22 bài</span><span>~65 phút/buổi</span><span>Ghi được</span></div>
   </a>
 
   <footer>
+    Mức tạ ghi trên trang của Tony, rồi bấm "Tạo link" để gửi link riêng cho từng người.<br>
     Ảnh động: free-exercise-db (giấy phép mở). Trang tự chứa, không cần internet.
   </footer>
 </div>
