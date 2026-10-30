@@ -1,15 +1,29 @@
-# Lịch tập 2 buổi
+# Lịch tập
 
-Trang HTML tự chứa (ảnh động nhúng base64) cho lịch tập 2 buổi/tuần: Buổi A thân trên, Buổi B thân dưới. Toàn bộ bài là máy cố định, trừ plank.
+Hai chương trình tập riêng, mỗi chương trình là một trang HTML tự chứa (ảnh động nhúng sẵn, không cần internet).
 
-## Nội dung
+## Các bản
+
+| Trang | Cho | Nội dung |
+|---|---|---|
+| [`vo5.html`](vo5.html) | Vợ | Lịch 2 buổi — thân trên / thân dưới, toàn máy cố định, 16 bài |
+| [`thanh.html`](thanh.html) | Thanh | Lịch 3 buổi — squat, deadlift cộng máy, 22 bài, có bảng ghi tạ |
+
+`index.html` là trang chủ để chọn giữa hai bản.
+
+## Điểm chung
 
 - **Thứ tự ưu tiên**: bài compound nặng và bài dễ sai tư thế đứng đầu buổi, khi thân còn khoẻ và kỹ thuật còn chuẩn.
-- **Ba mức**: mức 1 bắt buộc, mức 2 nên có, mức 3 tuỳ chọn — có đường cắt rõ ràng khi thiếu thời gian.
+- **Nhãn mức**: bắt buộc / phục hồi / cắt được — biết bỏ bài nào khi thiếu thời gian.
 - **Mỗi bài**: nhóm cơ chính và hỗ trợ, kỹ thuật tóm tắt, các bước tập chi tiết, mục chú ý, lý do chọn bài.
+- **Siêu bộ** ở những buổi cần nén thời gian.
 
-## Dùng
+## Đặc thù bản của Thanh
 
-Mở `index.html` bằng trình duyệt. Không cần internet, không có dependency, không cần build.
+Điều chỉnh cho tình trạng đau khớp AC (đỉnh vai) khi đẩy: đã bỏ Smith shoulder press, dip machine và barbell incline press; thêm face pull và cable external rotation ba lần mỗi tuần.
 
-Ảnh động: [free-exercise-db](https://github.com/yuhonas/free-exercise-db) (giấy phép mở).
+## Kỹ thuật
+
+Mỗi ảnh động được nhúng **một lần** dưới dạng CSS class `g-<slug>` rồi tái sử dụng qua `background-image`, nên bài xuất hiện ở nhiều buổi không làm tăng dung lượng trang.
+
+Ảnh: [free-exercise-db](https://github.com/yuhonas/free-exercise-db) (giấy phép mở).
