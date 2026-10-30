@@ -855,6 +855,19 @@
     return e;
   }
 
+  /* migrate: bản 87577be lưu log dưới khoá '***<plan>.<prof>.log' */
+  (function(){
+    var legacy = '***' + PLAN + '.' + PROF + '.log';
+    var have = null, had = null;
+    try { have = localStorage.getItem(LOGKEY); had = localStorage.getItem(legacy); } catch(e){ return; }
+    if (!have && had) {
+      try {
+        localStorage.setItem(LOGKEY, had);
+        localStorage.removeItem(legacy);
+      } catch(e){}
+    }
+  })();
+
   var state = {};
   function load(s){ if (!state[s]) state[s] = get(curKey(s)) || {}; return state[s]; }
   function save(s){ set(curKey(s), state[s] || {}); }
