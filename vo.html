@@ -116,8 +116,24 @@
     padding:9px 4px; outline:none; }
   table.ltab input:focus { border-color:var(--accent); background:#1b232b; }
   table.ltab input::placeholder { color:#4d5a68; }
-  .colw { width:31%; }
-  .colr { width:23%; }
+  .colc { width:34px; }
+  .colw { width:28%; }
+  .colr { width:21%; }
+  table.ltab td.ck { text-align:center; padding:6px 0 6px 2px; }
+  .tick { display:inline-flex; width:26px; height:26px; cursor:pointer;
+    align-items:center; justify-content:center; border-radius:8px;
+    background:var(--card2); border:1px solid var(--line);
+    color:transparent; font-size:15px; font-weight:800; line-height:1;
+    transition:.15s; user-select:none; }
+  .tick:active { transform:scale(.92); }
+  .tick.on { background:var(--accent); border-color:var(--accent); color:#0f1216; }
+  tr.done td.nm .t { color:var(--dim); text-decoration:line-through; }
+  tr.done td.nm .p { opacity:.55; }
+  tr.done td.v { opacity:.6; }
+  .lprog { font-size:12px; font-weight:700; color:var(--accent2); margin:0 0 8px; }
+  .lprog span { color:var(--dim); font-weight:600; }
+  .lbtn.reset { color:#ff9b9b; border-color:rgba(255,122,122,.4); }
+  .lbtn.reset:active { background:rgba(255,122,122,.15); }
   .lfoot { display:flex; align-items:center; gap:8px; margin-top:12px; flex-wrap:wrap; }
   .lbtn { font:inherit; font-size:12.5px; font-weight:700; cursor:pointer;
     color:var(--txt); background:var(--card2); border:1px solid var(--line);
@@ -612,6 +628,9 @@
   }
   root.appendChild(wr);
 
+  var prog = el('div', 'lprog');
+  root.appendChild(prog);
+
   var body = el('div');
   root.appendChild(body);
 
@@ -637,6 +656,7 @@
     body.innerHTML = '';
     var t = el('table', 'ltab');
     var thead = el('thead'), htr = el('tr');
+    htr.appendChild(el('th', 'colc', ''));
     htr.appendChild(el('th', null, 'Bài'));
     htr.appendChild(el('th', 'colw', 'Tạ'));
     htr.appendChild(el('th', 'colr', 'Reps'));
@@ -647,12 +667,18 @@
     S.ex.forEach(function(row){
       var slug = row.slug, name = row.name, presc = row.presc || '';
       var tr = el('tr');
+      var c = (data[week] && data[week][S.id] && data[week][S.id][slug]) || {};
+      var isDone = c.d === '1';
+
+      var tdc = el('td', 'ck');
+      tdc.appendChild(el('span', 'tick' + (isDone ? ' on' : ''), isDone ? '✓' : ''));
+      tr.appendChild(tdc);
+      if (isDone) tr.className = 'done';
+
       var td = el('td', 'nm');
       td.appendChild(el('span', 't', name));
       if (presc) td.appendChild(el('span', 'p', presc));
       tr.appendChild(td);
-
-      var c = (data[week] && data[week][S.id] && data[week][S.id][slug]) || {};
       [['w','colw'],['r','colr']].forEach(function(f){
         var val = c[f[0]];
         var has = !(val === undefined || val === null || val === '');
@@ -664,11 +690,16 @@
     t.appendChild(tbody);
     body.appendChild(t);
 
-    var any = false;
+    var any = false, doneN = 0;
     S.ex.forEach(function(row){
       var c = (data[week] && data[week][S.id] && data[week][S.id][row.slug]);
-      if (c && (c.w || c.r)) any = true;
+      if (c && (c.w || c.r || c.d)) any = true;
+      if (c && c.d === '1') doneN++;
     });
+    prog.innerHTML = 'Đã xong ' + doneN + '/' + S.ex.length + ' bài';
+    prog.appendChild(document.createTextNode(' · '));
+    prog.appendChild(el('span', null, doneN === S.ex.length ? 'hoàn thành buổi tập' : 'còn ' + (S.ex.length - doneN) + ' bài'));
+
     if (!any) body.appendChild(el('div', 'lhint', 'Tuần này chưa ghi gì cho buổi ' + S.name + '.'));
   }
 
