@@ -122,10 +122,16 @@
     font-variant-numeric:tabular-nums; }
   .mname { flex:1 1 auto; min-width:0; color:#6f7d8b; overflow:hidden;
     text-overflow:ellipsis; white-space:nowrap; }
-  .uni { flex:0 0 auto; font:inherit; font-size:10px; font-weight:800;
-    color:var(--dim); background:rgba(142,156,170,.13); border:none;
-    border-radius:4px; padding:2px 5px; cursor:pointer; letter-spacing:.2px; }
-  .uni:active { background:rgba(142,156,170,.3); }
+  select.uni { flex:0 0 auto; font:inherit; font-size:10px; font-weight:800;
+    color:var(--dim); background:rgba(142,156,170,.13);
+    border:1px solid transparent; border-radius:4px; padding:2px 2px 2px 4px;
+    cursor:pointer; letter-spacing:.2px; -webkit-appearance:none; appearance:none;
+    outline:none; text-align:center; }
+  select.uni:focus { border-color:var(--accent); }
+  select.uni.on-lb { color:var(--warn); background:rgba(255,181,71,.15); }
+  .usel { flex:0 0 auto; position:relative; display:inline-flex; }
+  .usel:after { content:'▾'; font-size:8px; color:#5f6c7a; margin-left:-9px;
+    pointer-events:none; }
   .swp { flex:0 0 auto; font:inherit; font-size:14px; font-weight:800;
     line-height:1; color:var(--dim); background:rgba(142,156,170,.13);
     border:none; border-radius:5px; padding:2px 6px 3px; cursor:pointer; }
@@ -177,9 +183,10 @@
   table.stab td.nm .mchip { font-size:9px; padding:1px 4px; margin-right:4px;
     vertical-align:middle; }
   table.stab td.nm.sub { padding-left:13px; font-weight:500; color:#b9c4cf; }
-  table.stab td.c { padding:3px 2px; min-width:66px; text-align:center; }
+  table.stab td.c { padding:3px 2px; min-width:62px; text-align:center; vertical-align:middle; }
   table.stab td.na { color:#33404b; text-align:center; font-size:13px; }
-  table.stab .vu { font-size:9px; font-weight:700; color:#5f6c7a; margin-left:1px; }
+  table.stab .vu { display:block; font-size:8.5px; font-weight:700; color:#5f6c7a;
+    line-height:1; margin:-3px 0 1px; letter-spacing:.2px; }
   .dh { display:flex; align-items:center; gap:1px; }
   .dtxt { font:inherit; font-size:11px; font-weight:800; color:#fff;
     font-variant-numeric:tabular-nums; letter-spacing:0; background:transparent;
@@ -956,7 +963,8 @@
 <script>
 (function(){
   var PLAN = "tony", PROF = "tony";
-  var MACH = {"M01": ["Front Lat Pulldown", "Máy kéo xô trước", "Lưng – Xô", "Kéo dọc từ trên xuống, tạo độ rộng cơ xô."], "M02": ["Chest-Supported Row", "Máy chèo thuyền tựa ngực", "Lưng – Xô", "Kéo ngang, ngực áp đệm, tăng độ dày lưng giữa."], "M03": ["Isolate Low Row", "Máy kéo xô thấp", "Lưng – Xô", "Kéo chéo từ thấp về hông, cô lập cơ xô dưới."], "M04": ["T-Bar Row (Chest-Supported)", "Máy kéo chữ T tựa ngực", "Lưng – Xô", "Kéo áp ngực, dày lưng, không mỏi thắt lưng."], "M05": ["T-Bar Row (Standing)", "Máy kéo chữ T đứng", "Lưng – Xô", "Kéo đứng cúi người, dày lưng toàn diện, có tải cột sống."], "M06": ["Lat Pulldown & Seated Row Combo", "Tháp cáp xô đa năng", "Lưng – Xô", "Tháp cáp khối kéo dọc hoặc kéo ngang."], "M07": ["Incline Chest Press", "Máy đẩy ngực trên", "Ngực – Vai – Tay", "Đẩy tạ góc nghiêng, ngực trên sát xương đòn."], "M08": ["Flat Chest Press", "Máy đẩy ngực bằng", "Ngực – Vai – Tay", "Đẩy ngực ngồi, đường đi cố định, an toàn cho vai."], "M09": ["Pec Deck Fly", "Máy ép ngực", "Ngực – Vai – Tay", "Ép cánh tay trước ngực, cô lập ngực, không tải vai như bài đẩy."], "M10": ["Rear Delt Fly", "Máy ban vai sau", "Ngực – Vai – Tay", "Gạt tạ về sau, vai sau và lưng trên."], "M11": ["Shoulder Press Machine", "Máy đẩy vai", "Ngực – Vai – Tay", "Đẩy từ ngang vai lên qua đầu, vai trước và vai giữa."], "M12": ["Preacher Curl", "Máy gập tay trước", "Ngực – Vai – Tay", "Cô lập tay trước, cùi chỏ tựa đệm."], "M13": ["Overhead Triceps Extension", "Máy duỗi tay sau ngồi", "Ngực – Vai – Tay", "Duỗi tay qua đầu, tập đầu dài tay sau."], "M14": ["Assisted Dip & Pull-Up", "Máy trợ lực xà đơn & xà kép", "Ngực – Vai – Tay", "Trợ lực nâng người — tạ càng nặng càng DỄ."], "M15": ["45-Degree Leg Press", "Máy đạp đùi ngả 45°", "Chân – Mông", "Đạp tạ đĩa khối lượng lớn, tải chân nặng, lưng được nâng đỡ."], "M16": ["Horizontal Leg Press", "Máy đạp đùi ngang", "Chân – Mông", "Đạp ngang tư thế ngồi, an toàn cho thắt lưng."], "M17": ["Hack Squat / Pendulum Squat", "Máy gánh đùi nghiêng", "Chân – Mông", "Squat theo ray trượt, tải chân nặng, giảm chấn cột sống."], "M18": ["Hip Thrust Machine", "Máy đẩy mông chuyên dụng", "Chân – Mông", "Lưng tựa đệm, hông đẩy thanh đòn lên, cô lập mông lớn."], "M19": ["Leg Extension", "Máy đá đùi trước", "Chân – Mông", "Duỗi chân thẳng, cô lập đùi trước."], "M20": ["Seated Leg Curl", "Máy móc đùi sau ngồi", "Chân – Mông", "Ngồi gập gót về sát mông, đùi sau."], "M21": ["Prone Leg Curl", "Máy móc đùi sau nằm", "Chân – Mông", "Nằm úp gập gót, đùi sau, ít dùng lưng dưới hơn bản ngồi."], "M22": ["Hip Abductor", "Máy mở hông", "Chân – Mông", "Đẩy đệm sang hai bên, mông nhỡ."], "M23": ["Hip Adductor", "Máy khép đùi", "Chân – Mông", "Ép đùi sát nhau, đùi trong."], "M24": ["Glute Kickback", "Máy đá mông sau", "Chân – Mông", "Đạp một chân ra sau, mông lớn, rất nhẹ cho lưng."], "M25": ["Treadmill", "Máy chạy bộ", "Tự do – Bụng – Cardio", "Chạy hoặc đi bộ dốc, tim mạch."], "M26": ["Elliptical Trainer", "Máy đi bộ trên không", "Tự do – Bụng – Cardio", "Cardio ít áp lực khớp gối."], "M27": ["Spin Bike", "Xe đạp tập", "Tự do – Bụng – Cardio", "Đạp cường độ cao, đùi và mông."], "M28": ["Ab Coaster / Slider", "Máy gập bụng trượt cong", "Tự do – Bụng – Cardio", "Cuộn bụng trên bục trượt, bụng dưới và cơ lõi."], "M29": ["Smith Machine", "Khung gánh tạ trợ lực", "Tự do – Bụng – Cardio", "Đòn gắn ray thẳng đứng, đường đi cố định."], "M30": ["Power Rack", "Khung gánh tạ tự do", "Tự do – Bụng – Cardio", "Đòn tự do có thanh bảo vệ hai bên."], "M31": ["Cable Crossover", "Dàn cáp đôi", "Tự do – Bụng – Cardio", "Hai tháp cáp chỉnh độ cao, đa năng."], "M32": ["Flat / Incline Bench Press", "Giá đẩy ngực tạ đòn", "Tự do – Bụng – Cardio", "Ghế cố định kèm giá đỡ, đẩy ngực tạ đòn."], "M33": ["Adjustable Bench", "Ghế điều chỉnh độ ngả", "Tự do – Bụng – Cardio", "Ghế chỉnh dốc, dùng với tạ đơn."], "M34": ["Dumbbell / Kettlebell", "Tạ tay / tạ ấm", "Tự do – Bụng – Cardio", "Dàn tạ rời nhiều mức."], "M35": ["Battle Ropes / Sled", "Dây thừng / khung đẩy", "Tự do – Bụng – Cardio", "Functional, HIIT."], "M36": ["Seated Calf Raise", "Máy nhón gót bắp chân", "Tự do – Bụng – Cardio", "Nhón gót đẩy khối tạ, bắp chân."], "M00": ["Bodyweight", "Thân trọng lượng", "—", "Không dùng máy."]}, EXM = {"barbellsquat": {"m": "M30", "u": "kg", "bar": 20, "sub": ["hacksquat", "legpress"], "name": "Back Squat"}, "machinebenchpress": {"m": "M08", "u": "kg", "bar": 0, "sub": ["dipmachine", "barbellinclinebenchpressmediumgrip"], "name": "Machine Bench Press"}, "seatedcablerows": {"m": "M06", "u": "lb", "bar": 0, "sub": ["lyingtbarrow", "bentovertwodumbbellrow"], "name": "Seated Cable Row"}, "sidelateralraise": {"m": "M34", "u": "kg/tay", "bar": 0, "sub": ["machineshouldermilitarypress"], "name": "Lateral Raise (tạ đơn)"}, "seatedlegcurl": {"m": "M20", "u": "lb", "bar": 0, "sub": ["lyinglegcurls"], "name": "Seated Leg Curl"}, "abcrunchmachine": {"m": "M28", "u": "kg", "bar": 0, "sub": ["cablecrunch", "hanginglegraise"], "name": "Ab Crunch Machine"}, "cablecrossover": {"m": "M31", "u": "kg", "bar": 0, "sub": ["butterfly", "reverseflyes"], "name": "Cable Crossover (low-to-high)"}, "barbelldeadlift": {"m": "M30", "u": "kg", "bar": 20, "sub": ["smithmachinestiffleggeddeadlift", "barbellhipthrust"], "name": "Deadlift"}, "widegriplatpulldown": {"m": "M01", "u": "kg", "bar": 0, "sub": ["closegripfrontlatpulldown", "lat-pulldown"], "name": "Wide-Grip Lat Pulldown"}, "machineshouldermilitarypress": {"m": "M11", "u": "kg", "bar": 0, "sub": ["sidelateralraise"], "name": "Machine Shoulder Press"}, "facepull": {"m": "M31", "u": "kg", "bar": 0, "sub": ["cablereardeltfly", "externalrotationcable"], "name": "Face Pull"}, "hacksquat": {"m": "M17", "u": "kg", "bar": 0, "sub": ["legpress", "legextensions"], "name": "Hack Squat"}, "barbellhipthrust": {"m": "M18", "u": "kg", "bar": 20, "sub": ["glutekickback", "smithmachinestiffleggeddeadlift"], "name": "Barbell Hip Thrust"}, "plank": {"m": "M00", "u": "", "bar": 0, "sub": ["hanginglegraise", "cablecrunch"], "name": "Plank"}, "pullups": {"m": "M14", "u": "kg trợ lực", "bar": 0, "sub": ["lat-pulldown", "closegripfrontlatpulldown"], "name": "Pull-up"}, "reversemachineflyes": {"m": "M10", "u": "kg", "bar": 0, "sub": ["cablereardeltfly", "facepull"], "name": "Reverse Machine Flyes"}, "butterfly": {"m": "M09", "u": "kg", "bar": 0, "sub": ["cablecrossover", "reverseflyes"], "name": "Butterfly (Pec Deck)"}, "tricepspushdown": {"m": "M31", "u": "kg", "bar": 0, "sub": ["cableropeoverheadtricepsextension", "dipmachine"], "name": "Cable Triceps Pushdown"}, "cablecrunch": {"m": "M31", "u": "kg", "bar": 0, "sub": ["hanginglegraise", "abcrunchmachine"], "name": "Cable Crunch"}, "externalrotationcable": {"m": "M31", "u": "kg", "bar": 0, "sub": ["facepull"], "name": "Cable External Rotation"}, "legpress": {"m": "M15", "u": "kg", "bar": 0, "sub": ["hacksquat", "legextensions"], "name": "Leg Press"}, "lyingtbarrow": {"m": "M04", "u": "kg", "bar": 0, "sub": ["bentovertwodumbbellrow", "seatedcablerows"], "name": "T-Bar Row tựa ngực"}, "bentovertwodumbbellrow": {"m": "M34", "u": "kg/tay", "bar": 0, "sub": ["lyingtbarrow", "seatedcablerows"], "name": "Bent-Over Row tạ đơn"}, "lyinglegcurls": {"m": "M21", "u": "lb", "bar": 0, "sub": ["seatedlegcurl"], "name": "Prone Leg Curl (nằm úp)"}, "hanginglegraise": {"m": "M00", "u": "", "bar": 0, "sub": ["cablecrunch", "abcrunchmachine"], "name": "Treo xà nâng chân"}, "reverseflyes": {"m": "M09", "u": "kg", "bar": 0, "sub": ["butterfly", "cablecrossover"], "name": "Reverse Fly — cùng máy M09, mặt sau"}, "smithmachinestiffleggeddeadlift": {"m": "M29", "u": "kg", "bar": 15, "sub": ["barbellhipthrust", "barbelldeadlift"], "name": "Romanian Deadlift máy Smith"}, "lat-pulldown": {"m": "M01", "u": "kg", "bar": 0, "sub": ["widegriplatpulldown", "closegripfrontlatpulldown"], "name": "Lat Pulldown cáp"}, "cablereardeltfly": {"m": "M31", "u": "kg", "bar": 0, "sub": ["reversemachineflyes", "facepull"], "name": "Cable Rear Delt Fly"}, "legextensions": {"m": "M19", "u": "kg", "bar": 0, "sub": ["hacksquat", "legpress"], "name": "Leg Extension"}, "glutekickback": {"m": "M24", "u": "kg", "bar": 0, "sub": ["barbellhipthrust", "smithmachinestiffleggeddeadlift"], "name": "Glute Kickback"}, "cableropeoverheadtricepsextension": {"m": "M31", "u": "kg", "bar": 0, "sub": ["tricepspushdown", "dipmachine"], "name": "Duỗi tay sau qua đầu (cáp)"}, "dipmachine": {"m": "M14", "u": "kg trợ lực", "bar": 0, "sub": ["machinebenchpress", "tricepspushdown"], "name": "Dip Machine trợ lực"}, "barbellinclinebenchpressmediumgrip": {"m": "M32", "u": "kg", "bar": 20, "sub": ["machinebenchpress"], "name": "Incline Bench Press tạ đòn"}}, SUBW = {"dipmachine": "Máy trợ lực: số tạ càng LỚN càng DỄ. Đã bỏ khỏi lịch chính vì vai ông duỗi cực độ ở đáy — chỉ dùng khi thật cần, dừng ở mức không đau.", "barbellinclinebenchpressmediumgrip": "Đây chính là bài đã bỏ khỏi lịch vì ép khớp AC. Nếu chọn, giảm biên độ và dừng ngay khi đỉnh vai nhói.", "pullups": "Máy trợ lực: tạ càng lớn càng dễ. Ghi số trợ lực, không phải số tạ nâng.", "plank": "Bài thân trọng lượng, không có tạ. Ghi số giây nếu muốn theo dõi."};
+  var MACH = {"M01": ["Front Lat Pulldown", "Máy kéo xô trước", "Lưng – Xô", "Kéo dọc từ trên xuống, tạo độ rộng cơ xô."], "M02": ["Chest-Supported Row", "Máy chèo thuyền tựa ngực", "Lưng – Xô", "Kéo ngang, ngực áp đệm, tăng độ dày lưng giữa."], "M03": ["Isolate Low Row", "Máy kéo xô thấp", "Lưng – Xô", "Kéo chéo từ thấp về hông, cô lập cơ xô dưới."], "M04": ["T-Bar Row (Chest-Supported)", "Máy kéo chữ T tựa ngực", "Lưng – Xô", "Kéo áp ngực, dày lưng, không mỏi thắt lưng."], "M05": ["T-Bar Row (Standing)", "Máy kéo chữ T đứng", "Lưng – Xô", "Kéo đứng cúi người, dày lưng toàn diện, có tải cột sống."], "M06": ["Lat Pulldown & Seated Row Combo", "Tháp cáp xô đa năng", "Lưng – Xô", "Tháp cáp khối kéo dọc hoặc kéo ngang."], "M07": ["Incline Chest Press", "Máy đẩy ngực trên", "Ngực – Vai – Tay", "Đẩy tạ góc nghiêng, ngực trên sát xương đòn."], "M08": ["Flat Chest Press", "Máy đẩy ngực bằng", "Ngực – Vai – Tay", "Đẩy ngực ngồi, đường đi cố định, an toàn cho vai."], "M09": ["Pec Deck Fly", "Máy ép ngực", "Ngực – Vai – Tay", "Ép cánh tay trước ngực, cô lập ngực, không tải vai như bài đẩy."], "M10": ["Rear Delt Fly", "Máy ban vai sau", "Ngực – Vai – Tay", "Gạt tạ về sau, vai sau và lưng trên."], "M11": ["Shoulder Press Machine", "Máy đẩy vai", "Ngực – Vai – Tay", "Đẩy từ ngang vai lên qua đầu, vai trước và vai giữa."], "M12": ["Preacher Curl", "Máy gập tay trước", "Ngực – Vai – Tay", "Cô lập tay trước, cùi chỏ tựa đệm."], "M13": ["Overhead Triceps Extension", "Máy duỗi tay sau ngồi", "Ngực – Vai – Tay", "Duỗi tay qua đầu, tập đầu dài tay sau."], "M14": ["Assisted Dip & Pull-Up", "Máy trợ lực xà đơn & xà kép", "Ngực – Vai – Tay", "Trợ lực nâng người — tạ càng nặng càng DỄ."], "M15": ["45-Degree Leg Press", "Máy đạp đùi ngả 45°", "Chân – Mông", "Đạp tạ đĩa khối lượng lớn, tải chân nặng, lưng được nâng đỡ."], "M16": ["Horizontal Leg Press", "Máy đạp đùi ngang", "Chân – Mông", "Đạp ngang tư thế ngồi, an toàn cho thắt lưng."], "M17": ["Hack Squat / Pendulum Squat", "Máy gánh đùi nghiêng", "Chân – Mông", "Squat theo ray trượt, tải chân nặng, giảm chấn cột sống."], "M18": ["Hip Thrust Machine", "Máy đẩy mông chuyên dụng", "Chân – Mông", "Lưng tựa đệm, hông đẩy thanh đòn lên, cô lập mông lớn."], "M19": ["Leg Extension", "Máy đá đùi trước", "Chân – Mông", "Duỗi chân thẳng, cô lập đùi trước."], "M20": ["Seated Leg Curl", "Máy móc đùi sau ngồi", "Chân – Mông", "Ngồi gập gót về sát mông, đùi sau."], "M21": ["Prone Leg Curl", "Máy móc đùi sau nằm", "Chân – Mông", "Nằm úp gập gót, đùi sau, ít dùng lưng dưới hơn bản ngồi."], "M22": ["Hip Abductor", "Máy mở hông", "Chân – Mông", "Đẩy đệm sang hai bên, mông nhỡ."], "M23": ["Hip Adductor", "Máy khép đùi", "Chân – Mông", "Ép đùi sát nhau, đùi trong."], "M24": ["Glute Kickback", "Máy đá mông sau", "Chân – Mông", "Đạp một chân ra sau, mông lớn, rất nhẹ cho lưng."], "M25": ["Treadmill", "Máy chạy bộ", "Tự do – Bụng – Cardio", "Chạy hoặc đi bộ dốc, tim mạch."], "M26": ["Elliptical Trainer", "Máy đi bộ trên không", "Tự do – Bụng – Cardio", "Cardio ít áp lực khớp gối."], "M27": ["Spin Bike", "Xe đạp tập", "Tự do – Bụng – Cardio", "Đạp cường độ cao, đùi và mông."], "M28": ["Ab Coaster / Slider", "Máy gập bụng trượt cong", "Tự do – Bụng – Cardio", "Cuộn bụng trên bục trượt, bụng dưới và cơ lõi."], "M29": ["Smith Machine", "Khung gánh tạ trợ lực", "Tự do – Bụng – Cardio", "Đòn gắn ray thẳng đứng, đường đi cố định."], "M30": ["Power Rack", "Khung gánh tạ tự do", "Tự do – Bụng – Cardio", "Đòn tự do có thanh bảo vệ hai bên."], "M31": ["Cable Crossover", "Dàn cáp đôi", "Tự do – Bụng – Cardio", "Hai tháp cáp chỉnh độ cao, đa năng."], "M32": ["Flat / Incline Bench Press", "Giá đẩy ngực tạ đòn", "Tự do – Bụng – Cardio", "Ghế cố định kèm giá đỡ, đẩy ngực tạ đòn."], "M33": ["Adjustable Bench", "Ghế điều chỉnh độ ngả", "Tự do – Bụng – Cardio", "Ghế chỉnh dốc, dùng với tạ đơn."], "M34": ["Dumbbell / Kettlebell", "Tạ tay / tạ ấm", "Tự do – Bụng – Cardio", "Dàn tạ rời nhiều mức."], "M35": ["Battle Ropes / Sled", "Dây thừng / khung đẩy", "Tự do – Bụng – Cardio", "Functional, HIIT."], "M36": ["Seated Calf Raise", "Máy nhón gót bắp chân", "Tự do – Bụng – Cardio", "Nhón gót đẩy khối tạ, bắp chân."], "M00": ["Bodyweight", "Thân trọng lượng", "—", "Không dùng máy."]}, EXM = {"barbellsquat": {"m": "M30", "u": "kg", "bar": 20, "sub": ["hacksquat", "legpress"], "name": "Back Squat"}, "machinebenchpress": {"m": "M08", "u": "kg", "bar": 0, "sub": ["dipmachine", "barbellinclinebenchpressmediumgrip"], "name": "Machine Bench Press"}, "seatedcablerows": {"m": "M06", "u": "lb", "bar": 0, "sub": ["lyingtbarrow", "bentovertwodumbbellrow"], "name": "Seated Cable Row"}, "sidelateralraise": {"m": "M34", "u": "kg/tay", "bar": 0, "sub": ["machineshouldermilitarypress"], "name": "Lateral Raise (tạ đơn)"}, "seatedlegcurl": {"m": "M20", "u": "lb", "bar": 0, "sub": ["lyinglegcurls"], "name": "Seated Leg Curl"}, "abcrunchmachine": {"m": "M28", "u": "kg", "bar": 0, "sub": ["cablecrunch", "hanginglegraise"], "name": "Ab Crunch Machine"}, "cablecrossover": {"m": "M31", "u": "kg", "bar": 0, "sub": ["butterfly", "reverseflyes", "smithinclinebenchpress"], "name": "Cable Crossover (low-to-high)"}, "barbelldeadlift": {"m": "M30", "u": "kg", "bar": 20, "sub": ["smithmachinestiffleggeddeadlift", "barbellhipthrust"], "name": "Deadlift"}, "widegriplatpulldown": {"m": "M01", "u": "kg", "bar": 0, "sub": ["closegripfrontlatpulldown", "lat-pulldown"], "name": "Wide-Grip Lat Pulldown"}, "machineshouldermilitarypress": {"m": "M11", "u": "kg", "bar": 0, "sub": ["sidelateralraise"], "name": "Machine Shoulder Press"}, "facepull": {"m": "M31", "u": "kg", "bar": 0, "sub": ["cablereardeltfly", "externalrotationcable"], "name": "Face Pull"}, "hacksquat": {"m": "M17", "u": "kg", "bar": 0, "sub": ["legpress", "legextensions"], "name": "Hack Squat"}, "barbellhipthrust": {"m": "M18", "u": "kg", "bar": 20, "sub": ["glutekickback", "smithmachinestiffleggeddeadlift"], "name": "Barbell Hip Thrust"}, "plank": {"m": "M00", "u": "", "bar": 0, "sub": ["hanginglegraise", "cablecrunch"], "name": "Plank"}, "pullups": {"m": "M14", "u": "kg trợ lực", "bar": 0, "sub": ["lat-pulldown", "closegripfrontlatpulldown"], "name": "Pull-up"}, "reversemachineflyes": {"m": "M10", "u": "kg", "bar": 0, "sub": ["cablereardeltfly", "facepull"], "name": "Reverse Machine Flyes"}, "butterfly": {"m": "M09", "u": "kg", "bar": 0, "sub": ["cablecrossover", "reverseflyes"], "name": "Butterfly (Pec Deck)"}, "tricepspushdown": {"m": "M31", "u": "kg", "bar": 0, "sub": ["cableropeoverheadtricepsextension", "dipmachine"], "name": "Cable Triceps Pushdown"}, "cablecrunch": {"m": "M31", "u": "kg", "bar": 0, "sub": ["hanginglegraise", "abcrunchmachine"], "name": "Cable Crunch"}, "externalrotationcable": {"m": "M31", "u": "kg", "bar": 0, "sub": ["facepull"], "name": "Cable External Rotation"}, "legpress": {"m": "M15", "u": "kg", "bar": 0, "sub": ["hacksquat", "legextensions"], "name": "Leg Press"}, "lyingtbarrow": {"m": "M04", "u": "kg", "bar": 0, "sub": ["bentovertwodumbbellrow", "seatedcablerows"], "name": "T-Bar Row tựa ngực"}, "bentovertwodumbbellrow": {"m": "M34", "u": "kg/tay", "bar": 0, "sub": ["lyingtbarrow", "seatedcablerows"], "name": "Bent-Over Row tạ đơn"}, "lyinglegcurls": {"m": "M21", "u": "lb", "bar": 0, "sub": ["seatedlegcurl"], "name": "Prone Leg Curl (nằm úp)"}, "hanginglegraise": {"m": "M00", "u": "", "bar": 0, "sub": ["cablecrunch", "abcrunchmachine"], "name": "Treo xà nâng chân"}, "reverseflyes": {"m": "M09", "u": "kg", "bar": 0, "sub": ["butterfly", "cablecrossover"], "name": "Reverse Fly — cùng máy M09, mặt sau"}, "smithmachinestiffleggeddeadlift": {"m": "M29", "u": "kg", "bar": 20, "sub": ["barbellhipthrust", "barbelldeadlift"], "name": "Romanian Deadlift máy Smith"}, "lat-pulldown": {"m": "M01", "u": "kg", "bar": 0, "sub": ["widegriplatpulldown", "closegripfrontlatpulldown"], "name": "Lat Pulldown cáp"}, "cablereardeltfly": {"m": "M31", "u": "kg", "bar": 0, "sub": ["reversemachineflyes", "facepull"], "name": "Cable Rear Delt Fly"}, "legextensions": {"m": "M19", "u": "kg", "bar": 0, "sub": ["hacksquat", "legpress"], "name": "Leg Extension"}, "glutekickback": {"m": "M24", "u": "kg", "bar": 0, "sub": ["barbellhipthrust", "smithmachinestiffleggeddeadlift"], "name": "Glute Kickback"}, "cableropeoverheadtricepsextension": {"m": "M31", "u": "kg", "bar": 0, "sub": ["tricepspushdown", "dipmachine"], "name": "Duỗi tay sau qua đầu (cáp)"}, "dipmachine": {"m": "M14", "u": "kg trợ lực", "bar": 0, "sub": ["machinebenchpress", "tricepspushdown"], "name": "Dip Machine trợ lực"}, "barbellinclinebenchpressmediumgrip": {"m": "M32", "u": "kg", "bar": 20, "sub": ["machinebenchpress"], "name": "Incline Bench Press tạ đòn"}, "smithinclinebenchpress": {"m": "M29", "u": "kg", "bar": 20, "sub": ["machinebenchpress"], "name": "Incline Bench — máy Smith"}}, SUBW = {"dipmachine": "Máy trợ lực: số tạ càng LỚN càng DỄ. Đã bỏ khỏi lịch chính vì vai ông duỗi cực độ ở đáy — chỉ dùng khi thật cần, dừng ở mức không đau.", "barbellinclinebenchpressmediumgrip": "Đây chính là bài đã bỏ khỏi lịch vì ép khớp AC. Nếu chọn, giảm biên độ và dừng ngay khi đỉnh vai nhói.", "pullups": "Máy trợ lực: tạ càng lớn càng dễ. Ghi số trợ lực, không phải số tạ nâng.", "smithinclinebenchpress": "Bài đẩy, KHÔNG tương đương cable crossover. Ghế nghiêng + ray cố định ép khớp AC — theo dõi đỉnh vai 1–2 ngày sau. Ghi tổng: tạ hai bên + đòn 20 kg.", "plank": "Bài thân trọng lượng, không có tạ. Ghi số giây nếu muốn theo dõi."};
+  var SEEDLOG = [{"id": "seed-20261102-A", "d": "2026-11-02", "s": "A", "label": "BUỔI A — T2", "items": [{"slug": "barbellsquat", "n": "Back Squat", "m": "M30", "u": "kg", "w": "50", "base": "barbellsquat"}, {"slug": "machinebenchpress", "n": "Machine Bench Press", "m": "M08", "u": "kg", "w": "40", "base": "machinebenchpress"}, {"slug": "seatedcablerows", "n": "Seated Cable Row", "m": "M06", "u": "lb", "w": "50", "base": "seatedcablerows"}, {"slug": "sidelateralraise", "n": "Lateral Raise (tạ đơn)", "m": "M34", "u": "kg/tay", "w": "2.5", "base": "sidelateralraise"}, {"slug": "seatedlegcurl", "n": "Seated Leg Curl", "m": "M20", "u": "lb", "w": "70", "base": "seatedlegcurl"}, {"slug": "smithinclinebenchpress", "n": "Incline Bench — máy Smith", "m": "M29", "u": "kg", "w": "35", "base": "cablecrossover"}]}], SEEDVER = "2026-11-02a";
   var main = document.querySelector('main');
   if (!main) return;
 
@@ -971,6 +979,24 @@
     if (!have && had) {
       try { localStorage.setItem(LOGKEY, had); localStorage.removeItem(legacy); } catch(e){}
     }
+  })();
+
+  /* số liệu nhúng sẵn trong trang; local thắng nếu đã có */
+  (function(){
+    if (!SEEDLOG || !SEEDLOG.length) return;
+    var SK = 'gymtrack.' + PLAN + '.' + PROF + '.seedver';
+    var have = null, ver = null;
+    try { have = localStorage.getItem(LOGKEY); ver = localStorage.getItem(SK); } catch(e){ return; }
+    if (ver === SEEDVER) return;
+    var log = [];
+    try { log = have ? JSON.parse(have) : []; } catch(e){ log = []; }
+    if (!Array.isArray(log)) log = [];
+    var ids = {};
+    SEEDLOG.forEach(function(e){ ids[e.id] = 1; });
+    /* bỏ bản cũ của đúng những buổi này, rồi chèn bản nhúng */
+    log = log.filter(function(e){ return !ids[e.id]; });
+    SEEDLOG.forEach(function(e){ log.push(JSON.parse(JSON.stringify(e))); });
+    try { localStorage.setItem(LOGKEY, JSON.stringify(log)); localStorage.setItem(SK, SEEDVER); } catch(e){}
   })();
 
   var storageOK = true;
@@ -1110,9 +1136,13 @@
       chip.className = 'mchip';
       var mname = document.createElement('span');
       mname.className = 'mname';
-      var uni = document.createElement('button');
-      uni.type = 'button';
+      var uni = document.createElement('select');
       uni.className = 'uni';
+      ['kg','lb','kg/tay','kg trợ lực'].forEach(function(o){
+        var op = document.createElement('option');
+        op.value = o; op.textContent = o;
+        uni.appendChild(op);
+      });
       var swp = document.createElement('button');
       swp.type = 'button';
       swp.className = 'swp';
@@ -1140,9 +1170,11 @@
           ex.classList.remove('swapped');
           mname.textContent = m.m === 'M00' ? mvi(m.m) : mm(m.m);
         }
-        uni.textContent = m.u || '—';
-        uni.title = 'Đơn vị: bấm để đổi kg / lb / kg mỗi tay';
-        inp.placeholder = m.u || 'kg';
+        var uu = r.u || m.u || 'kg';
+        uni.value = uu;
+        uni.classList.toggle('on-lb', uu === 'lb');
+        uni.title = 'Đơn vị tạ của bài này';
+        inp.placeholder = uu;
         if (r.done) {
           ex.classList.add('isdone');
           btn.classList.add('on');
@@ -1231,17 +1263,14 @@
         updateFinish(sid, sec);
       });
 
-      uni.addEventListener('click', function(ev){
-        ev.preventDefault(); ev.stopPropagation();
-        var m = curMeta();
-        var order = ['kg', 'lb', 'kg/tay', 'kg trợ lực'];
-        var i = order.indexOf(m.u);
+      uni.addEventListener('change', function(ev){
+        ev.stopPropagation();
         var s = load(sid);
         if (!s[base]) s[base] = { w:'', done:0 };
-        s[base].u = order[(i + 1) % order.length];
+        s[base].u = uni.value;
         save(sid);
         paint();
-        toast('Đơn vị: ' + s[base].u);
+        toast('Đơn vị: ' + uni.value);
       });
 
       swp.addEventListener('click', function(ev){
@@ -1251,7 +1280,9 @@
         box.classList.toggle('on', open);
       });
 
-      [inp, btn, uni, swp].forEach(function(n){
+      uni.addEventListener('mousedown', stop);
+      uni.addEventListener('touchstart', stop, { passive:true });
+      [inp, btn, swp].forEach(function(n){
         n.addEventListener('click', stop);
         n.addEventListener('mousedown', stop);
         n.addEventListener('touchstart', stop, { passive:true });
