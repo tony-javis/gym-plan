@@ -84,12 +84,12 @@
   .note code { background:var(--card2); padding:1px 5px; border-radius:4px; font-size:12.5px; }
   footer { max-width:720px; margin:0 auto; padding:12px 18px 0; color:var(--dim); font-size:12.3px; line-height:1.6; }
 
-  details.ex summary { flex-wrap:nowrap; gap:7px; padding:11px 10px; }
+  details.ex summary { flex-wrap:wrap; gap:6px; padding:10px 10px 9px; row-gap:5px; }
   .rank { flex:0 0 22px; height:22px; border-radius:6px; font-size:11.5px; }
-  .exname { flex:1 1 auto; min-width:0; font-size:13.5px; line-height:1.25;
+  .exname { flex:1 1 0; min-width:0; font-size:13.5px; line-height:1.25;
     display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
     overflow:hidden; word-break:break-word; }
-  .wt { flex:0 0 56px; width:56px; font:inherit; font-size:13.5px;
+  .wt { flex:0 0 54px; width:54px; font:inherit; font-size:13.5px;
     font-variant-numeric:tabular-nums; text-align:center; color:var(--txt);
     background:var(--card2); border:1px solid var(--line); border-radius:8px;
     padding:7px 3px; outline:none; }
@@ -106,6 +106,46 @@
   details.ex.isdone .exname { color:var(--dim); }
   details.ex.isdone .wt { background:rgba(78,201,160,.08);
     border-color:rgba(78,201,160,.35); color:#cfe9e0; }
+
+  /* dòng 2: mã máy + đơn vị + nút đổi bài */
+  .mline { flex:1 1 100%; display:flex; align-items:center; gap:5px;
+    font-size:10.5px; line-height:1.3; min-width:0; }
+  .mchip { flex:0 0 auto; font-weight:800; letter-spacing:.3px; color:#7cc6ff;
+    background:rgba(124,198,255,.14); border-radius:4px; padding:2px 5px;
+    font-variant-numeric:tabular-nums; }
+  .mname { flex:1 1 auto; min-width:0; color:#6f7d8b; overflow:hidden;
+    text-overflow:ellipsis; white-space:nowrap; }
+  .uni { flex:0 0 auto; font:inherit; font-size:10px; font-weight:800;
+    color:var(--dim); background:rgba(142,156,170,.13); border:none;
+    border-radius:4px; padding:2px 5px; cursor:pointer; letter-spacing:.2px; }
+  .uni:active { background:rgba(142,156,170,.3); }
+  .swp { flex:0 0 auto; font:inherit; font-size:14px; font-weight:800;
+    line-height:1; color:var(--dim); background:rgba(142,156,170,.13);
+    border:none; border-radius:5px; padding:2px 6px 3px; cursor:pointer; }
+  .swp:active { background:var(--accent); color:#0f1216; }
+  details.ex.swapped .mchip { color:var(--warn); background:rgba(255,181,71,.15); }
+  details.ex.swapped .mname { color:var(--warn); }
+  details.ex.swapped .exname { color:#b9c4cf; }
+
+  /* panel chọn bài thay thế */
+  .swapbox { display:none; margin:-6px 3px 10px; padding:11px 12px 5px;
+    background:var(--card2); border:1px solid var(--line); border-radius:12px; }
+  .swapbox.on { display:block; }
+  .swapbox .sh { font-size:10.5px; font-weight:800; letter-spacing:.5px;
+    text-transform:uppercase; color:var(--dim); margin:0 0 7px; }
+  .swapbox button { display:flex; width:100%; align-items:baseline; gap:7px;
+    font:inherit; font-size:12.5px; font-weight:700; text-align:left; color:var(--txt);
+    background:#1b232b; border:1px solid var(--line); border-radius:9px;
+    padding:9px 10px; margin-bottom:5px; cursor:pointer; }
+  .swapbox button:active { background:#2a333d; }
+  .swapbox button.cur { border-color:var(--accent); background:rgba(78,201,160,.13);
+    color:var(--accent); }
+  .swapbox .sm { flex:0 0 auto; font-size:9.5px; font-weight:800; color:#7cc6ff;
+    background:rgba(124,198,255,.14); border-radius:3px; padding:1px 4px; }
+  .swapbox .sn { flex:1 1 auto; min-width:0; }
+  .swapbox .sw { font-size:10px; color:#5f6c7a; line-height:1.4;
+    margin:3px 0 9px; padding-left:2px; }
+
   .finish { display:block; width:100%; margin:14px 0 4px; padding:14px;
     font:inherit; font-size:14px; font-weight:800; letter-spacing:.2px; cursor:pointer;
     color:#0f1216; background:var(--accent); border:1px solid var(--accent);
@@ -125,10 +165,14 @@
     font-size:11px; font-weight:700; color:var(--dim); vertical-align:bottom; }
   table.stab th.nm, table.stab td.nm { position:sticky; left:0; background:var(--card);
     border-right:1px solid var(--line); font-weight:600; color:var(--txt);
-    width:162px; min-width:162px; max-width:162px; white-space:normal;
+    width:158px; min-width:158px; max-width:158px; white-space:normal;
     line-height:1.3; vertical-align:middle; }
+  table.stab td.nm .mchip { font-size:9px; padding:1px 4px; margin-right:4px;
+    vertical-align:middle; }
+  table.stab td.nm.sub { padding-left:13px; font-weight:500; color:#b9c4cf; }
   table.stab td.c { padding:3px 2px; min-width:66px; text-align:center; }
   table.stab td.na { color:#33404b; text-align:center; font-size:13px; }
+  table.stab .vu { font-size:9px; font-weight:700; color:#5f6c7a; margin-left:1px; }
   .dh { display:flex; align-items:center; gap:1px; }
   .dtxt { font:inherit; font-size:11px; font-weight:800; color:#fff;
     font-variant-numeric:tabular-nums; letter-spacing:0; background:transparent;
@@ -148,12 +192,19 @@
     padding:5px 2px; outline:none; -webkit-appearance:none; appearance:none; }
   .sin::placeholder { color:#37424d; font-weight:400; }
   .sin:focus { border-color:var(--accent); background:#1b232b; }
-  .addday { margin-top:11px; font:inherit; font-size:12.5px; font-weight:800;
+  .toolbar { display:flex; flex-wrap:wrap; gap:6px; margin-top:11px; }
+  .toolbar button { flex:1 1 0; min-width:98px; font:inherit; font-size:12px;
+    font-weight:800; padding:9px 8px; border-radius:9px; cursor:pointer;
+    background:var(--card2); color:var(--txt); border:1px solid var(--line); }
+  .toolbar button:active { background:#2a333d; }
+  .toolbar button.pri { color:var(--accent); border-color:rgba(78,201,160,.45);
+    background:rgba(78,201,160,.09); }
+  .addday { flex:1 1 0; font:inherit; font-size:12px; font-weight:800;
     color:var(--accent); background:rgba(78,201,160,.09);
     border:1px dashed rgba(78,201,160,.45); border-radius:9px;
-    padding:9px 13px; cursor:pointer; }
+    padding:9px 8px; cursor:pointer; }
   .addday:active { background:rgba(78,201,160,.2); }
-  .addpick { display:none; flex-wrap:wrap; gap:6px; margin-top:8px; }
+  .addpick { display:none; flex-wrap:wrap; gap:6px; margin-top:8px; flex:1 1 100%; }
   .addpick.on { display:flex; }
   .addpick button { font:inherit; font-size:12px; font-weight:800; color:var(--txt);
     background:var(--card2); border:1px solid var(--line); border-radius:8px;
@@ -572,11 +623,22 @@
 <script>
 (function(){
   var PLAN = "vo", PROF = "vo";
+  var MACH = {"M01": ["Front Lat Pulldown", "Máy kéo xô trước", "Lưng – Xô", "Kéo dọc từ trên xuống, tạo độ rộng cơ xô."], "M02": ["Chest-Supported Row", "Máy chèo thuyền tựa ngực", "Lưng – Xô", "Kéo ngang, ngực áp đệm, tăng độ dày lưng giữa."], "M03": ["Isolate Low Row", "Máy kéo xô thấp", "Lưng – Xô", "Kéo chéo từ thấp về hông, cô lập cơ xô dưới."], "M04": ["T-Bar Row (Chest-Supported)", "Máy kéo chữ T tựa ngực", "Lưng – Xô", "Kéo áp ngực, dày lưng, không mỏi thắt lưng."], "M05": ["T-Bar Row (Standing)", "Máy kéo chữ T đứng", "Lưng – Xô", "Kéo đứng cúi người, dày lưng toàn diện, có tải cột sống."], "M06": ["Lat Pulldown & Seated Row Combo", "Tháp cáp xô đa năng", "Lưng – Xô", "Tháp cáp khối kéo dọc hoặc kéo ngang."], "M07": ["Incline Chest Press", "Máy đẩy ngực trên", "Ngực – Vai – Tay", "Đẩy tạ góc nghiêng, ngực trên sát xương đòn."], "M08": ["Flat Chest Press", "Máy đẩy ngực bằng", "Ngực – Vai – Tay", "Đẩy ngực ngồi, đường đi cố định, an toàn cho vai."], "M09": ["Pec Deck Fly", "Máy ép ngực", "Ngực – Vai – Tay", "Ép cánh tay trước ngực, cô lập ngực, không tải vai như bài đẩy."], "M10": ["Rear Delt Fly", "Máy ban vai sau", "Ngực – Vai – Tay", "Gạt tạ về sau, vai sau và lưng trên."], "M11": ["Shoulder Press Machine", "Máy đẩy vai", "Ngực – Vai – Tay", "Đẩy từ ngang vai lên qua đầu, vai trước và vai giữa."], "M12": ["Preacher Curl", "Máy gập tay trước", "Ngực – Vai – Tay", "Cô lập tay trước, cùi chỏ tựa đệm."], "M13": ["Overhead Triceps Extension", "Máy duỗi tay sau ngồi", "Ngực – Vai – Tay", "Duỗi tay qua đầu, tập đầu dài tay sau."], "M14": ["Assisted Dip & Pull-Up", "Máy trợ lực xà đơn & xà kép", "Ngực – Vai – Tay", "Trợ lực nâng người — tạ càng nặng càng DỄ."], "M15": ["45-Degree Leg Press", "Máy đạp đùi ngả 45°", "Chân – Mông", "Đạp tạ đĩa khối lượng lớn, tải chân nặng, lưng được nâng đỡ."], "M16": ["Horizontal Leg Press", "Máy đạp đùi ngang", "Chân – Mông", "Đạp ngang tư thế ngồi, an toàn cho thắt lưng."], "M17": ["Hack Squat / Pendulum Squat", "Máy gánh đùi nghiêng", "Chân – Mông", "Squat theo ray trượt, tải chân nặng, giảm chấn cột sống."], "M18": ["Hip Thrust Machine", "Máy đẩy mông chuyên dụng", "Chân – Mông", "Lưng tựa đệm, hông đẩy thanh đòn lên, cô lập mông lớn."], "M19": ["Leg Extension", "Máy đá đùi trước", "Chân – Mông", "Duỗi chân thẳng, cô lập đùi trước."], "M20": ["Seated Leg Curl", "Máy móc đùi sau ngồi", "Chân – Mông", "Ngồi gập gót về sát mông, đùi sau."], "M21": ["Prone Leg Curl", "Máy móc đùi sau nằm", "Chân – Mông", "Nằm úp gập gót, đùi sau, ít dùng lưng dưới hơn bản ngồi."], "M22": ["Hip Abductor", "Máy mở hông", "Chân – Mông", "Đẩy đệm sang hai bên, mông nhỡ."], "M23": ["Hip Adductor", "Máy khép đùi", "Chân – Mông", "Ép đùi sát nhau, đùi trong."], "M24": ["Glute Kickback", "Máy đá mông sau", "Chân – Mông", "Đạp một chân ra sau, mông lớn, rất nhẹ cho lưng."], "M25": ["Treadmill", "Máy chạy bộ", "Tự do – Bụng – Cardio", "Chạy hoặc đi bộ dốc, tim mạch."], "M26": ["Elliptical Trainer", "Máy đi bộ trên không", "Tự do – Bụng – Cardio", "Cardio ít áp lực khớp gối."], "M27": ["Spin Bike", "Xe đạp tập", "Tự do – Bụng – Cardio", "Đạp cường độ cao, đùi và mông."], "M28": ["Ab Coaster / Slider", "Máy gập bụng trượt cong", "Tự do – Bụng – Cardio", "Cuộn bụng trên bục trượt, bụng dưới và cơ lõi."], "M29": ["Smith Machine", "Khung gánh tạ trợ lực", "Tự do – Bụng – Cardio", "Đòn gắn ray thẳng đứng, đường đi cố định."], "M30": ["Power Rack", "Khung gánh tạ tự do", "Tự do – Bụng – Cardio", "Đòn tự do có thanh bảo vệ hai bên."], "M31": ["Cable Crossover", "Dàn cáp đôi", "Tự do – Bụng – Cardio", "Hai tháp cáp chỉnh độ cao, đa năng."], "M32": ["Flat / Incline Bench Press", "Giá đẩy ngực tạ đòn", "Tự do – Bụng – Cardio", "Ghế cố định kèm giá đỡ, đẩy ngực tạ đòn."], "M33": ["Adjustable Bench", "Ghế điều chỉnh độ ngả", "Tự do – Bụng – Cardio", "Ghế chỉnh dốc, dùng với tạ đơn."], "M34": ["Dumbbell / Kettlebell", "Tạ tay / tạ ấm", "Tự do – Bụng – Cardio", "Dàn tạ rời nhiều mức."], "M35": ["Battle Ropes / Sled", "Dây thừng / khung đẩy", "Tự do – Bụng – Cardio", "Functional, HIIT."], "M36": ["Seated Calf Raise", "Máy nhón gót bắp chân", "Tự do – Bụng – Cardio", "Nhón gót đẩy khối tạ, bắp chân."], "M00": ["Bodyweight", "Thân trọng lượng", "—", "Không dùng máy."]}, EXM = {"barbellsquat": {"m": "M30", "u": "kg", "bar": 20, "sub": ["hacksquat", "legpress"], "name": "barbellsquat"}, "machinebenchpress": {"m": "M08", "u": "kg", "bar": 0, "sub": ["dipmachine", "barbellinclinebenchpressmediumgrip"], "name": "Machine Bench Press"}, "seatedcablerows": {"m": "M06", "u": "lb", "bar": 0, "sub": ["lyingtbarrow", "bentovertwodumbbellrow"], "name": "Seated Cable Rows"}, "sidelateralraise": {"m": "M34", "u": "kg/tay", "bar": 0, "sub": ["machineshouldermilitarypress"], "name": "Side Lateral Raise"}, "seatedlegcurl": {"m": "M20", "u": "lb", "bar": 0, "sub": ["lyinglegcurls"], "name": "Seated Leg Curl"}, "abcrunchmachine": {"m": "M28", "u": "kg", "bar": 0, "sub": ["cablecrunch", "hanginglegraise"], "name": "Ab Crunch Machine"}, "cablecrossover": {"m": "M31", "u": "kg", "bar": 0, "sub": ["butterfly", "reverseflyes"], "name": "Cable Crossover"}, "barbelldeadlift": {"m": "M30", "u": "kg", "bar": 20, "sub": ["smithmachinestiffleggeddeadlift", "barbellhipthrust"], "name": "barbelldeadlift"}, "widegriplatpulldown": {"m": "M01", "u": "kg", "bar": 0, "sub": ["closegripfrontlatpulldown", "lat-pulldown"], "name": "Wide-Grip Lat Pulldown"}, "machineshouldermilitarypress": {"m": "M11", "u": "kg", "bar": 0, "sub": ["sidelateralraise"], "name": "Machine Shoulder (Military) Press"}, "facepull": {"m": "M31", "u": "kg", "bar": 0, "sub": ["cablereardeltfly", "externalrotationcable"], "name": "Face Pull"}, "hacksquat": {"m": "M17", "u": "kg", "bar": 0, "sub": ["legpress", "legextensions"], "name": "Hack Squat"}, "barbellhipthrust": {"m": "M18", "u": "kg", "bar": 20, "sub": ["glutekickback", "smithmachinestiffleggeddeadlift"], "name": "Barbell Hip Thrust"}, "plank": {"m": "M00", "u": "", "bar": 0, "sub": ["hanginglegraise", "cablecrunch"], "name": "Plank"}, "pullups": {"m": "M14", "u": "kg trợ lực", "bar": 0, "sub": ["lat-pulldown", "closegripfrontlatpulldown"], "name": "pullups"}, "reversemachineflyes": {"m": "M10", "u": "kg", "bar": 0, "sub": ["cablereardeltfly", "facepull"], "name": "Reverse Machine Flyes"}, "butterfly": {"m": "M09", "u": "kg", "bar": 0, "sub": ["cablecrossover", "reverseflyes"], "name": "Butterfly"}, "tricepspushdown": {"m": "M31", "u": "kg", "bar": 0, "sub": ["cableropeoverheadtricepsextension", "dipmachine"], "name": "Triceps Pushdown"}, "cablecrunch": {"m": "M31", "u": "kg", "bar": 0, "sub": ["hanginglegraise", "abcrunchmachine"], "name": "Cable Crunch"}, "externalrotationcable": {"m": "M31", "u": "kg", "bar": 0, "sub": ["facepull"], "name": "externalrotationcable"}, "legpress": {"m": "M15", "u": "kg", "bar": 0, "sub": ["hacksquat", "legextensions"], "name": "Leg Press"}, "lyingtbarrow": {"m": "M04", "u": "kg", "bar": 0, "sub": ["bentovertwodumbbellrow", "seatedcablerows"], "name": "T-Bar Row tựa ngực"}, "bentovertwodumbbellrow": {"m": "M34", "u": "kg/tay", "bar": 0, "sub": ["lyingtbarrow", "seatedcablerows"], "name": "Bent-Over Row tạ đơn"}, "lyinglegcurls": {"m": "M21", "u": "lb", "bar": 0, "sub": ["seatedlegcurl"], "name": "Prone Leg Curl (nằm úp)"}, "hanginglegraise": {"m": "M00", "u": "", "bar": 0, "sub": ["cablecrunch", "abcrunchmachine"], "name": "Treo xà nâng chân"}, "reverseflyes": {"m": "M09", "u": "kg", "bar": 0, "sub": ["butterfly", "cablecrossover"], "name": "Reverse Fly — cùng máy M09, mặt sau"}, "smithmachinestiffleggeddeadlift": {"m": "M29", "u": "kg", "bar": 15, "sub": ["barbellhipthrust", "barbelldeadlift"], "name": "Romanian Deadlift máy Smith"}, "lat-pulldown": {"m": "M01", "u": "kg", "bar": 0, "sub": ["widegriplatpulldown", "closegripfrontlatpulldown"], "name": "Lat Pulldown cáp"}, "cablereardeltfly": {"m": "M31", "u": "kg", "bar": 0, "sub": ["reversemachineflyes", "facepull"], "name": "Cable Rear Delt Fly"}, "legextensions": {"m": "M19", "u": "kg", "bar": 0, "sub": ["hacksquat", "legpress"], "name": "Leg Extension"}, "glutekickback": {"m": "M24", "u": "kg", "bar": 0, "sub": ["barbellhipthrust", "smithmachinestiffleggeddeadlift"], "name": "Glute Kickback"}, "cableropeoverheadtricepsextension": {"m": "M31", "u": "kg", "bar": 0, "sub": ["tricepspushdown", "dipmachine"], "name": "Duỗi tay sau qua đầu (cáp)"}, "dipmachine": {"m": "M14", "u": "kg trợ lực", "bar": 0, "sub": ["machinebenchpress", "tricepspushdown"], "name": "Dip Machine trợ lực"}, "barbellinclinebenchpressmediumgrip": {"m": "M32", "u": "kg", "bar": 20, "sub": ["machinebenchpress"], "name": "Incline Bench Press tạ đòn"}}, SUBW = {"dipmachine": "Máy trợ lực: số tạ càng LỚN càng DỄ. Đã bỏ khỏi lịch chính vì vai ông duỗi cực độ ở đáy — chỉ dùng khi thật cần, dừng ở mức không đau.", "barbellinclinebenchpressmediumgrip": "Đây chính là bài đã bỏ khỏi lịch vì ép khớp AC. Nếu chọn, giảm biên độ và dừng ngay khi đỉnh vai nhói.", "pullups": "Máy trợ lực: tạ càng lớn càng dễ. Ghi số trợ lực, không phải số tạ nâng.", "plank": "Bài thân trọng lượng, không có tạ. Ghi số giây nếu muốn theo dõi."};
   var main = document.querySelector('main');
   if (!main) return;
 
   function curKey(s){ return 'gymtrack.' + PLAN + '.' + PROF + '.cur.' + s; }
   var LOGKEY = 'gymtrack.' + PLAN + '.' + PROF + '.log';
+
+  /* migrate: bản 87577be lưu log dưới khoá '***<plan>.<prof>.log' */
+  (function(){
+    var legacy = '***' + PLAN + '.' + PROF + '.log';
+    var have = null, had = null;
+    try { have = localStorage.getItem(LOGKEY); had = localStorage.getItem(legacy); } catch(e){ return; }
+    if (!have && had) {
+      try { localStorage.setItem(LOGKEY, had); localStorage.removeItem(legacy); } catch(e){}
+    }
+  })();
 
   var storageOK = true;
   function get(k){
@@ -602,14 +664,12 @@
     if (p.length !== 3) return iso;
     return p[2] + '/' + p[1] + '/' + p[0];
   }
-  /* "2026-10-30" → "30/10/26" (gọn cho cột hẹp) */
   function dmyS(iso){
     if (!iso) return '';
     var p = String(iso).split('-');
     if (p.length !== 3) return iso;
     return p[2] + '/' + p[1] + '/' + p[0].slice(-2);
   }
-  /* gõ tay "25/10", "25-10-2026", "25.10.26" → ISO; sai thì null */
   function parseDMY(txt){
     var m = String(txt || '').trim().match(/^(\d{1,2})\s*[\/\-\.]\s*(\d{1,2})(?:\s*[\/\-\.]\s*(\d{2,4}))?$/);
     if (!m) return null;
@@ -622,7 +682,7 @@
     if (isNaN(chk.getTime()) || chk.getDate() !== d) return null;
     return iso;
   }
-  /* "42,5" / " 42.5 kg " → "42.5"; rỗng → "" */
+  /* "42,5" / "42.5 kg" → "42.5" */
   function num(v){
     var t = String(v === undefined || v === null ? '' : v).replace(',', '.').replace(/[^0-9.]/g, '');
     if (!t) return '';
@@ -634,35 +694,15 @@
     if (isNaN(n) || n < 0) return '';
     return String(Math.round(n * 100) / 100);
   }
-  /* "BUỔI A — THÂN TRÊN" → "BUỔI A" */
   function shortLabel(lbl, sid){
     var m = String(lbl || '').match(/^\s*(BU[ỔO]I\s+[A-Z0-9]+)/i);
     if (m) return m[1].toUpperCase();
     return String(lbl || sid || '').toUpperCase();
   }
-  function normEntry(e){
-    var d = e.d || '';
-    if (/^\d{2}\/\d{2}\/\d{4}$/.test(d)) {
-      var q = d.split('/');
-      e.d = q[2] + '-' + q[1] + '-' + q[0];
-    }
-    if (!e.id) e.id = 'e' + Math.random().toString(36).slice(2, 9);
-    if (!e.items) e.items = [];
-    return e;
-  }
-
-  /* migrate: bản 87577be lưu log dưới khoá '***<plan>.<prof>.log' */
-  (function(){
-    var legacy = '***' + PLAN + '.' + PROF + '.log';
-    var have = null, had = null;
-    try { have = localStorage.getItem(LOGKEY); had = localStorage.getItem(legacy); } catch(e){ return; }
-    if (!have && had) {
-      try {
-        localStorage.setItem(LOGKEY, had);
-        localStorage.removeItem(legacy);
-      } catch(e){}
-    }
-  })();
+  function mm(mid){ return MACH[mid] ? MACH[mid][0] : ''; }
+  function nm(slug){ return (EXM[slug] && EXM[slug].name) ? EXM[slug].name : slug; }
+  function mvi(mid){ return MACH[mid] ? MACH[mid][1] : ''; }
+  function exm(slug){ return EXM[slug] || {m:'M00', u:'', bar:0, sub:[]}; }
 
   var state = {};
   function load(s){ if (!state[s]) state[s] = get(curKey(s)) || {}; return state[s]; }
@@ -678,7 +718,7 @@
     toastEl.textContent = msg;
     toastEl.className = 'toast on';
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(function(){ toastEl.className = 'toast'; }, 2000);
+    toastTimer = setTimeout(function(){ toastEl.className = 'toast'; }, 2600);
   }
   function stop(e){ e.stopPropagation(); }
 
@@ -695,8 +735,8 @@
     SESMAP[sid] = SES[SES.length - 1];
 
     exs.forEach(function(ex){
-      var slug = ex.getAttribute('data-slug');
-      var name = ex.getAttribute('data-name') || slug;
+      var base = ex.getAttribute('data-slug');
+      var baseName = ex.getAttribute('data-name') || base;
       var sum = ex.querySelector('summary');
       if (!sum || sum.querySelector('.mark')) return;
 
@@ -706,9 +746,14 @@
 
       function rec(){
         var s = load(sid);
-        if (!s[slug]) s[slug] = { w:'', done:0 };
-        return s[slug];
+        if (!s[base]) s[base] = { w:'', done:0 };
+        return s[base];
       }
+      function cur(){
+        var r = rec();
+        return r.slug || base;
+      }
+      function curMeta(){ return exm(cur()); }
 
       var inp = document.createElement('input');
       inp.type = 'text';
@@ -717,17 +762,54 @@
       inp.className = 'wt';
       inp.placeholder = 'kg';
       inp.value = rec().w || '';
-      inp.setAttribute('aria-label', 'Mức tạ ' + name);
+      inp.setAttribute('aria-label', 'Mức tạ ' + baseName);
 
       var btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'mark';
       btn.textContent = repsTxt;
-      btn.dataset.reps = repsTxt;
-      btn.setAttribute('aria-label', 'Hoàn thành ' + name + ' · ' + repsTxt);
+      btn.setAttribute('aria-label', 'Hoàn thành ' + baseName + ' · ' + repsTxt);
+
+      /* dòng 2 */
+      var mline = document.createElement('div');
+      mline.className = 'mline';
+      var chip = document.createElement('span');
+      chip.className = 'mchip';
+      var mname = document.createElement('span');
+      mname.className = 'mname';
+      var uni = document.createElement('button');
+      uni.type = 'button';
+      uni.className = 'uni';
+      var swp = document.createElement('button');
+      swp.type = 'button';
+      swp.className = 'swp';
+      swp.textContent = '⇄';
+      swp.setAttribute('aria-label', 'Đổi bài thay thế');
+      mline.appendChild(chip);
+      mline.appendChild(mname);
+      mline.appendChild(uni);
+      mline.appendChild(swp);
+
+      /* panel thay thế */
+      var box = document.createElement('div');
+      box.className = 'swapbox';
 
       function paint(){
         var r = rec();
+        var slug = r.slug || base;
+        var m = exm(slug);
+        chip.textContent = m.m;
+        mname.textContent = (slug === base ? mm(m.m) : mm(m.m));
+        if (slug !== base) {
+          ex.classList.add('swapped');
+          mname.textContent = mm(m.m) || slug;
+        } else {
+          ex.classList.remove('swapped');
+          mname.textContent = m.m === 'M00' ? mvi(m.m) : mm(m.m);
+        }
+        uni.textContent = m.u || '—';
+        uni.title = 'Đơn vị: bấm để đổi kg / lb / kg mỗi tay';
+        inp.placeholder = m.u || 'kg';
         if (r.done) {
           ex.classList.add('isdone');
           btn.classList.add('on');
@@ -740,22 +822,64 @@
           btn.disabled = false;
         }
       }
+
+      function buildBox(){
+        var slug = cur();
+        var m = exm(slug);
+        var h = '<div class="sh">Chọn bài</div>';
+        h += '<button data-s="' + esc(base) + '"' + (slug === base ? ' class="cur"' : '') + '>' +
+             '<span class="sm">' + esc(exm(base).m) + '</span>' +
+             '<span class="sn">' + esc(baseName) + ' <b>(gốc)</b></span></button>';
+        (exm(base).sub || []).forEach(function(s){
+          var sm = exm(s);
+          h += '<button data-s="' + esc(s) + '"' + (slug === s ? ' class="cur"' : '') + '>' +
+               '<span class="sm">' + esc(sm.m) + '</span>' +
+               '<span class="sn">' + esc(nm(s)) + '</span></button>';
+        });
+        var w = SUBW[slug];
+        if (w) h += '<div class="sw">⚠ ' + esc(w) + '</div>';
+        h += '<div class="sw">Bài thay thế ghi tạ riêng, không lẫn với bài gốc. ' +
+             'Mã máy là số hiệu trong danh sách 36 thiết bị.</div>';
+        box.innerHTML = h;
+        [].slice.call(box.querySelectorAll('button')).forEach(function(b){
+          b.addEventListener('click', function(ev){
+            ev.preventDefault(); ev.stopPropagation();
+            var to = b.getAttribute('data-s');
+            var s = load(sid);
+            if (!s[base]) s[base] = { w:'', done:0 };
+            s[base].slug = (to === base ? '' : to);
+            if (s[base].done) { s[base].done = 0; s[base].w = ''; inp.value = ''; }
+            save(sid);
+            box.classList.remove('on');
+            paint(); updateFinish(sid, sec);
+            if (to !== base) toast('Đổi sang ' + nm(to) + ' · ' + exm(to).m);
+          });
+          b.addEventListener('mousedown', stop);
+          b.addEventListener('touchstart', stop, { passive:true });
+        });
+      }
+
       paint();
 
       inp.addEventListener('input', function(){
         var s = load(sid);
-        if (!s[slug]) s[slug] = { w:'', done:0 };
-        s[slug].w = num(inp.value);
+        if (!s[base]) s[base] = { w:'', done:0 };
+        s[base].w = num(inp.value);
         save(sid);
       });
       inp.addEventListener('blur', function(){
         var v = num(inp.value);
         inp.value = v;
         var s = load(sid);
-        if (!s[slug]) s[slug] = { w:'', done:0 };
-        s[slug].w = v;
+        if (!s[base]) s[base] = { w:'', done:0 };
+        s[base].w = v;
         save(sid);
         updateFinish(sid, sec);
+        /* nghi số lb: 2 số lẻ không phải .5 */
+        var u = curMeta().u;
+        if (v && u === 'kg' && /\.\d\d?$/.test(v) && !/\.50?$/.test(v) && !/\.0$/.test(v)) {
+          toast('Số này có vẻ là lb. Bấm "' + u + '" để đổi đơn vị');
+        }
       });
       inp.addEventListener('change', function(){ updateFinish(sid, sec); });
 
@@ -767,22 +891,44 @@
         if (!v) { toast('Nhập mức tạ trước'); inp.focus(); return; }
         inp.value = v;
         var s = load(sid);
-        s[slug].w = v;
-        s[slug].done = 1;
+        s[base].w = v;
+        s[base].done = 1;
         save(sid);
         paint();
         updateFinish(sid, sec);
       });
 
-      [inp, btn].forEach(function(n){
+      uni.addEventListener('click', function(ev){
+        ev.preventDefault(); ev.stopPropagation();
+        var m = curMeta();
+        var order = ['kg', 'lb', 'kg/tay', 'kg trợ lực'];
+        var i = order.indexOf(m.u);
+        var s = load(sid);
+        if (!s[base]) s[base] = { w:'', done:0 };
+        s[base].u = order[(i + 1) % order.length];
+        save(sid);
+        paint();
+        toast('Đơn vị: ' + s[base].u);
+      });
+
+      swp.addEventListener('click', function(ev){
+        ev.preventDefault(); ev.stopPropagation();
+        var open = !box.classList.contains('on');
+        if (open) buildBox();
+        box.classList.toggle('on', open);
+      });
+
+      [inp, btn, uni, swp].forEach(function(n){
         n.addEventListener('click', stop);
         n.addEventListener('mousedown', stop);
         n.addEventListener('touchstart', stop, { passive:true });
-        n.addEventListener('keydown', stop);
       });
 
       sum.appendChild(inp);
       sum.appendChild(btn);
+      sum.appendChild(mline);
+      /* ngoài <details>: nội dung details bị ẩn khi thẻ đóng */
+      ex.parentNode.insertBefore(box, ex.nextSibling);
     });
 
     var fin = document.createElement('button');
@@ -796,10 +942,21 @@
   function itemsOf(sid, sec){
     var s = load(sid), out = [];
     [].slice.call(sec.querySelectorAll('details.ex[data-slug]')).forEach(function(ex){
-      var slug = ex.getAttribute('data-slug');
-      var r = s[slug];
-      var v = r && r.w !== undefined && r.w !== null ? String(r.w).trim() : '';
-      if (v) out.push({ slug: slug, n: ex.getAttribute('data-name') || slug, w: v });
+      var base = ex.getAttribute('data-slug');
+      var r = s[base];
+      if (!r) return;
+      var v = r.w !== undefined && r.w !== null ? String(r.w).trim() : '';
+      if (!v) return;
+      var slug = r.slug || base;
+      var m = exm(slug);
+      out.push({
+        slug: slug,
+        base: base,
+        n: (slug === base ? (ex.getAttribute('data-name') || base) : nm(slug)),
+        m: m.m,
+        u: r.u || m.u || '',
+        w: v
+      });
     });
     return out;
   }
@@ -828,15 +985,16 @@
     save(sid);
 
     [].slice.call(sec.querySelectorAll('details.ex[data-slug]')).forEach(function(ex){
-      ex.classList.remove('isdone');
+      ex.classList.remove('isdone'); ex.classList.remove('swapped');
       var i = ex.querySelector('.wt');
       if (i) i.value = '';
       var b = ex.querySelector('.mark');
-      if (b) {
-        b.classList.remove('on');
-        b.disabled = false;
-        b.textContent = b.dataset.reps || b.textContent;
-      }
+      if (b) { b.classList.remove('on'); b.disabled = false; b.textContent = b.dataset.reps || b.textContent; }
+      var bo = ex.querySelector('.swapbox');
+      if (bo) bo.classList.remove('on');
+    });
+    [].slice.call(sec.querySelectorAll('details.ex[data-slug] mark, details.ex[data-slug] .mark')).forEach(function(b){
+      if (b.dataset && b.dataset.reps) b.textContent = b.dataset.reps;
     });
 
     updateFinish(sid, sec);
@@ -844,18 +1002,29 @@
     toast('Đã lưu ' + items.length + ' bài');
   }
 
+  /* lưu nhãn reps gốc */
+  [].slice.call(document.querySelectorAll('details.ex[data-slug]')).forEach(function(ex){
+    var b = ex.querySelector('.mark');
+    if (b && !b.dataset.reps) b.dataset.reps = b.textContent;
+  });
+
   /* ---------- bảng thống kê ---------- */
   function logOf(){ return (get(LOGKEY) || []).map(normEntry); }
+  function normEntry(e){
+    if (!e.items) e.items = [];
+    e.items.forEach(function(it){
+      if (!it.u) it.u = exm(it.slug).u || '';
+      if (!it.m) it.m = exm(it.slug).m || 'M00';
+      if (!it.base) it.base = it.slug;
+    });
+    if (!e.id) e.id = 'e' + Math.random().toString(36).slice(2, 9);
+    return e;
+  }
   function findItem(e, slug, nm){
-    for (var i = 0; i < e.items.length; i++) {
-      if (e.items[i].slug === slug) return e.items[i];
-    }
-    for (var j = 0; j < e.items.length; j++) {
-      if (!e.items[j].slug && e.items[j].n === nm) return e.items[j];
-    }
+    for (var i = 0; i < e.items.length; i++) if (e.items[i].slug === slug) return e.items[i];
+    for (var j = 0; j < e.items.length; j++) if (e.items[j].n === nm) return e.items[j];
     return null;
   }
-
   var pickOpen = false;
 
   function renderStats(){
@@ -865,25 +1034,36 @@
       host.id = 'statroot';
       main.appendChild(host);
     }
-    var log = logOf().sort(function(a, b){
-      return a.d < b.d ? 1 : (a.d > b.d ? -1 : 0);
-    });
+    var log = logOf().sort(function(a, b){ return a.d < b.d ? 1 : (a.d > b.d ? -1 : 0); });
 
     if (!log.length) {
       host.innerHTML = '<h4>Bảng thống kê</h4><div class="lhint">Chưa có buổi nào được chốt. ' +
-        'Nhập mức tạ rồi bấm "Hoàn thành ngày tập" ở cuối buổi — hoặc bấm nút bên dưới để ' +
-        'nhập tay một buổi cũ.</div>' + addDayHTML();
-      wireAddDay(host);
+        'Nhập mức tạ rồi bấm "Hoàn thành ngày tập" ở cuối buổi — hoặc thêm buổi cũ để nhập tay.</div>' +
+        toolbarHTML() + addDayHTML();
+      wireAll(host);
       return;
     }
 
     var present = {};
     log.forEach(function(e){ present[e.s] = 1; });
-    var rows = [];
+
+    /* hàng: bài gốc theo buổi + bài thay thế đã dùng */
+    var rows = [], seen = {};
     SES.forEach(function(s){
       if (!present[s.id]) return;
       s.exs.forEach(function(x){
-        rows.push({ slug: x.slug, n: x.n, s: s.id });
+        rows.push({ slug: x.slug, n: x.n, s: s.id, sub: false, base: x.slug });
+      });
+      log.forEach(function(e){
+        if (e.s !== s.id) return;
+        e.items.forEach(function(it){
+          var b = it.base || it.slug;
+          if (b === it.slug) return;
+          var k = s.id + '|' + it.slug;
+          if (seen[k]) return;
+          seen[k] = 1;
+          rows.push({ slug: it.slug, n: nm(it.slug), s: s.id, sub: true, base: b, m: it.m });
+        });
       });
     });
 
@@ -901,52 +1081,132 @@
     h += '</tr></thead><tbody>';
 
     rows.forEach(function(r){
-      h += '<tr><td class="nm">' + esc(r.n) + '</td>';
+      var mid = r.m || exm(r.slug).m;
+      h += '<tr><td class="nm' + (r.sub ? ' sub' : '') + '">' +
+           (r.sub ? '↳ ' : '<span class="mchip">' + esc(mid) + '</span>') +
+           esc(r.n) + '</td>';
       log.forEach(function(e){
         if (e.s !== r.s) { h += '<td class="na">·</td>'; return; }
         var it = findItem(e, r.slug, r.n);
+        if (r.sub && !it) { h += '<td class="na">·</td>'; return; }
         var v = it ? String(it.w) : '';
+        var u = it ? (it.u || exm(r.slug).u) : exm(r.slug).u;
         h += '<td class="c"><input class="sin" type="text" inputmode="decimal" autocomplete="off" ' +
              'value="' + esc(v) + '" placeholder="–" data-id="' + esc(e.id) + '" ' +
-             'data-slug="' + esc(r.slug) + '" data-n="' + esc(r.n) + '" ' +
-             'aria-label="' + esc(r.n) + '">' + '</td>';
+             'data-slug="' + esc(r.slug) + '" data-n="' + esc(r.n) + '" data-base="' + esc(r.base) + '" ' +
+             'aria-label="' + esc(r.n) + '">' +
+             (u && v ? '<span class="vu">' + esc(u) + '</span>' : '') + '</td>';
       });
       h += '</tr>';
     });
     h += '</tbody></table></div>';
     h += '<div class="lhint" style="margin-top:9px">Bấm thẳng vào ô số để sửa mức tạ. ' +
-         'Gõ ngày dạng <b>ngày/tháng</b> (hoặc ngày/tháng/năm) rồi bấm ra ngoài. ' +
-         'Bấm × để xoá buổi.</div>';
-    h += addDayHTML();
+         'Gõ ngày dạng <b>ngày/tháng</b> rồi bấm ra ngoài. Bấm × để xoá buổi.</div>';
+    h += toolbarHTML() + addDayHTML();
 
     host.innerHTML = h;
-    wireAddDay(host);
+    wireAll(host);
+  }
+
+  function toolbarHTML(){
+    return '<div class="toolbar">' +
+      '<button type="button" class="pri" id="bexp">Xuất JSON</button>' +
+      '<button type="button" id="bimp">Nhập JSON</button>' +
+      '<button type="button" id="bcsv">Xuất CSV</button>' +
+      '<input type="file" id="finp" accept=".json,application/json" style="display:none">' +
+      '</div>';
+  }
+
+  function addDayHTML(){
+    return '<div class="toolbar" style="margin-top:6px">' +
+           '<button type="button" class="addday">+ Thêm buổi cũ</button>' +
+           '<div class="addpick">' + SES.map(function(s){
+             return '<button type="button" data-s="' + esc(s.id) + '">' +
+                    esc(s.label) + '</button>';
+           }).join('') + '</div></div>';
+  }
+
+  function wireAll(host){
+    /* thêm buổi */
+    var add = host.querySelector('.addday');
+    var pick = host.querySelector('.addpick');
+    if (add && pick) {
+      add.addEventListener('click', function(){
+        pickOpen = !pickOpen;
+        pick.classList.toggle('on', pickOpen);
+      });
+      [].slice.call(pick.querySelectorAll('button')).forEach(function(b){
+        b.addEventListener('click', function(){
+          var sid = b.getAttribute('data-s');
+          var sm = SESMAP[sid];
+          var lg = logOf();
+          lg.push({ id: 'e' + Date.now().toString(36), d: isoToday(), s: sid,
+                    label: sm ? sm.label : ('Buổi ' + sid), items: [] });
+          set(LOGKEY, lg);
+          pickOpen = false;
+          renderStats();
+          toast('Đã thêm buổi — gõ ngày và điền số tạ');
+        });
+      });
+    }
+
+    /* xuất / nhập */
+    var bexp = host.querySelector('#bexp');
+    if (bexp) bexp.addEventListener('click', exportJSON);
+    var bcsv = host.querySelector('#bcsv');
+    if (bcsv) bcsv.addEventListener('click', exportCSV);
+    var bimp = host.querySelector('#bimp');
+    var finp = host.querySelector('#finp');
+    if (bimp && finp) {
+      bimp.addEventListener('click', function(){ finp.click(); });
+      finp.addEventListener('change', function(){
+        var f = finp.files && finp.files[0];
+        if (!f) return;
+        var rd = new FileReader();
+        rd.onload = function(){
+          try {
+            var data = JSON.parse(String(rd.result));
+            var arr = data.log || data.entries || data;
+            if (!Array.isArray(arr)) throw new Error('no log array');
+            if (!confirm('Nhập ' + arr.length + ' buổi từ file?\n\nDữ liệu hiện có sẽ bị thay thế. ' +
+                         'Xuất JSON trước nếu chưa chắc.')) return;
+            set(LOGKEY, arr.map(normEntry));
+            state = {};
+            renderStats();
+            [].slice.call(document.querySelectorAll('section.session[data-session]')).forEach(function(s){
+              updateFinish(s.getAttribute('data-session'), s);
+            });
+            toast('Đã nhập ' + arr.length + ' buổi');
+          } catch(err) {
+            toast('File không đọc được');
+          }
+          finp.value = '';
+        };
+        rd.readAsText(f);
+      });
+    }
 
     /* sửa ngày */
     [].slice.call(host.querySelectorAll('.dtxt')).forEach(function(inp){
       inp.addEventListener('focus', function(){ inp.select(); });
+      inp.addEventListener('keydown', function(ev){
+        ev.stopPropagation();
+        if (ev.key === 'Enter') inp.blur();
+      });
       inp.addEventListener('change', function(){
         var iso = parseDMY(inp.value);
         var lg = logOf();
         var id = inp.getAttribute('data-id');
-        if (!iso) {
-          inp.classList.add('bad');
-          toast('Ngày không hợp lệ. Gõ dạng 25/10');
-          return;
-        }
+        if (!iso) { inp.classList.add('bad'); toast('Ngày không hợp lệ. Gõ dạng 25/10'); return; }
         inp.classList.remove('bad');
         for (var i = 0; i < lg.length; i++) if (lg[i].id === id) lg[i].d = iso;
         set(LOGKEY, lg);
         renderStats();
         toast('Đã đổi ngày');
       });
-      inp.addEventListener('keydown', function(ev){
-        ev.stopPropagation();
-        if (ev.key === 'Enter') inp.blur();
-      });
     });
 
-    /* sửa số tạ từng ô */
+    /* sửa số tạ */
     [].slice.call(host.querySelectorAll('.sin')).forEach(function(inp){
       inp.addEventListener('keydown', function(ev){
         ev.stopPropagation();
@@ -957,6 +1217,7 @@
         var id = inp.getAttribute('data-id');
         var slug = inp.getAttribute('data-slug');
         var nm = inp.getAttribute('data-n');
+        var base = inp.getAttribute('data-base') || slug;
         var v = num(inp.value);
         inp.value = v;
         for (var i = 0; i < lg.length; i++) {
@@ -965,14 +1226,14 @@
           if (!v) {
             lg[i].items = lg[i].items.filter(function(x){ return x !== it; });
           } else if (it) {
-            it.w = v; it.n = nm;
+            it.w = v;
           } else {
-            lg[i].items.push({ slug: slug, n: nm, w: v });
+            var m = exm(slug);
+            lg[i].items.push({ slug: slug, n: nm, w: v, m: m.m, u: m.u || '', base: base });
           }
           break;
         }
         set(LOGKEY, lg);
-        inp.value = v;
       });
     });
 
@@ -993,43 +1254,53 @@
     });
   }
 
-  function addDayHTML(){
-    return '<button type="button" class="addday">+ Thêm buổi cũ</button>' +
-           '<div class="addpick">' + SES.map(function(s){
-             return '<button type="button" data-s="' + esc(s.id) + '">' +
-                    esc(s.label) + '</button>';
-           }).join('') + '</div>';
+  function download(name, text, mime){
+    var blob = new Blob([text], { type: mime || 'application/json' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function(){ URL.revokeObjectURL(url); a.remove(); }, 1500);
   }
 
-  function wireAddDay(host){
-    var btn = host.querySelector('.addday');
-    var pick = host.querySelector('.addpick');
-    if (!btn || !pick) return;
-    btn.addEventListener('click', function(){
-      pickOpen = !pickOpen;
-      pick.classList.toggle('on', pickOpen);
+  function exportJSON(){
+    var log = logOf();
+    var data = {
+      schema: 'gym-plan/1',
+      plan: PLAN,
+      profile: PROF,
+      exported: new Date().toISOString(),
+      machines: MACH,
+      exercises: {},
+      log: log
+    };
+    Object.keys(EXM).forEach(function(slug){
+      data.exercises[slug] = { machine: EXM[slug].m, unit: EXM[slug].u,
+                               bar: EXM[slug].bar, substitutes: EXM[slug].sub };
     });
-    [].slice.call(pick.querySelectorAll('button')).forEach(function(b){
-      b.addEventListener('click', function(){
-        var sid = b.getAttribute('data-s');
-        var sm = SESMAP[sid];
-        var lg = logOf();
-        lg.push({
-          id: 'e' + Date.now().toString(36),
-          d: isoToday(),
-          s: sid,
-          label: sm ? sm.label : ('Buổi ' + sid),
-          items: []
-        });
-        set(LOGKEY, lg);
-        pickOpen = false;
-        renderStats();
-        toast('Đã thêm buổi — gõ ngày và điền số tạ');
+    download('gym-' + PLAN + '-' + PROF + '-' + isoToday() + '.json',
+             JSON.stringify(data, null, 2));
+    toast('Đã xuất ' + log.length + ' buổi');
+  }
+
+  function exportCSV(){
+    var log = logOf();
+    var lines = ['ngay,buoi,bai,machine,ta,don_vi,la_thay_the'];
+    log.forEach(function(e){
+      e.items.forEach(function(it){
+        var b = it.base || it.slug;
+        lines.push([e.d, e.s, '"' + String(it.n).replace(/"/g, '""') + '"',
+                    it.m || '', it.w || '', it.u || '',
+                    (b === it.slug ? 'khong' : 'co')].join(','));
       });
     });
+    download('gym-' + PLAN + '-' + PROF + '-' + isoToday() + '.csv',
+             '\ufeff' + lines.join('\n'), 'text/csv');
+    toast('Đã xuất CSV');
   }
 
-  /* khởi động */
   sections.forEach(function(sec){ updateFinish(sec.getAttribute('data-session'), sec); });
   renderStats();
   if (!storageOK) toast('Trình duyệt đang chặn lưu trữ');
