@@ -1159,13 +1159,16 @@
         if (e.s !== s.id) return;
         e.items.forEach(function(it){
           var b = it.base || it.slug;
-          if (b === it.slug) return;
-          /* bài thay thế vốn đã có hàng chính trong buổi này:
-             số đã tự hiện ở hàng đó, không tạo thêm hàng ↳ trùng */
+          /* bài đã có hàng chính trong buổi này: số tự hiện ở hàng đó,
+             không tạo thêm hàng ↳ trùng */
           if (main[it.slug]) return;
           var k = s.id + '|' + it.slug;
           if (seen[k]) return;
           seen[k] = 1;
+          /* Còn lại đều phải có hàng riêng — kể cả khi base === slug.
+             Trước đây bỏ qua trường hợp đó, nên khi một bài bị rút khỏi
+             lịch (vd T-bar đứng -> máy tựa ngực), số tạ cũ của nó BIẾN MẤT
+             khỏi bảng thay vì hiện thành hàng ↳. */
           rows.push({ slug: it.slug, n: nm(it.slug), s: s.id, sub: true, base: b, m: it.m });
         });
       });
