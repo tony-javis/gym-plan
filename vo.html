@@ -650,7 +650,7 @@
         uni.classList.toggle('on-lb', uu === 'lb');
         uni.title = 'Đơn vị tạ của bài này';
         /* số mờ = mức tạ lần trước, kèm đơn vị; nhấn chốt là lấy luôn số đó */
-        lastW = lastOf(slug, base);
+        lastW = lastOf(slug);
         var hint = '';
         if (lastW && !lastW.dw) hint = lastW.w + ' ' + (lastW.u || uu);
         else if (lastW && lastW.dw) hint = 'mặc định';
@@ -682,26 +682,23 @@
         }
       }
 
-      /* mức tạ lần trước của đúng bài này; không có thì lấy của bài gốc */
-      function lastOf(slug, baseSlug){
-        var log = logOf(), hitSlug = null, hitBase = null;
-        function newer(a, b){
-          if (!b) return true;
-          if (a.d !== b.d) return a.d > b.d;
-          return a.t > b.t;
-        }
+      /* Mức tạ lần trước, CHỈ khi trùng đúng slug bài.
+         Không lấy theo bài gốc: một ô có thể đang giữ số của bài thay thế khác
+         (vd Cable Crossover từng bị thay bằng Smith Incline 35 kg), lấy sang là sai. */
+      function lastOf(slug){
+        var log = logOf(), hit = null;
         for (var i = 0; i < log.length; i++){
           var e = log[i];
           for (var j = 0; j < e.items.length; j++){
             var it = e.items[j];
+            if (it.slug !== slug) continue;
             var v = (it.w !== undefined && it.w !== null) ? String(it.w).trim() : '';
             if (!v && !it.dw) continue;
             var cand = { d: e.d || '', t: e.t || 0, w: v, u: it.u || '', dw: !v && !!it.dw };
-            if (it.slug === slug && newer(cand, hitSlug)) hitSlug = cand;
-            else if ((it.base || it.slug) === baseSlug && newer(cand, hitBase)) hitBase = cand;
+            if (!hit || cand.d > hit.d || (cand.d === hit.d && cand.t > hit.t)) hit = cand;
           }
         }
-        return hitSlug || hitBase;
+        return hit;
       }
 
       function buildBox(){
