@@ -115,6 +115,8 @@
     padding:7px 3px; outline:none; }
   .wt::placeholder { color:#4d5a68; font-size:12px; }
   .wt:focus { border-color:var(--accent); background:#1b232b; }
+  .wt.hint::placeholder { color:#7b8fa3; font-size:12px; }
+  .wt.hint { border-style:dashed; border-color:#3a4756; }
   .mark { flex:0 0 auto; font:inherit; font-size:11.5px; font-weight:800;
     font-variant-numeric:tabular-nums; letter-spacing:.2px; cursor:pointer;
     padding:8px 9px; border-radius:8px; border:1px solid transparent;
@@ -813,6 +815,8 @@
       inp.value = rec().w || '';
       inp.setAttribute('aria-label', 'Mức tạ ' + baseName);
 
+      var lastW = null;   /* mức tạ lần trước, dùng khi ô trống */
+
       var btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'mark';
@@ -881,19 +885,26 @@
         uni.value = uu;
         uni.classList.toggle('on-lb', uu === 'lb');
         uni.title = 'Đơn vị tạ của bài này';
-        inp.placeholder = uu;
+        /* số mờ = mức tạ lần trước, kèm đơn vị; nhấn chốt là lấy luôn số đó */
+        lastW = lastOf(slug, base);
+        var hint = '';
+        if (lastW && !lastW.dw) hint = lastW.w + ' ' + (lastW.u || uu);
+        else if (lastW && lastW.dw) hint = 'mặc định';
+        inp.placeholder = hint || uu;
+        inp.classList.toggle('hint', !!hint && String(inp.value).trim() === '');
 
         paintBody(slug);
         var canDefault = isDefw(slug);
         dwb.style.display = canDefault ? '' : 'none';
         dwb.classList.toggle('on', !!(canDefault && r.dw));
         if (canDefault) {
-          inp.placeholder = r.dw ? 'mặc định' : uu;
+          inp.placeholder = r.dw ? 'mặc định' : (hint || uu);
           inp.disabled = !!r.dw;
           if (r.dw) inp.value = '';
         } else {
           inp.disabled = false;
         }
+        inp.classList.toggle('hint', !r.dw && !!hint && String(inp.value).trim() === '');
         if (r.done) {
           ex.classList.add('isdone');
           btn.classList.add('on');
@@ -905,6 +916,28 @@
           btn.textContent = repsTxt;
           btn.disabled = false;
         }
+      }
+
+      /* mức tạ lần trước của đúng bài này; không có thì lấy của bài gốc */
+      function lastOf(slug, baseSlug){
+        var log = logOf(), hitSlug = null, hitBase = null;
+        function newer(a, b){
+          if (!b) return true;
+          if (a.d !== b.d) return a.d > b.d;
+          return a.t > b.t;
+        }
+        for (var i = 0; i < log.length; i++){
+          var e = log[i];
+          for (var j = 0; j < e.items.length; j++){
+            var it = e.items[j];
+            var v = (it.w !== undefined && it.w !== null) ? String(it.w).trim() : '';
+            if (!v && !it.dw) continue;
+            var cand = { d: e.d || '', t: e.t || 0, w: v, u: it.u || '', dw: !v && !!it.dw };
+            if (it.slug === slug && newer(cand, hitSlug)) hitSlug = cand;
+            else if ((it.base || it.slug) === baseSlug && newer(cand, hitBase)) hitBase = cand;
+          }
+        }
+        return hitSlug || hitBase;
       }
 
       function buildBox(){
@@ -948,6 +981,7 @@
       paint();
 
       inp.addEventListener('input', function(){
+        inp.classList.toggle('hint', false);
         var s = load(sid);
         if (!s[base]) s[base] = { w:'', done:0 };
         s[base].w = num(inp.value);
@@ -974,6 +1008,12 @@
         var r = rec();
         if (r.done) return;
         var v = num(inp.value);
+        var usedHint = false;
+        if (!v && !r.dw && lastW) {
+          /* ô trống: lấy luôn số mờ của lần trước */
+          if (lastW.dw) { r.dw = 1; }
+          else { v = num(lastW.w); if (lastW.u) r.u = lastW.u; usedHint = true; }
+        }
         if (!v && !r.dw) { toast('Nhập mức tạ trước'); inp.focus(); return; }
         inp.value = v;
         var s = load(sid);
@@ -982,6 +1022,7 @@
         save(sid);
         paint();
         updateFinish(sid, sec);
+        if (usedHint) toast('Chốt ở mức ' + v);
       });
 
       dwb.addEventListener('click', function(ev){
