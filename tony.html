@@ -114,6 +114,16 @@
     background:var(--card2); border:1px solid var(--line); border-radius:8px;
     padding:7px 3px; outline:none; }
   .wt::placeholder { color:#4d5a68; font-size:12px; }
+  .rp { flex:0 0 40px; width:40px; font:inherit; font-size:13px; font-weight:700;
+    font-variant-numeric:tabular-nums; text-align:center; color:#cfe9e0;
+    background:rgba(78,201,160,.10); border:1px solid rgba(78,201,160,.28);
+    border-radius:8px; padding:7px 2px; outline:none; }
+  .rp::placeholder { color:#4d6a61; font-size:11px; font-weight:600; }
+  .rp:focus { border-color:var(--accent); background:#1b232b; }
+  .rpz { flex:0 0 auto; font-size:10px; font-weight:800; color:#4d6a61;
+    align-self:center; }
+  details.ex.isdone .rp { background:rgba(78,201,160,.16);
+    border-color:rgba(78,201,160,.45); }
   .wt:focus { border-color:var(--accent); background:#1b232b; }
   .wt.hint::placeholder { color:#7b8fa3; font-size:12px; }
   .wt.hint { border-style:dashed; border-color:#3a4756; }
@@ -896,6 +906,25 @@
       var badge = sum.querySelector('.badge');
       var repsTxt = badge ? badge.textContent.trim() : '✓';
       if (badge) badge.parentNode.removeChild(badge);
+      /* Khung reps của bài: "8-12" -> [8,12]; "15" -> [15,15].
+         Lấy SỐ THẤP NHẤT làm mặc định khi chưa có dữ liệu — đó là điểm
+         khởi hành của vòng tăng tạ kép, không phải đích. */
+      function repRange(txt){
+        /* badge là "3×10-12" (sets × reps) — chỉ lấy phần SAU dấu ×,
+           nếu không "3×5" sẽ bị đọc thành 3 reps. */
+        var t = String(txt);
+        var k = t.indexOf('\u00d7');
+        if (k < 0) k = t.indexOf('x');
+        if (k >= 0) t = t.slice(k + 1);
+        var m = t.match(/(\d+)\s*[-\u2013]\s*(\d+)/);
+        if (m) return [parseInt(m[1], 10), parseInt(m[2], 10)];
+        var s = t.match(/(\d+)/);
+        if (s) return [parseInt(s[1], 10), parseInt(s[1], 10)];
+        return null;
+      }
+      var RANGE = repRange(repsTxt);
+      var REPLO = RANGE ? RANGE[0] : null;
+      var REPHI = RANGE ? RANGE[1] : null;
 
       function rec(){
         var s = load(sid);
@@ -917,7 +946,16 @@
       inp.value = rec().w || '';
       inp.setAttribute('aria-label', 'Mức tạ ' + baseName);
 
+      var rinp = document.createElement('input');
+      rinp.type = 'text';
+      rinp.inputMode = 'numeric';
+      rinp.autocomplete = 'off';
+      rinp.className = 'rp';
+      rinp.setAttribute('aria-label', 'Số lần lặp ' + baseName);
+      if (RANGE) rinp.title = 'Số reps · khung ' + repsTxt;
+
       var lastW = null;   /* mức tạ lần trước, dùng khi ô trống */
+      var lastR = null;   /* reps lần trước, dùng khi ô reps để trống */
 
       var btn = document.createElement('button');
       btn.type = 'button';
@@ -1029,6 +1067,20 @@
         inp.placeholder = hint || uu;
         inp.classList.toggle('hint', !!hint && String(inp.value).trim() === '');
 
+        /* reps: ưu tiên số đã gõ buổi này, rồi reps gần nhất của ĐÚNG bài,
+           cuối cùng là đáy khung. Không lấy reps của bài thay thế khác. */
+        lastR = lastRepsOf(slug);
+        if (r.r) {
+          rinp.value = r.r;
+        } else if (lastR) {
+          rinp.value = lastR.r;
+          rinp.title = 'Reps lần trước (' + lastR.d + ') · khung ' + repsTxt;
+        } else {
+          rinp.value = REPLO === null ? '' : String(REPLO);
+          rinp.title = 'Mặc định = đáy khung (' + repsTxt + ') · khung ' + repsTxt;
+        }
+        rinp.disabled = !!r.done;
+
         /* tiêu đề phải đổi theo bài đang chọn, không bám tên bài gốc */
         if (nameEl) nameEl.textContent = (slug === base ? baseName : nm(slug));
         ex.setAttribute('data-name-cur', slug === base ? baseName : nm(slug));
@@ -1072,6 +1124,25 @@
             var v = (it.w !== undefined && it.w !== null) ? String(it.w).trim() : '';
             if (!v && !it.dw) continue;
             var cand = { d: e.d || '', t: e.t || 0, w: v, u: it.u || '', dw: !v && !!it.dw };
+            if (!hit || cand.d > hit.d || (cand.d === hit.d && cand.t > hit.t)) hit = cand;
+          }
+        }
+        return hit;
+      }
+
+      /* Reps lần trước — CHỈ theo đúng slug, cùng quy tắc với lastOf.
+         Bài thay thế ghi reps riêng: 12 reps ở thanh chữ W không nói gì
+         về 12 reps ở thanh thẳng nắm rộng. */
+      function lastRepsOf(slug){
+        var log = logOf(), hit = null;
+        for (var i = 0; i < log.length; i++){
+          var e = log[i];
+          for (var j = 0; j < e.items.length; j++){
+            var it = e.items[j];
+            if (it.slug !== slug) continue;
+            var rv = (it.r !== undefined && it.r !== null) ? String(it.r).trim() : '';
+            if (!rv) continue;
+            var cand = { d: e.d || '', t: e.t || 0, r: rv };
             if (!hit || cand.d > hit.d || (cand.d === hit.d && cand.t > hit.t)) hit = cand;
           }
         }
@@ -1123,6 +1194,9 @@
       }
 
       paint();
+      /* để finish() vẽ lại được sau khi xoá trắng: lúc đó state đã mất,
+         nên phải gọi lại paint để ô reps và placeholder lấy mặc định mới. */
+      ex._paint = paint;
 
       inp.addEventListener('input', function(){
         inp.classList.toggle('hint', false);
@@ -1147,6 +1221,34 @@
       });
       inp.addEventListener('change', function(){ updateFinish(sid, sec); });
 
+      /* ô reps: lưu từng lần gõ, không cần chờ blur */
+      rinp.addEventListener('input', function(){
+        var s = load(sid);
+        if (!s[base]) s[base] = { w:'', done:0 };
+        var rv = parseInt(String(rinp.value).replace(/[^0-9]/g, ''), 10);
+        s[base].r = isNaN(rv) ? '' : rv;
+        save(sid);
+        updateFinish(sid, sec);
+      });
+      rinp.addEventListener('blur', function(){
+        var rv = parseInt(String(rinp.value).replace(/[^0-9]/g, ''), 10);
+        var s = load(sid);
+        if (!s[base]) s[base] = { w:'', done:0 };
+        if (isNaN(rv)) {
+          /* để trống -> hiện lại mức mặc định (reps gần nhất hoặc đáy khung) */
+          var rec2 = lastRepsOf(cur());
+          rv = rec2 ? parseInt(rec2.r, 10) : REPLO;
+          s[base].r = '';
+        } else {
+          s[base].r = rv;
+        }
+        save(sid);
+        paint();
+        if (REPHI !== null && rv > REPHI) {
+          toast('Vượt khung ' + repsTxt + ' — reps cao hơn nghĩa là tạ còn nhẹ, tăng tạ rồi quay lại ' + REPLO);
+        }
+      });
+
       btn.addEventListener('click', function(ev){
         ev.preventDefault(); ev.stopPropagation();
         var r = rec();
@@ -1159,6 +1261,9 @@
           else { v = num(lastW.w); if (lastW.u) r.u = lastW.u; usedHint = true; }
         }
         if (!v && !r.dw) { toast('Nhập mức tạ trước'); inp.focus(); return; }
+        /* chốt reps đang hiện trên ô (mặc định hoặc số đã gõ) */
+        var rv = parseInt(String(rinp.value).replace(/[^0-9]/g, ''), 10);
+        if (!isNaN(rv)) r.r = rv;
         inp.value = v;
         var s = load(sid);
         s[base].w = v;
@@ -1218,6 +1323,7 @@
       });
 
       sum.appendChild(inp);
+      sum.appendChild(rinp);
       sum.appendChild(btn);
       sum.appendChild(mline);
       /* ngoài <details>: nội dung details bị ẩn khi thẻ đóng */
@@ -1252,6 +1358,11 @@
       };
       if (!v && r.dw) o.dw = 1;
       if (r.g) o.g = 1;
+      /* reps: giá trị đang hiện trên ô, kể cả khi là mặc định.
+         Ghi cả khi ô trống vì "không ghi" khác "không có reps". */
+      var rinpEl = ex.querySelector('.rp');
+      var rv = rinpEl ? String(rinpEl.value).replace(/[^0-9]/g, '') : '';
+      if (rv) o.r = parseInt(rv, 10);
       out.push(o);
     });
     return out;
@@ -1306,8 +1417,11 @@
       if (i) i.value = '';
       var b = ex.querySelector('.mark');
       if (b) { b.classList.remove('on'); b.disabled = false; b.textContent = b.dataset.reps || b.textContent; }
+      var ri = ex.querySelector('.rp');
+      if (ri) { ri.value = ''; ri.disabled = false; }
       var bo = ex.querySelector('.swapbox');
       if (bo) bo.classList.remove('on');
+      if (ex._paint) ex._paint();
     });
     [].slice.call(sec.querySelectorAll('details.ex[data-slug] mark, details.ex[data-slug] .mark')).forEach(function(b){
       if (b.dataset && b.dataset.reps) b.textContent = b.dataset.reps;
@@ -1417,12 +1531,15 @@
         var v = it ? String(it.w) : '';
         var u = it ? (it.u || exm(r.slug).u) : exm(r.slug).u;
         var dw = !!(it && it.dw);
+        var rr = (it && it.r !== undefined && it.r !== null) ? String(it.r) : '';
         h += '<td class="c"><input class="sin' + (dw ? ' dwon' : '') + '" type="text" ' +
              'inputmode="decimal" autocomplete="off" ' +
              'value="' + esc(v) + '" placeholder="' + (dw ? 'mặc định' : '–') + '" ' +
              'data-id="' + esc(e.id) + '" ' +
              'data-slug="' + esc(r.slug) + '" data-n="' + esc(r.n) + '" data-base="' + esc(r.base) + '" ' +
              'aria-label="' + esc(r.n) + '">' +
+             (rr ? '<span class="vu rvu" data-id="' + esc(e.id) + '" data-slug="' + esc(r.slug) +
+                   '" data-n="' + esc(r.n) + '" title="Bấm để sửa số reps">× ' + esc(rr) + '</span>' : '') +
              (dw ? '<span class="vu">mặc định</span>' : (u && v ? '<span class="vu">' + esc(u) + '</span>' : '')) +
              (it && it.g ? '<span class="dag" title="có dùng dây quấn">dây</span>' : '') +
              '</td>';
@@ -1570,6 +1687,38 @@
       });
     });
 
+    /* sửa số reps trên bảng: bấm nhãn "× 10" -> hỏi số mới */
+    [].slice.call(host.querySelectorAll('.rvu')).forEach(function(sp){
+      sp.style.cursor = 'pointer';
+      sp.addEventListener('click', function(ev){
+        ev.preventDefault(); ev.stopPropagation();
+        var id = sp.getAttribute('data-id');
+        var slug = sp.getAttribute('data-slug');
+        var nmx = sp.getAttribute('data-n');
+        var lg = logOf();
+        var tgt = null, item = null;
+        for (var i = 0; i < lg.length; i++){
+          if (lg[i].id !== id) continue;
+          tgt = lg[i];
+          item = findItem(lg[i], slug, nmx);
+        }
+        if (!tgt || !item) return;
+        var curv = (item.r !== undefined && item.r !== null) ? String(item.r) : '';
+        var inp2 = window.prompt('Số reps của "' + nmx + '":', curv);
+        if (inp2 === null) return;
+        var rv = parseInt(String(inp2).replace(/[^0-9]/g, ''), 10);
+        if (isNaN(rv) || rv < 1) {
+          delete item.r;
+        } else {
+          item.r = rv;
+        }
+        tgt.t = Date.now();
+        set(LOGKEY, lg);
+        renderStats();
+        toast(isNaN(rv) ? 'Đã xoá reps' : 'Reps: ' + rv);
+      });
+    });
+
     /* xoá buổi */
     [].slice.call(host.querySelectorAll('.ddel')).forEach(function(b){
       b.addEventListener('click', function(){
@@ -1620,12 +1769,13 @@
 
   function exportCSV(){
     var log = logOf();
-    var lines = ['ngay,buoi,bai,machine,ta,don_vi,day_quan,la_thay_the'];
+    var lines = ['ngay,buoi,bai,machine,ta,reps,don_vi,day_quan,la_thay_the'];
     log.forEach(function(e){
       e.items.forEach(function(it){
         var b = it.base || it.slug;
         lines.push([e.d, e.s, '"' + String(it.n).replace(/"/g, '""') + '"',
-                    it.m || '', it.w || '', it.u || '', (it.g ? 'co' : 'khong'),
+                    it.m || '', it.w || '', (it.r === undefined || it.r === null ? '' : it.r),
+                    it.u || '', (it.g ? 'co' : 'khong'),
                     (b === it.slug ? 'khong' : 'co')].join(','));
       });
     });
