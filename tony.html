@@ -1125,12 +1125,16 @@
           ex.classList.add('isdone');
           btn.classList.add('on');
           btn.textContent = '✓';
-          btn.disabled = true;
+          /* KHÔNG khoá: bấm lại = mở bài ra để sửa. Lỡ tay nhập sai mà
+             không mở lại được là mất số, phải xoá cả buổi. */
+          btn.disabled = false;
+          btn.title = 'Đã chốt — bấm lần nữa để mở lại và sửa';
         } else {
           ex.classList.remove('isdone');
           btn.classList.remove('on');
           btn.textContent = repsTxt;
           btn.disabled = false;
+          btn.title = repsTxt ? 'Chốt bài ở khung ' + repsTxt : '';
         }
       }
 
@@ -1275,7 +1279,19 @@
       btn.addEventListener('click', function(ev){
         ev.preventDefault(); ev.stopPropagation();
         var r = rec();
-        if (r.done) return;
+        /* Bấm lại khi đã chốt = MỞ LẠI để sửa, giữ nguyên số đã nhập.
+           Trước đây nút bị khoá nên lỡ nhập sai là phải xoá cả buổi. */
+        if (r.done) {
+          var s0 = load(sid);
+          s0[base].done = 0;
+          save(sid);
+          ex.open = true;
+          paint();
+          updateFinish(sid, sec);
+          try { ex.scrollIntoView({ block:'nearest', behavior:'smooth' }); } catch(e){}
+          toast('Đã mở lại — sửa số rồi bấm ' + repsTxt + ' để chốt');
+          return;
+        }
         var v = num(inp.value);
         var usedHint = false;
         if (!v && !r.dw && lastW) {
