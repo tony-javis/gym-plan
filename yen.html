@@ -764,6 +764,16 @@
         uni.title = 'Đơn vị tạ của bài này';
         /* số mờ = mức tạ lần trước, kèm đơn vị; nhấn chốt là lấy luôn số đó */
         lastW = lastOf(slug);
+        /* TĂNG TẠ KÉP: nếu buổi trước đã chạm ĐỈNH khung ở ĐÚNG bài này thì
+           đây là lúc tăng tạ rồi quay lại ĐÁY khung — không lặp lại mức cũ.
+           Trước 20/11 người tập tập max reps ở một mức tạ nên không bao giờ
+           lên được tạ; app phải nói ra việc đó. */
+        var prevR = lastRepsOf(slug);
+        var promo = null;
+        if (prevR && REPHI !== null) {
+          var pv = parseInt(String(prevR.r).replace(/[^0-9]/g, ''), 10);
+          if (!isNaN(pv) && pv >= REPHI) promo = prevR;
+        }
         var hint = '';
         if (lastW && !lastW.dw) {
           var lu = lastW.u || uu;
@@ -782,6 +792,17 @@
           }
         }
         else if (lastW && lastW.dw) hint = 'mặc định';
+        /* đề xuất mức kế tiếp, in mờ ngay trong ô tạ */
+        if (promo && lastW && !lastW.dw) {
+          var _bw = parseFloat(String(lastW.w).replace(',', '.'));
+          if (_bw) {
+            var _step = (uu === 'lb') ? 5 : 2.5;
+            if (uu.indexOf('/') >= 0) _step = 1;
+            var _nx = Math.round((_bw + _step) * 10) / 10;
+            hint = '\u2191 ' + String(_nx).replace('.', ',') + ' ' + uu +
+                   ' (lần trước ' + lastW.w + ')';
+          }
+        }
         inp.placeholder = hint || uu;
         inp.classList.toggle('hint', !!hint && String(inp.value).trim() === '');
 
@@ -791,8 +812,10 @@
         if (r.r) {
           rinp.value = r.r;
         } else if (lastR) {
-          rinp.value = lastR.r;
-          rinp.title = 'Reps lần trước (' + lastR.d + ') · khung ' + repsTxt;
+          rinp.value = promo ? String(REPLO) : lastR.r;
+          rinp.title = promo
+            ? 'Đã chạm đỉnh ' + REPHI + ' lần trước → tăng tạ, quay lại đáy ' + REPLO
+            : 'Reps lần trước (' + lastR.d + ') · khung ' + repsTxt;
         } else {
           rinp.value = REPLO === null ? '' : String(REPLO);
           rinp.title = 'Mặc định = đáy khung (' + repsTxt + ') · khung ' + repsTxt;
