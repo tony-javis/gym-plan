@@ -796,6 +796,8 @@
   /* Địa chỉ nhận dữ liệu. Rỗng = ẩn nút gửi. Trang chạy trên GitHub Pages
      (HTTPS) nên máy chủ cũng phải HTTPS, nếu không trình duyệt chặn. */
   var SEND_URL = "";
+  /* Đồng bộ đám mây (API Gateway + Lambda + DynamoDB). Rỗng = tắt. */
+  var SYNC_URL = "https://zspwl26776.execute-api.ap-southeast-1.amazonaws.com";
   /* Bước tạ riêng cho bài có bàn tạ thô (M10 chỉ có đĩa 10 lb) */
   var STEP10 = {"reversemachineflyes": 10, "reverseflyes": 10};
   var main = document.querySelector('main');
@@ -2150,6 +2152,194 @@
              '\ufeff' + lines.join('\n'), 'text/csv');
     toast('Đã xuất CSV');
   }
+
+  
+  /* ─── Đồng bộ đám mây ───────────────────────────────────────────────
+     Dùng API Gateway + Lambda + DynamoDB. Gộp theo id của từng buổi:
+     bản nào có t lớn hơn thì thắng, nên nhập trên điện thoại rồi mở
+     máy tính vẫn thấy đủ, không mất dữ liệu của bên nào.
+     Mất mạng: giữ nguyên local, thử lại sau — không xoá gì.
+  */
+  var SYNC_URL = "https://zspwl26776.execute-api.ap-southeast-1.amazonaws.com";
+  var TOKKEY = 'gymtrack.' + PLAN + '.' + PROF + '.synctok';
+  var DIRTYKEY = 'gymtrack.' + PLAN + '.' + PROF + '.dirty';
+  var LASTSYNC = 'gymtrack.' + PLAN + '.' + PROF + '.lastsync';
+  var syncTok = null;
+  try { syncTok = localStorage.getItem(TOKKEY); } catch(e){}
+  var syncTimer = null, syncBusy = false;
+
+  function syncEnabled(){ return !!SYNC_URL && !!syncTok; }
+
+  function payloadDoc(){
+    var data = {
+      schema: 'gym-plan/1', plan: PLAN, profile: PROF,
+      exported: new Date().toISOString(),
+      machines: MACH, exercises: {}, log: logOf()
+    };
+    Object.keys(EXM).forEach(function(slug){
+      data.exercises[slug] = { machine: EXM[slug].m, unit: EXM[slug].u,
+                               bar: EXM[slug].bar, substitutes: EXM[slug].sub };
+    });
+    return data;
+  }
+
+  /* Gộp hai mảng log theo id; t lớn hơn thắng; không id thì giữ cả hai. */
+  function mergeLog(local, remote){
+    var byId = {}, out = [];
+    function take(e){
+      if (!e || typeof e !== 'object') return;
+      var k = e.id;
+      if (!k) { out.push(e); return; }
+      var p = byId[k];
+      if (!p || (e.t || 0) >= (p.t || 0)) byId[k] = e;
+    }
+    (remote || []).forEach(take);
+    (local || []).forEach(take);
+    Object.keys(byId).forEach(function(k){ out.push(byId[k]); });
+    out.sort(function(a,b){ return String(b.d||'').localeCompare(String(a.d||'')); });
+    return out;
+  }
+
+  function applyLog(arr){
+    if (!arr || !arr.length) return 0;
+    var before = logOf();
+    var merged = mergeLog(before, arr);
+    if (merged.length === before.length) {
+      /* cùng số lượng: kiểm tra xem có bản nào mới hơn không */
+      var sameJson = JSON.stringify(merged) === JSON.stringify(before);
+      if (sameJson) return 0;
+    }
+    set(LOGKEY, merged);
+    state = {};
+    if (typeof renderStats === 'function') renderStats();
+    [].slice.call(document.querySelectorAll('section.session[data-session]')).forEach(function(s){
+      if (typeof updateFinish === 'function') updateFinish(s.getAttribute('data-session'), s);
+    });
+    return merged.length - before.length;
+  }
+
+  function markDirty(v){
+    try { if (v) localStorage.setItem(DIRTYKEY, '1'); else localStorage.removeItem(DIRTYKEY); } catch(e){}
+  }
+  function isDirty(){
+    try { return localStorage.getItem(DIRTYKEY) === '1'; } catch(e){ return false; }
+  }
+
+  function scheduleSync(){
+    markDirty(true);
+    if (!syncEnabled()) return;
+    clearTimeout(syncTimer);
+    syncTimer = setTimeout(pushSync, 2000);
+  }
+
+  function pushSync(){
+    if (!syncEnabled() || syncBusy) return;
+    syncBusy = true;
+    fetch(SYNC_URL + '/gym', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Gym-Token': syncTok },
+      body: JSON.stringify(payloadDoc())
+    }).then(function(r){
+      if (r.status === 401) throw new Error('token sai');
+      return r.json();
+    }).then(function(j){
+      if (!j.ok) throw new Error(j.error || 'lỗi máy chủ');
+      markDirty(false);
+      try { localStorage.setItem(LASTSYNC, String(Date.now())); } catch(e){}
+      setSyncLabel('✓ đã lưu ' + j.sessions + ' buổi');
+    }).catch(function(e){
+      setSyncLabel('⚠ chưa lưu được: ' + (e.message || 'mất mạng'), true);
+    }).then(function(){ syncBusy = false; });
+  }
+
+  function pullSync(){
+    if (!syncEnabled()) return Promise.resolve(0);
+    return fetch(SYNC_URL + '/gym?profile=' + encodeURIComponent(PROF), {
+      headers: { 'X-Gym-Token': syncTok }
+    }).then(function(r){
+      if (r.status === 401) throw new Error('token sai');
+      return r.json();
+    }).then(function(j){
+      if (!j.ok) throw new Error(j.error || 'lỗi máy chủ');
+      var added = applyLog((j.doc && j.doc.log) || []);
+      setSyncLabel(added > 0 ? ('↓ nhận ' + added + ' buổi mới') : '✓ đã đồng bộ');
+      /* local có thay đổi chưa đẩy thì đẩy luôn */
+      if (isDirty()) scheduleSync();
+      return added;
+    }).catch(function(e){
+      setSyncLabel('⚠ không tải được: ' + (e.message || 'mất mạng'), true);
+      return 0;
+    });
+  }
+
+  function setSyncLabel(txt, bad){
+    var el = document.getElementById('syncst');
+    if (!el) return;
+    el.textContent = txt || '';
+    el.style.color = bad ? '#e0736b' : '#8e9caa';
+  }
+
+  /* Thanh điều khiển đồng bộ: chỉ hiện khi trang có SYNC_URL */
+  function buildSyncBar(){
+    if (!SYNC_URL) return;
+    var host = document.querySelector('#planbar') || document.querySelector('main');
+    if (!host) return;
+    var box = document.createElement('div');
+    box.id = 'syncbar';
+    box.style.cssText = 'display:flex;gap:8px;align-items:center;flex-wrap:wrap;' +
+      'padding:10px 12px;margin:10px 0;background:var(--card);border:1px solid var(--line);' +
+      'border-radius:12px;font-size:13px';
+    box.innerHTML =
+      '<span style="color:var(--dim)">Đồng bộ:</span>' +
+      '<span id="syncst" style="color:var(--dim);flex:1;min-width:120px"></span>' +
+      '<input id="synctok" type="password" placeholder="dán token đồng bộ" ' +
+        'style="flex:1;min-width:160px;padding:6px 8px;border-radius:8px;' +
+        'border:1px solid var(--line);background:var(--bg);color:var(--txt)" />' +
+      '<button id="bsyncnow" class="btn">Đồng bộ ngay</button>';
+    host.insertBefore(box, host.firstChild);
+
+    var inp = box.querySelector('#synctok');
+    if (syncTok) { inp.value = syncTok; }
+    inp.addEventListener('change', function(){
+      var v = inp.value.trim();
+      try {
+        if (v) localStorage.setItem(TOKKEY, v); else localStorage.removeItem(TOKKEY);
+      } catch(e){}
+      syncTok = v || null;
+      if (syncEnabled()) pullSync();
+      else setSyncLabel('chưa có token');
+    });
+    box.querySelector('#bsyncnow').addEventListener('click', function(){
+      if (!syncEnabled()) { setSyncLabel('chưa có token', true); return; }
+      setSyncLabel('đang đồng bộ…');
+      pullSync().then(function(){ if (isDirty()) pushSync(); });
+    });
+  }
+
+  /* Bắt mọi lần ghi log để đánh dấu cần đẩy lên */
+  var _origSet = set;
+  set = function(k, v){
+    var ok = _origSet(k, v);
+    if (ok && k === LOGKEY) scheduleSync();
+    return ok;
+  };
+
+  buildSyncBar();
+  if (syncEnabled()) {
+    setSyncLabel('đang tải…');
+    pullSync();
+  } else if (SYNC_URL) {
+    setSyncLabel('chưa có token');
+  }
+  /* Quay lại tab thì đồng bộ lại — điện thoại hay bị treo nền */
+  document.addEventListener('visibilitychange', function(){
+    if (!document.hidden && syncEnabled()) pullSync();
+  });
+  window.addEventListener('online', function(){ if (syncEnabled()) pullSync(); });
+  window.addEventListener('beforeunload', function(e){
+    if (isDirty() && syncEnabled()) { pushSync(); }
+  });
+
 
   sections.forEach(function(sec){ updateFinish(sec.getAttribute('data-session'), sec); });
   renderStats();
