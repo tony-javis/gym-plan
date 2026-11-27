@@ -2262,9 +2262,20 @@
     }).then(function(j){
       if (!j.ok) throw new Error(j.error || 'lỗi máy chủ');
       var added = applyLog((j.doc && j.doc.log) || []);
+      /* Local có buổi mà cloud chưa có (hoặc mới hơn) thì phải đẩy lên.
+         Trước đây chỉ đẩy khi isDirty(), nên lần đầu dán token thì dữ liệu
+         đang nằm sẵn trên máy không bao giờ lên cloud. */
+      var cloudIds = {};
+      ((j.doc && j.doc.log) || []).forEach(function(e){ if (e && e.id) cloudIds[e.id] = e.t || 0; });
+      var localLog = logOf();
+      var needPush = false;
+      for (var i = 0; i < localLog.length; i++) {
+        var le = localLog[i];
+        if (!le || !le.id) continue;
+        if (!(le.id in cloudIds) || (le.t || 0) > cloudIds[le.id]) { needPush = true; break; }
+      }
       setSyncLabel(added > 0 ? ('↓ nhận ' + added + ' buổi mới') : '✓ đã đồng bộ');
-      /* local có thay đổi chưa đẩy thì đẩy luôn */
-      if (isDirty()) scheduleSync();
+      if (needPush || isDirty()) scheduleSync();
       return added;
     }).catch(function(e){
       setSyncLabel('⚠ không tải được: ' + (e.message || 'mất mạng'), true);
